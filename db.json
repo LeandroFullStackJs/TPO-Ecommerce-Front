@@ -1,0 +1,147 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "email": "admin@techparts.com",
+      "password": "admin123",
+      "firstName": "Admin",
+      "lastName": "TechParts",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "username": "demo",
+      "email": "demo@techparts.com",
+      "password": "demo123",
+      "firstName": "Demo",
+      "lastName": "User",
+      "role": "user"
+    }
+  ],
+  "products": [
+    {
+      "id": "abstract-colors-01",
+      "name": "Colores Abstractos",
+      "artist": "María González",
+      "category": "abstract",
+      "price": 45000,
+      "stock": 1,
+      "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center",
+      "description": "Obra abstracta vibrante que juega con la interacción de colores primarios y formas geométricas. Técnica mixta sobre lienzo.",
+      "dimensions": "60x80 cm",
+      "technique": "Técnica mixta sobre lienzo",
+      "year": 2024,
+      "userId": 1
+    },
+    {
+      "id": "landscape-dream-02",
+      "name": "Sueño de Paisaje",
+      "artist": "Carlos Mendoza",
+      "category": "landscape",
+      "price": 38000,
+      "stock": 1,
+      "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=center",
+      "description": "Paisaje onírico que captura la esencia de la naturaleza en un momento de tranquilidad absoluta. Pintura al óleo.",
+      "dimensions": "70x50 cm",
+      "technique": "Óleo sobre lienzo",
+      "year": 2023,
+      "userId": 1
+    },
+    {
+      "id": "urban-portrait-03",
+      "name": "Retrato Urbano",
+      "artist": "Ana Silvestre",
+      "category": "portrait",
+      "price": 52000,
+      "stock": 1,
+      "image": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800&h=600&fit=crop&crop=center",
+      "description": "Retrato contemporáneo que refleja la vida urbana moderna. Expresividad única con técnicas de acuarela.",
+      "dimensions": "50x70 cm",
+      "technique": "Acuarela sobre papel",
+      "year": 2024,
+      "userId": 1
+    },
+    {
+      "id": "geometric-symphony-04",
+      "name": "Sinfonía Geométrica",
+      "artist": "Roberto Klein",
+      "category": "geometric",
+      "price": 41000,
+      "stock": 2,
+      "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop&crop=center",
+      "description": "Composición geométrica que explora la armonía entre líneas, ángulos y espacios negativos.",
+      "dimensions": "80x80 cm",
+      "technique": "Acrílico sobre lienzo",
+      "year": 2024,
+      "userId": 1
+    },
+    {
+      "id": "floral-explosion-05",
+      "name": "Explosión Floral",
+      "artist": "Isabella Torres",
+      "category": "nature",
+      "price": 35000,
+      "stock": 1,
+      "image": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=600&fit=crop&crop=center",
+      "description": "Interpretación moderna de la naturaleza con colores intensos y formas orgánicas fluidas.",
+      "dimensions": "60x90 cm",
+      "technique": "Técnica mixta",
+      "year": 2023,
+      "userId": 1
+    },
+    {
+      "id": "minimalist-essence-06",
+      "name": "Esencia Minimalista",
+      "artist": "Diego Vargas",
+      "category": "minimalist",
+      "price": 48000,
+      "stock": 1,
+      "image": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800&h=600&fit=crop&crop=center",
+      "description": "Obra minimalista que encuentra la belleza en la simplicidad y el espacio negativo.",
+      "dimensions": "100x70 cm",
+      "technique": "Óleo sobre lienzo",
+      "year": 2024,
+      "userId": 1
+    },
+    {
+      "id": "contemporary-motion-07",
+      "name": "Movimiento Contemporáneo",
+      "artist": "Lucia Fernández",
+      "category": "contemporary",
+      "price": 55000,
+      "stock": 1,
+      "image": "https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&h=600&fit=crop&crop=center",
+      "description": "Expresión del movimiento y la energía contemporránea a través de pinceladas dinámicas.",
+      "dimensions": "75x60 cm",
+      "technique": "Acrílico sobre lienzo",
+      "year": 2024,
+      "userId": 1
+    },
+    {
+      "id": "textured-dreams-08",
+      "name": "Sueños Texturizados",
+      "artist": "Miguel Santos",
+      "category": "textured",
+      "price": 42000,
+      "stock": 1,
+      "image": "https://images.unsplash.com/photo-1561049501-e1f4c5c59257?w=800&h=600&fit=crop&crop=center",
+      "description": "Exploración de texturas y relieves que invitan al espectador a una experiencia táctil visual.",
+      "dimensions": "65x85 cm",
+      "technique": "Técnica mixta con texturas",
+      "year": 2023,
+      "userId": 1
+    }
+  ],
+  "categories": [
+    { "id": "abstract", "name": "Arte Abstracto" },
+    { "id": "landscape", "name": "Paisajes" },
+    { "id": "portrait", "name": "Retratos" },
+    { "id": "geometric", "name": "Geométrico" },
+    { "id": "nature", "name": "Naturaleza" },
+    { "id": "minimalist", "name": "Minimalista" },
+    { "id": "contemporary", "name": "Contemporáneo" },
+    { "id": "textured", "name": "Texturizado" }
+  ],
+  "cart": []
+}
