@@ -1,5 +1,8 @@
+//useState para utilizar componentes funcionales de react
 import { useState } from 'react'
+//podernavegar entre pestañas
 import { Link, useNavigate } from 'react-router-dom'
+//contexto de usuario, es en donde se maneja la autenticación y los datos del usuario es como el puente entre el srv y la bdd (simulada)
 import { useUser } from '../context/UserContext'
 
 export default function LoginPage() {
@@ -120,9 +123,9 @@ export default function LoginPage() {
           </div>
 
           <div className="demo-credentials">
-            <h4>Credenciales de demo:</h4>
-            <p><strong>Admin:</strong> admin@techparts.com / admin123</p>
-            <p><strong>Usuario:</strong> demo@techparts.com / demo123</p>
+            <h4>Credenciales de la demo:</h4>
+            <p><strong>Admin:</strong> adm@artGallery.com / adm123</p>
+            <p><strong>Usuario:</strong> delfi@artGallery.com / delfi123</p>
           </div>
         </div>
       </div>
