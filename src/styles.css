@@ -233,6 +233,21 @@ body {
 .btn-full {
   width: 100%;
 }
+/* Forzar misma altura en el carrusel */
+.swiper {
+  padding-bottom: 3rem; /* espacio extra para los bullets y sombra */
+}
+.swiper-slide {
+  display: flex;
+  height: auto; /* Deja que se expanda al contenido */
+  padding: 0.5rem; /* para que no se junten demasiado */
+}
+
+.swiper-slide .product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
 /* Footer */
 .footer {
@@ -494,6 +509,10 @@ body {
 
 .product-info {
   padding: 2rem;
+  flex: 1; /* ocupa todo el espacio disponible */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .product-info h3 {
@@ -562,6 +581,7 @@ body {
   padding: 0 2rem 2rem;
   display: flex;
   gap: 0.75rem;
+  margin-top: auto; /* empuja los botones al fondo */
 }
 
 /* Información específica para obras de arte */

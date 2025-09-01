@@ -4,6 +4,13 @@ import { categoriesAPI } from '../api/categories'
 import ProductCard from '../components/ProductCard'
 import { useState, useEffect } from 'react'
 
+// Importar Swiper
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+
 export default function HomePage() {
   const { products, loading } = useProducts()
   const [categories, setCategories] = useState([])
@@ -57,9 +64,27 @@ export default function HomePage() {
             Las obras más populares y apreciadas de nuestra galería
           </p>
         </div>
-        <div className="products-grid">
-          {featuredProducts.map(p => <ProductCard key={p.id} product={p} />)}
-        </div>
+
+        {/* Carrusel de productos */}
+        <Swiper
+          modules={[Navigation, Pagination]}
+          spaceBetween={20}
+          slidesPerView={3}
+          navigation
+          pagination={{ clickable: true }}
+          breakpoints={{
+            320: { slidesPerView: 1 },
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 }
+          }}
+        >
+          {featuredProducts.map(p => (
+            <SwiperSlide key={p.id}>
+              <ProductCard product={p} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+
         <div style={{ textAlign: 'center', marginTop: '3rem' }}>
           <Link className="btn btn-outline btn-lg" to="/catalogo">
             Ver Toda la Colección
@@ -78,15 +103,15 @@ export default function HomePage() {
           {categories.map(category => {
             const icons = {
               abstract: '🎨',
-              landscape: '�', 
+              landscape: '🌄',
               portrait: '👤',
               geometric: '📐',
               nature: '🌿',
               minimalist: '⚪',
-              contemporary: '�️',
+              contemporary: '🖼️',
               textured: '🎭'
             }
-            
+
             return (
               <Link key={category.id} to={`/catalogo?cat=${category.id}`} className="category-card">
                 <div className="category-icon">{icons[category.id] || '🎨'}</div>
@@ -100,4 +125,3 @@ export default function HomePage() {
     </>
   )
 }
-
