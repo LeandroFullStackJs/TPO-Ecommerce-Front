@@ -5,7 +5,7 @@
   --accent-color: #e74c3c;
   --text-color: #2c3e50;
   --text-light: #7f8c8d;
-  --background-color: #ffffff;
+  --background-color: #f3f1f1;
   --light-gray: #f8f9fa;
   --white: #ffffff;
   --border-color: #ecf0f1;
@@ -285,6 +285,86 @@ body {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   opacity: 0.8;
 }
+
+
+/*AGREGADO NUEVO ESTILO PARA LA PÁGINA DE LOGIN */
+
+/* Fondo general */
+
+
+/* Contenedor central */
+.auth-containerLogin {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+/* Tarjeta */
+.auth-cardLogin {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* Título */
+.auth-titleLogin {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+}
+
+/* Inputs */
+.inputLogin {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  background: #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.inputLogin:focus {
+  outline: 2px solid #7aa1ae; /* azul de la paleta */
+}
+
+/* Botón Submit*/
+.btnSubmit {
+  width: 100%;
+  padding: 12px;
+  background: #7aa1ae; /* azul */
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.btnSubmit:hover {
+  background: #5c7d85; /* azul más oscuro al pasar el mouse */
+}
+
+
+
+.auth-link {
+  color: #c69f89; /* marrón de la paleta */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
+
 
 /* Páginas de autenticación */
 .auth-page {
