@@ -1,80 +1,80 @@
 export const categories = [
-  { id: 'cpu', name: 'Procesadores' },
-  { id: 'gpu', name: 'Placas de video' },
-  { id: 'ram', name: 'Memorias RAM' },
-  { id: 'storage', name: 'Almacenamiento' },
-  { id: 'mb', name: 'Motherboards' },
-  { id: 'psu', name: 'Fuentes' },
+  { id: 'abstract', name: 'Abstracto' },
+  { id: 'realistic', name: 'Realista' },
+  { id: 'impressionist', name: 'Impresionista' },
+  { id: 'modern', name: 'Moderno' },
+  { id: 'contemporary', name: 'Contemporáneo' },
+  { id: 'classical', name: 'Clásico' },
 ]
 
 // Productos iniciales
 const initialProducts = [
   {
-    id: 'cpu-ryzen5-5600',
-    name: 'AMD Ryzen 5 5600',
-    brand: 'AMD',
-    category: 'cpu',
-    price: 189999,
-    stock: 20,
-    image: 'https://images.unsplash.com/photo-1591486063071-ffa1904be7e1?q=80&w=800&auto=format&fit=crop',
-    description: 'Procesador 6C/12T, base 3.5GHz boost 4.4GHz, AM4',
+    id: 'natural-honey-bottle',
+    name: 'Natural Honey Bottle',
+    artist: 'Itar',
+    category: 'abstract',
+    price: 99000,
+    stock: 5,
+    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=800&auto=format&fit=crop',
+    description: 'Composición abstracta con elementos naturales y colores cálidos',
   },
   {
-    id: 'gpu-rtx4060',
-    name: 'NVIDIA GeForce RTX 4060 8GB',
-    brand: 'NVIDIA',
-    category: 'gpu',
-    price: 699999,
-    stock: 8,
-    image: 'https://images.unsplash.com/photo-1616401784845-180882ba9baa?q=80&w=800&auto=format&fit=crop',
-    description: 'Ada Lovelace, DLSS 3, perfecto para 1080p/1440p',
+    id: 'itar-composition',
+    name: 'Itar',
+    artist: 'Itar',
+    category: 'modern',
+    price: 99000,
+    stock: 3,
+    image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=800&auto=format&fit=crop',
+    description: 'Obra moderna con influencias contemporáneas',
   },
   {
-    id: 'ram-16gb-3200',
-    name: 'DDR4 16GB 3200MHz (2x8GB)',
-    brand: 'Corsair',
-    category: 'ram',
-    price: 99999,
-    stock: 30,
-    image: 'https://images.unsplash.com/photo-1587202372775-98927b2755da?q=80&w=800&auto=format&fit=crop',
-    description: 'Kit dual-channel, latencia CL16',
+    id: 'white-cap',
+    name: 'White Cap',
+    artist: 'Caps',
+    category: 'contemporary',
+    price: 99000,
+    stock: 7,
+    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=800&auto=format&fit=crop',
+    description: 'Composición minimalista en tonos blancos',
   },
   {
-    id: 'ssd-1tb',
-    name: 'SSD NVMe 1TB Gen4',
-    brand: 'WD',
-    category: 'storage',
-    price: 149999,
-    stock: 18,
-    image: 'https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?q=80&w=800&auto=format&fit=crop',
-    description: 'Lectura 7000MB/s - Escritura 5300MB/s',
+    id: 'jae-namaz',
+    name: 'Jae Namaz',
+    artist: 'Kafan',
+    category: 'realistic',
+    price: 99000,
+    stock: 4,
+    image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=800&auto=format&fit=crop',
+    description: 'Pintura realista con detalles meticulosos',
   },
   {
-    id: 'mb-b550',
-    name: 'Motherboard B550 ATX',
-    brand: 'MSI',
-    category: 'mb',
-    price: 229999,
-    stock: 12,
-    image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=800&auto=format&fit=crop',
-    description: 'AM4, PCIe 4.0, VRM reforzado',
+    id: 'dates-composition',
+    name: 'Dates',
+    artist: 'Food',
+    category: 'impressionist',
+    price: 99000,
+    stock: 6,
+    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=800&auto=format&fit=crop',
+    description: 'Estilo impresionista con pinceladas sueltas',
   },
   {
-    id: 'psu-650w',
-    name: 'Fuente 650W 80+ Gold',
-    brand: 'EVGA',
-    category: 'psu',
-    price: 129999,
-    stock: 25,
-    image: 'https://images.unsplash.com/photo-1622799034854-35a504a0f2d1?q=80&w=800&auto=format&fit=crop',
-    description: 'Modular, silenciosa, protección OCP/OVP/OTP',
+    id: 'miswak-artwork',
+    name: 'Miswak',
+    artist: 'Food',
+    category: 'classical',
+    price: 99000,
+    stock: 2,
+    image: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?q=80&w=800&auto=format&fit=crop',
+    description: 'Obra clásica con técnicas tradicionales',
   },
 ]
 
 // Función para cargar productos desde localStorage o usar los iniciales
 export function loadProducts() {
   try {
-    const saved = localStorage.getItem('techparts_products')
+    const saved = localStorage.getItem('artgallery_products')
     if (saved) {
       const parsed = JSON.parse(saved)
       if (Array.isArray(parsed) && parsed.length > 0) {
@@ -93,7 +93,7 @@ export function loadProducts() {
 // Función para guardar productos en localStorage
 export function saveProducts(productsArray) {
   try {
-    localStorage.setItem('techparts_products', JSON.stringify(productsArray))
+    localStorage.setItem('artgallery_products', JSON.stringify(productsArray))
   } catch (error) {
     console.error('Error al guardar productos:', error)
   }

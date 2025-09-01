@@ -26,6 +26,9 @@ export default function Navbar() {
           <Link to="/catalogo" className="navbar-link">
             Catálogo
           </Link>
+          <Link to="/categorias" className="navbar-link">
+            Categorías
+          </Link>
           
           {isAuthenticated && (
             <Link to="/my-products" className="navbar-link">
