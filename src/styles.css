@@ -307,7 +307,7 @@ body {
   font-size: 13px;
   color: #718085; /* azul de la paleta */
   text-decoration: none;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .forgot-password a:hover {
@@ -345,7 +345,7 @@ body {
   font-weight: bold;
   margin-bottom: 20px;
   color: #1a1a1a;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 40px;
 }
 /* Botón Submit */
@@ -360,7 +360,7 @@ body {
   cursor: pointer;
   margin: 15px auto 0;   /* auto en los costados centra el botón */
   display: block;       
-  font-family: 'Courier New', Courier, monospace;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: large;
 }
 
@@ -420,7 +420,7 @@ body {
   border-radius: var(--border-radius);
   font-size: 1rem;
   transition: var(--transition);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   color: var(--text-color);
 }
 
@@ -462,8 +462,8 @@ body {
   font-weight: bold;
   margin-bottom: 20px;
   color: #1a1a1a;
-  font-family: 'Courier New', Courier, monospace;
   font-size: 40px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 /* Inputs (comparten estilo con Login) */
@@ -504,7 +504,7 @@ body {
   margin-top: 20px;
   font-size: 14px;
   color: #666666;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 
@@ -573,7 +573,7 @@ body {
   padding-top: 1.5rem;
   border-top: 1px solid var(--border-color);
   font-size: 0.9rem;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .auth-link {
