@@ -10,7 +10,7 @@ import CatalogPage from './pages/CatalogPage'
 import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
 import MyProductsPage from './pages/MyProductsPage'
-
+import MyAccountPage from './pages/MyAccountPage';
 export default function App() {
   return (
     <UserProvider>
@@ -26,6 +26,7 @@ export default function App() {
               <Route path="/producto/:id" element={<ProductPage />} />
               <Route path="/carrito" element={<CartPage />} />
               <Route path="/my-products" element={<MyProductsPage />} />
+              <Route path="/mi-cuenta" element={<MyAccountPage />} />
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Routes>
           </Layout>

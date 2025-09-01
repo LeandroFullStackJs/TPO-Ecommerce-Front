@@ -1,19 +1,29 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useUser } from '../context/UserContext'
+import { useNavigate } from 'react-router-dom'
+import Modal from '../components/Modal'
 
 export default function CartPage() {
   const { items, totals, removeFromCart, setQuantity, clearCart, canCheckout, checkout } = useCart()
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
+  const { user } = useUser()
+  const navigate = useNavigate()
+  const [showLoginModal, setShowLoginModal] = useState(false)
 
   const handleCheckout = async () => {
+    if (!user) {
+      setShowLoginModal(true)
+      return
+    }
     try {
       setLoading(true)
       setError('')
       setSuccess('')
-      
+
       if (!canCheckout()) {
         setError('No hay stock suficiente para algunos productos. Por favor, ajusta las cantidades.')
         return
@@ -27,7 +37,8 @@ export default function CartPage() {
       setLoading(false)
     }
   }
-
+  const closeModal = () => setShowLoginModal(false)
+  const goToLogin = () => navigate('/login')
   const handleQuantityChange = (id, newQuantity) => {
     try {
       setError('')
@@ -197,6 +208,7 @@ export default function CartPage() {
             >
               ← Seguir explorando
             </Link>
+            <Modal isOpen={showLoginModal} onClose={closeModal} onLogin={goToLogin} />
           </div>
         </div>
       )}
