@@ -35,6 +35,15 @@
       "lastName": "Brandt",
       "id": 1756604432602,
       "role": "user"
+    },
+    {
+      "username": "dbrunstein",
+      "email": "del@gmail.com",
+      "password": "123456",
+      "firstName": "Delfina Pilar",
+      "lastName": "Brunstein",
+      "id": 1756765545320,
+      "role": "user"
     }
   ],
   "products": [

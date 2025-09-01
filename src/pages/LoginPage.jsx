@@ -66,6 +66,8 @@ export default function LoginPage() {
     }
   }
 
+
+  //aca comienza lo que seria el html, clases, estilos, etc
   return (
   <div className="auth-page">
     <div className="auth-containerLogin">
@@ -107,9 +109,19 @@ export default function LoginPage() {
             )}
           </div>
 
+          <div className="forgot-password">
+              <Link to="/forgot-password">¿Olvidaste tu contraseña?</Link>
+          </div>
+          
           <button type="submit" className="btnSubmit" disabled={loading}>
             {loading ? 'Iniciando sesión...' : 'Submit'}
           </button>
+
+          <div className="demo-credentials">
+            <h4>Credenciales de la demo:</h4>
+            <p><strong>Admin:</strong> adm@artGallery.com / adm123</p>
+            <p><strong>Usuario:</strong> delfi@artGallery.com / delfi123</p>
+          </div>
         </form>
 
         <p className="auth-footer">
