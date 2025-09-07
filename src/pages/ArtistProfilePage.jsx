@@ -2,31 +2,32 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import ProductCard from '../components/ProductCard'
+import { categoriesAPI } from '../api/categories'
 
 export default function ArtistProfilePage() {
   const { artistId } = useParams()
   const { products } = useProducts()
   const [artist, setArtist] = useState(null)
-
   const [categories, setCategories] = useState([])
-  
-    useEffect(() => {
-      const fetchCategories = async () => {
-        try {
-          const data = await categoriesAPI.getAll()
-          setCategories(data)
-        } catch (error) {
-          console.error('Error fetching categories:', error)
-        }
+
+  // Cargar categorías
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        const data = await categoriesAPI.getAll()
+        setCategories(data)
+      } catch (error) {
+        console.error('Error al cargar categorías:', error)
       }
-  
-      fetchCategories()
-    }, [])
-  
-    const getCategoryName = (categoryId) => {
-      const category = categories.find((c) => c.id === categoryId)
-      return category ? category.name : categoryId
     }
+    loadCategories()
+  }, [])
+
+  const getCategoryName = (categoryId) => {
+    const category = categories.find((c) => c.id === categoryId);
+    return category ? category.name : 'Categoría desconocida';
+  };
+  
 
   useEffect(() => {
     // Encontrar todas las obras del artista
@@ -63,19 +64,6 @@ export default function ArtistProfilePage() {
           />
           <h1>{artist.name}</h1>
           <p className="artist-category">{getCategoryName(artist.category)}</p>
-          
-          <div className="social-links">
-            {artist.socialLinks?.instagram && (
-              <a href={artist.socialLinks.instagram} target="_blank" rel="noopener noreferrer">
-                Instagram
-              </a>
-            )}
-            {artist.socialLinks?.twitter && (
-              <a href={artist.socialLinks.twitter} target="_blank" rel="noopener noreferrer">
-                Twitter
-              </a>
-            )}
-          </div>
         </div>
       </div>
 
