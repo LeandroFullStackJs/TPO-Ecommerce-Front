@@ -143,5 +143,6 @@
     { "id": "contemporary", "name": "Contemporáneo" },
     { "id": "textured", "name": "Texturizado" }
   ],
-  "cart": []
+  "cart": [],
+  "orders": []
 }
