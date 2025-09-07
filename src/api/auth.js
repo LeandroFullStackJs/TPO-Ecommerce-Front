@@ -26,7 +26,7 @@ export const authAPI = {
     }
 
     // Crear nuevo usuario
-    const newUser = {
+    const newUser   = {
       ...userData,
       id: Date.now(),//es tipo timestamp
       role: 'user'
@@ -40,6 +40,22 @@ export const authAPI = {
   // Obtener usuario por ID
   getUserById: async (id) => {
     const response = await api.get(`/users/${id}`)
+    const { password: _, ...userWithoutPassword } = response.data
+    return userWithoutPassword
+  },
+
+  // Actualizar usuario (nombre, email, etc.)
+  updateUser : async (id, userData) => {
+    const response = await api.put(`/users/${id}`, userData)
+    const { password: _, ...userWithoutPassword } = response.data
+    return userWithoutPassword
+  },
+
+  // Cambiar contraseña
+  changePassword: async (id, currentPassword, newPassword) => {
+    // Nota: En producción, el backend debe verificar currentPassword
+    // Aquí solo se actualiza la contraseña directamente
+    const response = await api.patch(`/users/${id}`, { password: newPassword })
     const { password: _, ...userWithoutPassword } = response.data
     return userWithoutPassword
   }
