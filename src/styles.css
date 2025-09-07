@@ -113,7 +113,7 @@ body {
 }
 
 .navbar-link:hover {
-  color: var(--accent-color);
+  color: var(--secondary-color);
 }
 
 .cart-link {
@@ -130,7 +130,7 @@ body {
 }
 
 .cart-link:hover {
-  background: var(--accent-color);
+  background: var(--primary-color);
   transform: translateY(-1px);
   box-shadow: var(--shadow-hover);
 }
@@ -183,7 +183,7 @@ body {
 }
 
 .btn-primary:hover {
-  background: #c0392b;
+  background: var(--primary-color);
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover);
 }

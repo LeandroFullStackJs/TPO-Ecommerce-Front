@@ -10,6 +10,13 @@
   margin-top: 2rem;
 }
 
+/* --- Carrusel de Artistas --- */
+.artist-carousel .swiper-slide {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2.5rem; /* Espacio para la paginación */
+}
+
 /* --- Tarjeta de Artista --- */
 .artist-card {
   background: var(--white);
@@ -21,6 +28,9 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  max-width: 450px; /* Ancho máximo para la tarjeta */
+  width: 100%;
+  margin: 0 auto; /* Centrar en el slide */
 }
 
 .artist-card:hover {
@@ -30,7 +40,7 @@
 
 .artist-card-header {
   position: relative;
-  height: 120px;
+  height: 160px; /* Más altura para el encabezado */
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
   display: flex;
   justify-content: center;
@@ -38,17 +48,17 @@
 }
 
 .artist-card-avatar {
-  width: 80px;
-  height: 80px;
+  width: 120px; /* Avatar más grande */
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   border: 4px solid var(--white);
   box-shadow: var(--shadow);
-  transform: translateY(50%); /* Posiciona el avatar a mitad de camino */
+  transform: translateY(50%);
 }
 
 .artist-card-body {
-  padding: 3rem 1.5rem 1.5rem; /* Padding superior para el avatar */
+  padding: 5rem 1.5rem 1.5rem; /* Padding superior aumentado */
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -56,20 +66,20 @@
 }
 
 .artist-card .artist-name {
-  font-size: 1.3rem;
+  font-size: 1.5rem; /* Nombre más grande */
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
 
 .artist-card .artist-category {
   color: var(--text-light);
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
   text-transform: capitalize;
 }
 
 .artist-card-stats {
-  margin-top: auto; /* Empuja las estadísticas hacia abajo */
+  margin-top: auto;
   padding-top: 1rem;
   border-top: 1px solid var(--border-color);
   color: var(--text-light);
@@ -79,6 +89,7 @@
 .artist-card-actions {
   margin-top: 1.5rem;
 }
+
 
 /* --- Página de Perfil de Artista --- */
 
