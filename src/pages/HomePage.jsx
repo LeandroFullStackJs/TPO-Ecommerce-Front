@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import { categoriesAPI } from '../api/categories'
 import ProductCard from '../components/ProductCard'
+import ArtistCard from '../components/ArtistCard' // Importar ArtistCard
 import { useState, useEffect } from 'react'
 
 // Importar Swiper
@@ -30,6 +31,31 @@ export default function HomePage() {
     }
     loadCategories()
   }, [])
+
+  // Procesar artistas a partir de los productos
+  const featuredArtists = products
+    ? Object.values(
+        products.reduce((acc, product) => {
+          if (!acc[product.artist]) {
+            acc[product.artist] = {
+              id: product.artist.toLowerCase().replace(/\s+/g, '-'),
+              name: product.artist,
+              category: product.category,
+              works: [],
+              profileImage: null
+            }
+          }
+          acc[product.artist].works.push(product)
+          return acc
+        }, {})
+      ).slice(0, 6)
+    : []
+
+  // Función para obtener el nombre de la categoría
+  const getCategoryName = categoryId => {
+    const category = categories.find(c => c.id === categoryId)
+    return category ? category.name : 'Sin categoría'
+  }
 
   // Obtener productos destacados (con stock disponible)
   const featuredProducts = products?.filter(p => p.stock > 0).slice(0, 6) || []
@@ -90,6 +116,34 @@ export default function HomePage() {
             Ver Toda la Colección
           </Link>
         </div>
+      </section>
+
+      
+
+
+      <section className="featured section">
+        <div className="section-header">
+          <h2 className="section-title">Artistas Destacados</h2>
+          <p className="section-subtitle">
+            Descubre a los talentos detrás de nuestras obras
+          </p>
+        </div>
+        <Swiper
+          modules={[Navigation, Pagination]}
+          className="artist-carousel" /* Clase para estilos custom */
+          spaceBetween={50}
+          slidesPerView={3}
+          centeredSlides={true}
+          navigation
+          pagination={{ clickable: true }}
+          loop={true}
+        >
+          {featuredArtists.map(artist => (
+            <SwiperSlide key={artist.id}>
+              <ArtistCard artist={artist} getCategoryName={getCategoryName} />
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </section>
 
       <section className="categories section">
