@@ -3,14 +3,16 @@
 
 /* Variables CSS */
 :root {
-  --primary-color: #2c3e50;
-  --secondary-color: #34495e;
-  --accent-color: #e74c3c;
+  --primary-color: #b89b6a;
+  --secondary-color: #8a7653;
+  --accent-color: #2d343d;
   --text-color: #2c3e50;
   --text-light: #7f8c8d;
-  --background-color: #ffffff;
+  --background-color:#e0e0e0;
   --light-gray: #f8f9fa;
-  --white: #ffffff;
+  --color-clarito: #f6f2eb;
+  --botones-marrones:#8a7653;
+  --white: #f8f8f8;
   --border-color: #ecf0f1;
   --shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.15);
@@ -38,7 +40,6 @@ body {
   font-weight: 400;
   letter-spacing: 0.01em;
 }
-
 /* Layout */
 .layout {
   min-height: 100vh;
@@ -56,7 +57,7 @@ body {
 
 /* Navbar */
 .navbar {
-  background: var(--white);
+  background: var(--color-clarito);
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
@@ -129,7 +130,7 @@ body {
 }
 
 .cart-link:hover {
-  background: #c0392b;
+  background: var(--accent-color);
   transform: translateY(-1px);
   box-shadow: var(--shadow-hover);
 }
@@ -235,6 +236,21 @@ body {
 
 .btn-full {
   width: 100%;
+}
+/* Forzar misma altura en el carrusel */
+.swiper {
+  padding-bottom: 3rem; /* espacio extra para los bullets y sombra */
+}
+.swiper-slide {
+  display: flex;
+  height: auto; /* Deja que se expanda al contenido */
+  padding: 0.5rem; /* para que no se junten demasiado */
+}
+
+.swiper-slide .product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 /* Footer */
@@ -497,6 +513,10 @@ body {
 
 .product-info {
   padding: 2rem;
+  flex: 1; /* ocupa todo el espacio disponible */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .product-info h3 {
@@ -565,6 +585,7 @@ body {
   padding: 0 2rem 2rem;
   display: flex;
   gap: 0.75rem;
+  margin-top: auto; /* empuja los botones al fondo */
 }
 
 /* Información específica para obras de arte */
@@ -704,7 +725,7 @@ body {
 
 /* Categorías */
 .categories {
-  padding: 4rem 2rem;
+  padding: 2rem 2rem;
 }
 
 .categories-grid {
