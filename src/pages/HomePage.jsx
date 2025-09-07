@@ -85,10 +85,12 @@ export default function HomePage() {
 
         {/* Carrusel de productos */}
         <Swiper
+          className="featured-products-swiper"
           modules={[Navigation, Pagination]}
           spaceBetween={20}
           slidesPerView={3}
           navigation
+          loop={true}
           pagination={{ clickable: true }}
           breakpoints={{
             320: { slidesPerView: 1 },
@@ -103,7 +105,7 @@ export default function HomePage() {
           ))}
         </Swiper>
 
-        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+        <div className="view-all-link">
           <Link className="btn btn-outline btn-lg" to="/catalogo">
             Ver Toda la Colección
           </Link>
