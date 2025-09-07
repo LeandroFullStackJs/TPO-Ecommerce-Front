@@ -85,7 +85,6 @@ export default function HomePage() {
 
         {/* Carrusel de productos */}
         <Swiper
-          className="featured-products-swiper"
           modules={[Navigation, Pagination]}
           spaceBetween={20}
           slidesPerView={3}
@@ -105,12 +104,12 @@ export default function HomePage() {
           ))}
         </Swiper>
 
-        <div className="view-all-link">
+        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
           <Link className="btn btn-outline btn-lg" to="/catalogo">
             Ver Toda la Colección
           </Link>
         </div>
-      </section>
+      </section>
 
       <section className="categories section">
         <div className="section-header">
