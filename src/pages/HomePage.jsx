@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import { categoriesAPI } from '../api/categories'
 import ProductCard from '../components/ProductCard'
@@ -15,6 +15,8 @@ export default function HomePage() {
   const { products, loading } = useProducts()
   const [categories, setCategories] = useState([])
   const [categoriesLoading, setCategoriesLoading] = useState(true)
+  const [searchQuery, setSearchQuery] = useState('')
+  const navigate = useNavigate()
 
   // Cargar categorías desde la API
   useEffect(() => {
@@ -30,6 +32,13 @@ export default function HomePage() {
     }
     loadCategories()
   }, [])
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      navigate(`/catalogo?q=${encodeURIComponent(searchQuery.trim())}`)
+    }
+  }
 
   // Obtener productos destacados (con stock disponible)
   const featuredProducts = products?.filter(p => p.stock > 0).slice(0, 6) || []
@@ -51,9 +60,18 @@ export default function HomePage() {
         <div className="hero-content">
           <h1>ArtGallery</h1>
           <p>Descubre obras de arte únicas creadas por artistas contemporáneos. Cada pieza cuenta una historia y transforma espacios.</p>
-          <Link className="btn btn-primary btn-lg" to="/catalogo">
-            Explorar Obras de Arte
-          </Link>
+          <form onSubmit={handleSearch} className="hero-search">
+            <div className="search-container">
+              <div className="search-icon">🔍</div>
+              <input
+                className="search-input"
+                placeholder="Buscar obras, artistas o estilos..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary btn-lg">Buscar</button>
+          </form>
         </div>
       </section>
 
