@@ -3,19 +3,55 @@
     {
       "id": 1,
       "username": "admin",
-      "email": "admin@techparts.com",
+      "email": "admin@artGallery.com",
       "password": "admin123",
       "firstName": "Admin",
-      "lastName": "TechParts",
+      "lastName": "ArtGallery",
       "role": "admin"
     },
     {
       "id": 2,
       "username": "demo",
-      "email": "demo@techparts.com",
+      "email": "demo@artGallery.com",
       "password": "demo123",
       "firstName": "Demo",
       "lastName": "User",
+      "role": "user"
+    },
+    {
+      "id": 3,
+      "username": "delfi",
+      "email": "delfi@artGallery.com",
+      "password": "delfi123",
+      "firstName": "Delfina",
+      "lastName": "ArtGallery",
+      "role": "user"
+    },
+    {
+      "username": "m_brandt",
+      "email": "mbrandt@uade.edu.ar",
+      "password": "maga123",
+      "firstName": "magali",
+      "lastName": "Brandt",
+      "id": 1756604432602,
+      "role": "user"
+    },
+    {
+      "username": "dbrunstein",
+      "email": "del@gmail.com",
+      "password": "123456",
+      "firstName": "Delfina Pilar",
+      "lastName": "Brunstein",
+      "id": 1756765545320,
+      "role": "user"
+    },
+    {
+      "username": "mbrandt",
+      "email": "mbrandt@uade.com",
+      "password": "maga1234",
+      "firstName": "magali",
+      "lastName": "brandt",
+      "id": 1757267521133,
       "role": "user"
     }
   ],
@@ -134,14 +170,38 @@
     }
   ],
   "categories": [
-    { "id": "abstract", "name": "Arte Abstracto" },
-    { "id": "landscape", "name": "Paisajes" },
-    { "id": "portrait", "name": "Retratos" },
-    { "id": "geometric", "name": "Geométrico" },
-    { "id": "nature", "name": "Naturaleza" },
-    { "id": "minimalist", "name": "Minimalista" },
-    { "id": "contemporary", "name": "Contemporáneo" },
-    { "id": "textured", "name": "Texturizado" }
+    {
+      "id": "abstract",
+      "name": "Arte Abstracto"
+    },
+    {
+      "id": "landscape",
+      "name": "Paisajes"
+    },
+    {
+      "id": "portrait",
+      "name": "Retratos"
+    },
+    {
+      "id": "geometric",
+      "name": "Geométrico"
+    },
+    {
+      "id": "nature",
+      "name": "Naturaleza"
+    },
+    {
+      "id": "minimalist",
+      "name": "Minimalista"
+    },
+    {
+      "id": "contemporary",
+      "name": "Contemporáneo"
+    },
+    {
+      "id": "textured",
+      "name": "Texturizado"
+    }
   ],
   "cart": [],
   "orders": []

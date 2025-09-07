@@ -83,128 +83,116 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="auth-page">
-      <div className="auth-container">
-        <div className="auth-card">
-          <h1>Crear Cuenta</h1>
-          <p className="auth-subtitle">
-            Únete a TechParts y comienza a vender
-          </p>
+  <div className="auth-page">
+    <div className="auth-containerRegister">
+      <div className="auth-cardRegister">
+        <h1 className="auth-titleRegister">Register</h1>
 
-          {errors.general && (
-            <div className="error-message">
-              {errors.general}
-            </div>
-          )}
+        {errors.general && (
+          <div className="error-message">{errors.general}</div>
+        )}
 
-          <form onSubmit={handleSubmit} className="auth-form">
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="firstName">Nombre</label>
-                <input
-                  type="text"
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className={errors.firstName ? 'error' : ''}
-                  placeholder="Tu nombre"
-                />
-                {errors.firstName && <span className="error-text">{errors.firstName}</span>}
-              </div>
+        <form onSubmit={handleSubmit} className="auth-form">
+          <div className="form-group">
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              className={`input ${errors.firstName ? 'error' : ''}`}
+              placeholder="Enter your name"
+            />
+            {errors.firstName && <span className="error-text">{errors.firstName}</span>}
+          </div>
 
-              <div className="form-group">
-                <label htmlFor="lastName">Apellido</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className={errors.lastName ? 'error' : ''}
-                  placeholder="Tu apellido"
-                />
-                {errors.lastName && <span className="error-text">{errors.lastName}</span>}
-              </div>
-            </div>
+          <div className="form-group">
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              className={`input ${errors.lastName ? 'error' : ''}`}
+              placeholder="Enter your lastname"
+            />
+            {errors.lastName && (
+              <span className="error-text">{errors.lastName}</span>
+            )}
+          </div>
+
+          <div className="form-group">
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`input ${errors.email ? 'error' : ''}`}
+              placeholder="Enter your email"
+            />
+            {errors.email && <span className="error-text">{errors.email}</span>}
+          </div>
 
             <div className="form-group">
-              <label htmlFor="username">Nombre de usuario</label>
               <input
                 type="text"
                 id="username"
                 name="username"
                 value={formData.username}
                 onChange={handleChange}
-                className={errors.username ? 'error' : ''}
-                placeholder="nombre_usuario"
+                className={`input ${errors.username ? 'error' : ''}`}
+                placeholder="Enter your username"
               />
-              {errors.username && <span className="error-text">{errors.username}</span>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={errors.email ? 'error' : ''}
-                placeholder="tu@email.com"
-              />
-              {errors.email && <span className="error-text">{errors.email}</span>}
-            </div>
-
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="password">Contraseña</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  className={errors.password ? 'error' : ''}
-                  placeholder="••••••••"
-                />
-                {errors.password && <span className="error-text">{errors.password}</span>}
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="confirmPassword">Confirmar contraseña</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  className={errors.confirmPassword ? 'error' : ''}
-                  placeholder="••••••••"
-                />
-                {errors.confirmPassword && <span className="error-text">{errors.confirmPassword}</span>}
-              </div>
-            </div>
-
-            <button 
-              type="submit" 
-              className="btn btn-primary btn-full"
-              disabled={loading}
-            >
-              {loading ? 'Creando cuenta...' : 'Crear Cuenta'}
-            </button>
-          </form>
-
-          <div className="auth-footer">
-            <p>
-              ¿Ya tienes cuenta?{' '}
-              <Link to="/login" className="auth-link">
-                Inicia sesión aquí
-              </Link>
-            </p>
+            {errors.username && <span className="error-text">{errors.username}</span>}
           </div>
-        </div>
+          <div className="form-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className={`input ${errors.password ? 'error' : ''}`}
+              placeholder="Enter your password"
+            />
+            {errors.password && (
+              <span className="error-text">{errors.password}</span>
+            )}
+          </div>
+
+          <div className="form-group">
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className={`input ${errors.confirmPassword ? 'error' : ''}`}
+              placeholder="Confirm your password"
+            />
+
+            {errors.confirmPassword && (
+            <span className="error-text">{errors.confirmPassword}</span>
+          )}
+
+          </div>
+          
+          <button type="submit" className="btnSubmit" disabled={loading}>
+            {loading ? 'Creando...' : 'Submit'}
+          </button>
+
+  
+        </form>
+
+        <p className="auth-footer">
+          Already have an account?{' '}
+          <Link to="/login" className="auth-link">
+            Log In
+          </Link>
+        </p>
       </div>
     </div>
-  )
+  </div>
+)
 }

@@ -28,10 +28,12 @@ export function UserProvider({ children }) {
     loadUser()
   }, [])
 
-  // Función de login
+  // Función de login, pasamos parametros base
   const login = async (email, password) => {
     try {
+      //cambiamos el estado null -> true
       setLoading(true)
+      //llamamos a la api (authAPI.login y le pasamos los parametros)
       const userData = await authAPI.login(email, password)
 
       // Guardar en estado y localStorage
@@ -42,6 +44,7 @@ export function UserProvider({ children }) {
     } catch (error) {
       throw error
     } finally {
+      //algo fallo, por lo q no se cambio el estado
       setLoading(false)
     }
   }
@@ -71,6 +74,7 @@ export function UserProvider({ children }) {
   }
 
   // Verificar si el usuario está autenticado
+  //true - si hay un usuario logeado, null en caso contrario
   const isAuthenticated = !!user
 
   // Verificar si el usuario es admin
@@ -110,6 +114,7 @@ export function UserProvider({ children }) {
     }
   }
 
+  // Valores y funciones que estarán disponibles en el contexto (cuando usemos useUser)
   const value = {
     user,
     loading,
