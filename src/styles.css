@@ -1,3 +1,6 @@
+/* Importar estilos de artistas */
+@import './styles/artist.css';
+
 /* Variables CSS */
 :root {
   --primary-color: #2c3e50;
@@ -1310,5 +1313,6 @@ body {
     margin: 0 1rem;
     padding: 1.5rem;
   }
-}
 
+  
+}

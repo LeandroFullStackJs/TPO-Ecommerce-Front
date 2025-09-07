@@ -10,6 +10,8 @@ import CatalogPage from './pages/CatalogPage'
 import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
 import MyProductsPage from './pages/MyProductsPage'
+import ArtistPage from './pages/artistPage'
+import ArtistProfilePage from './pages/ArtistProfilePage'
 
 export default function App() {
   return (
@@ -21,6 +23,8 @@ export default function App() {
               <Route path="/" element={<Navigate to="/home" replace />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
+              <Route path="/artistas" element={<ArtistPage />} />
+              <Route path="/artists/:artistId" element={<ArtistProfilePage />} />
               <Route path="/home" element={<HomePage />} />
               <Route path="/catalogo" element={<CatalogPage />} />
               <Route path="/producto/:id" element={<ProductPage />} />
