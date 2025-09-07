@@ -113,7 +113,7 @@ body {
 }
 
 .navbar-link:hover {
-  color: var(--white);
+  color: var(--secondary-color);
 }
 
 .cart-link {

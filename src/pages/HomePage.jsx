@@ -97,6 +97,7 @@ export default function HomePage() {
           spaceBetween={20}
           slidesPerView={3}
           navigation
+          loop={true}
           pagination={{ clickable: true }}
           breakpoints={{
             320: { slidesPerView: 1 },
