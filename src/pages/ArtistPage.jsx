@@ -37,7 +37,7 @@ export default function ArtistPage() {
 
   const getCategoryName = (categoryId) => {
     const category = categories.find((c) => c.id === categoryId);
-    return category ? category.name : categoryId;
+    return category ? category.name : 'Categoría desconocida';
   };
 
   // Filtrar artistas según búsqueda y categoría
