@@ -5,7 +5,7 @@
   --accent-color: #e74c3c;
   --text-color: #2c3e50;
   --text-light: #7f8c8d;
-  --background-color: #ffffff;
+  --background-color: #f3f1f1;
   --light-gray: #f8f9fa;
   --white: #ffffff;
   --border-color: #ecf0f1;
@@ -174,8 +174,8 @@ body {
 }
 
 .btn-primary {
-  background: var(--accent-color);
-  color: var(--white);
+  background: black;
+  color: white;
 }
 
 .btn-primary:hover {
@@ -286,6 +286,10 @@ body {
   opacity: 0.8;
 }
 
+
+
+
+
 /* Páginas de autenticación */
 .auth-page {
   min-height: 80vh;
@@ -322,53 +326,16 @@ body {
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.1rem;
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.form-group label {
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--text-color);
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  padding: 0.75rem;
-  border: 2px solid var(--border-color);
-  border-radius: var(--border-radius);
-  font-size: 1rem;
-  transition: var(--transition);
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: var(--primary-color);
-}
-
-.form-group input.error,
-.form-group select.error,
-.form-group textarea.error {
-  border-color: #dc3545;
-}
 
 .error-text {
-  color: #dc3545;
+  color: #ff0019;
   font-size: 0.8rem;
   margin-top: 0.25rem;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 .auth-footer {
@@ -376,6 +343,8 @@ body {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border-color);
+  font-size: 0.9rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .auth-link {
@@ -388,23 +357,7 @@ body {
   text-decoration: underline;
 }
 
-.demo-credentials {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  background: #f8f9fa;
-  border-radius: var(--border-radius);
-  font-size: 0.9rem;
-}
 
-.demo-credentials h4 {
-  margin-bottom: 0.5rem;
-  color: var(--text-color);
-}
-
-.demo-credentials p {
-  margin-bottom: 0.25rem;
-  color: var(--text-light);
-}
 
 /* Hero section */
 .hero {
@@ -507,10 +460,11 @@ body {
 .brand {
   color: var(--text-light);
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-  text-transform: uppercase;
+  font-size: 1.5rem;
+  text-transform: capitalize;
   letter-spacing: 0.05em;
   font-weight: 500;
+  font-style: 'italic';
 }
 
 .price {
@@ -529,8 +483,8 @@ body {
 
 .stock {
   color: var(--text-light);
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -554,8 +508,11 @@ body {
 .description {
   color: var(--text-color);
   line-height: 1.6;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  border-top: lightgray 0.15rem solid;
+  border-bottom:  lightgray 0.15rem solid;
+  font-style: oblique;
 }
 
 .product-actions {
@@ -773,7 +730,6 @@ body {
 }
 
 .product-detail-image-container {
-  position: sticky;
   top: 2rem;
   height: fit-content;
 }
@@ -1312,3 +1268,274 @@ body {
   }
 }
 
+/*OLVIDE MI CONTRASEÑA */
+.auth-containerForgot {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+.auth-cardForgot {
+  background: #ffffff;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.auth-titleForgot {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #1a1a1a;
+}
+
+.auth-subtitle {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.success-message {
+  margin: 10px 0;
+  padding: 10px;
+  background: #e6f9e6;
+  border: 1px solid #4CAF50;
+  color: #2e7d32;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+
+
+/*AGREGADO NUEVO ESTILO PARA LA PÁGINA DE LOGIN */
+
+/* Contenedor central */
+.auth-containerLogin {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+
+
+.forgot-password {
+  text-align: left;
+  margin:  0 15px;
+}
+
+.forgot-password a {
+  font-size: 13px;
+  color: #718085; /* azul de la paleta */
+  text-decoration: none;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  border: none;
+  background: #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  outline: 2px solid #7aa1ae; /* azul de la paleta */
+}
+
+/* Tarjeta */
+.auth-cardLogin {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 115%;
+}
+
+/* Título */
+.auth-titleLogin {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 40px;
+}
+/* Botón Submit */
+.btnSubmit {
+  width: 50%;
+  padding: 12px;
+  background: #7aa1ae; /* azul */
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 15px auto 0;   /* auto en los costados centra el botón */
+  display: block;       
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: large;
+}
+
+.btnSubmit:hover {
+  background: #5c7d85; /* azul más oscuro al pasar el mouse */
+}
+
+
+
+.auth-link {
+  color: #c69f89; /* marrón de la paleta */
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+
+.demo-credentials {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-left: 4px solid #7aa1ae; /* azul de tu paleta */
+  font-size: 14px;
+  text-align: left;
+  border-radius: 4px;
+}
+
+.demo-credentials p {
+  margin: 5px 0;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.75rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: var(--transition);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: var(--text-color);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: #dc3545;
+}
+
+/* Registro */
+/* Contenedor principal del Register */
+.auth-containerRegister {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+/* Tarjeta del Register */
+.auth-cardRegister {
+  background: #ffffff;
+  padding: 40px 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  text-align: center;
+  width: 130%;
+}
+
+/* Título del Register */
+.auth-titleRegister {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+  font-size: 40px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Inputs (comparten estilo con Login) */
+.auth-cardRegister .input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  background: #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.auth-cardRegister .input:focus {
+  outline: 2px solid #7aa1ae; /* azul de tu paleta */
+}
+
+/* Botón submit  */
+.auth-cardRegister .btnSubmit {
+  width: 100%;
+  padding: 12px;
+  background: #7aa1ae;
+  border: none;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.auth-cardRegister .btnSubmit:disabled {
+  background: #b0bec5;
+  cursor: not-allowed;
+}
+
+/* Footer del Register */
+.auth-cardRegister .auth-footer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666666;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+
+.auth-cardRegister .auth-link {
+  color: #272626;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.auth-cardRegister .auth-link:hover {
+  text-decoration: underline;
+}
