@@ -145,6 +145,11 @@ export default function HomePage() {
             </SwiperSlide>
           ))}
         </Swiper>
+        <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+          <Link className="btn btn-outline btn-lg" to="/artistas">
+            Ver todos los artistas
+          </Link>
+        </div>
       </section>
 
       <section className="categories section">
