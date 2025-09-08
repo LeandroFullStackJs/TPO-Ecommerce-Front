@@ -1,6 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { UserProvider } from './context/UserContext'
 import { ProductProvider } from './context/ProductContext'
+import { OrderProvider } from './context/OrderContext' 
 import { CartProvider } from './context/CartContext'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
@@ -12,6 +13,9 @@ import CartPage from './pages/CartPage'
 import MyProductsPage from './pages/MyProductsPage'
 import ArtistPage from './pages/artistPage'
 import ArtistProfilePage from './pages/ArtistProfilePage'
+import MyAccountPage from './pages/MyAccountPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+
 
 export default function App() {
   return (
@@ -34,6 +38,25 @@ export default function App() {
             </Routes>
           </Layout>
         </CartProvider>
+        <OrderProvider>
+          <CartProvider>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/home" replace />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/catalogo" element={<CatalogPage />} />
+                  <Route path="/producto/:id" element={<ProductPage />} />
+                  <Route path="/carrito" element={<CartPage />} />
+                  <Route path="/my-products" element={<MyProductsPage />} />
+                  <Route path="/mi-cuenta" element={<MyAccountPage />} />
+                  <Route path="*" element={<Navigate to="/home" replace />} />
+                </Routes>
+              </Layout>
+          </CartProvider>
+        </OrderProvider>
       </ProductProvider>
     </UserProvider>
   )

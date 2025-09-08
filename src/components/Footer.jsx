@@ -4,28 +4,28 @@ export default function Footer() {
       <div className="footer-container">
         <div className="footer-content">
           <div className="footer-section">
-            <h4>TechParts</h4>
-            <p>Tu tienda de componentes de computación</p>
+            <h4>ArtGallery</h4> {/* Cambiado de TechParts */}
+            <p>Tu espacio para descubrir y adquirir obras de arte únicas.</p> {/* Mensaje adaptado */}
           </div>
           
           <div className="footer-section">
-            <h4>Enlaces</h4>
+            <h4>Enlaces Rápidos</h4> {/* Título adaptado */}
             <ul>
-              <li><a href="/home">Productos</a></li>
-              <li><a href="/cart">Carrito</a></li>
-              <li><a href="/login">Iniciar sesión</a></li>
+              <li><a href="/catalogo">Explorar Obras</a></li> {/* Enlace adaptado */}
+              <li><a href="/carrito">Mi Carrito</a></li> {/* Enlace adaptado */}
+              <li><a href="/mi-cuenta">Mi Cuenta</a></li> {/* Nuevo enlace útil */}
             </ul>
           </div>
           
           <div className="footer-section">
             <h4>Contacto</h4>
-            <p>info@techparts.com</p>
-            <p>+54 11 1234-5678</p>
+            <p>info@artgallery.com</p> {/* Email adaptado */}
+            <p>+54 11 9876-5432</p> {/* Teléfono adaptado */}
           </div>
         </div>
         
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} TechParts. Todos los derechos reservados.</p>
+          <p>&copy; {new Date().getFullYear()} ArtGallery. Todos los derechos reservados.</p> {/* Copyright adaptado */}
         </div>
       </div>
     </footer>

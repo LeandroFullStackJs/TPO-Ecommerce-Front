@@ -30,9 +30,16 @@ export default function Navbar() {
             Artistas
           </Link>
           
+
           {isAuthenticated && (
             <Link to="/my-products" className="navbar-link">
               Mis Obras
+            </Link>
+          )}
+
+          {isAuthenticated && (
+            <Link to="/mi-cuenta" className="navbar-link">
+              Mi Cuenta
             </Link>
           )}
           
