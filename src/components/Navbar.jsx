@@ -26,10 +26,16 @@ export default function Navbar() {
           <Link to="/catalogo" className="navbar-link">
             Catálogo
           </Link>
-          
+
           {isAuthenticated && (
             <Link to="/my-products" className="navbar-link">
               Mis Obras
+            </Link>
+          )}
+
+          {isAuthenticated && (
+            <Link to="/mi-cuenta" className="navbar-link">
+              Mi Cuenta
             </Link>
           )}
           

@@ -254,7 +254,10 @@ export default function ProductPage() {
             <Link to="/catalogo" className="btn btn-outline">
               ← Seguir explorando
             </Link>
-            <Modal isOpen={showLoginModal} onClose={closeModal} onLogin={goToLogin} />
+            <Link to="/carrito" className="btn btn-secondary">
+              Ver carrito
+            </Link>
+          </div>
         </div>
       </div>
     </div>
