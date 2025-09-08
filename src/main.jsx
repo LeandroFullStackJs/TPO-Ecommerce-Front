@@ -1,14 +1,28 @@
 import React from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import ReactDOM from 'react-dom/client'
 import App from './App'
-import './styles.css'
+import { BrowserRouter } from 'react-router-dom'
+import { UserProvider } from './context/UserContext'
+import { OrderProvider } from './context/OrderContext'
+import { ProductProvider } from './context/ProductContext'
+import { CartProvider } from './context/CartContext'
 
-createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
-)
-
+const container = document.getElementById('root')
+if (container) {
+  const root = ReactDOM.createRoot(container)
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <UserProvider>
+          <OrderProvider> {}
+            <ProductProvider>
+              <CartProvider> {}
+                <App />
+              </CartProvider>
+            </ProductProvider>
+          </OrderProvider>
+        </UserProvider>
+      </BrowserRouter>
+    </React.StrictMode>
+  )
+}
