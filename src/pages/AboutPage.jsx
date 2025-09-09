@@ -1,3 +1,24 @@
+/**
+ * PÁGINA ABOUT - INFORMACIÓN CORPORATIVA DE LA GALERÍA
+ * 
+ * Página institucional que presenta la identidad, valores y propuesta
+ * de valor de ArtGallery. Diseñada para generar confianza y conexión
+ * emocional con los visitantes.
+ * 
+ * Secciones incluidas:
+ * - Historia de la empresa y su fundación
+ * - Misión y visión corporativa
+ * - Valores fundamentales
+ * - Estadísticas de impacto
+ * - Información del equipo
+ * - Categorías de arte disponibles
+ * - Compromiso social y educativo
+ * - Call-to-actions estratégicos
+ * 
+ * Objetivo: Convertir visitantes en usuarios activos y generar confianza
+ * en la plataforma tanto para artistas como para coleccionistas.
+ */
+
 export default function AboutPage() {
   return (
     <div className="about-page">

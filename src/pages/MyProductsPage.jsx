@@ -1,3 +1,27 @@
+/**
+ * PÁGINA DE GESTIÓN DE OBRAS DEL ARTISTA
+ * 
+ * Esta página permite a los usuarios registrados como artistas gestionar sus obras:
+ * - Ver todas sus obras publicadas
+ * - Crear nuevas obras con formulario completo
+ * - Editar obras existentes
+ * - Eliminar obras
+ * - Navegar a la vista detalle de cada obra
+ * 
+ * Características técnicas:
+ * - Formulario dinámico con validación en tiempo real
+ * - Integración con contextos de productos, usuarios y categorías
+ * - Persistencia de datos y manejo de estados de carga
+ * - Interfaz responsive y user-friendly
+ * - Manejo de errores y feedback visual
+ * 
+ * Estados manejados:
+ * - Formulario de creación/edición con todos los campos de una obra de arte
+ * - Validaciones de campos requeridos
+ * - Estados de carga durante operaciones CRUD
+ * - Filtrado de productos por usuario actual
+ */
+
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useUser } from '../context/UserContext'

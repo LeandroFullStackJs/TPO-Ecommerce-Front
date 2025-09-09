@@ -1,3 +1,27 @@
+/**
+ * PÁGINA DE PREGUNTAS FRECUENTES (FAQs)
+ * 
+ * Página de soporte que responde las consultas más comunes de los usuarios.
+ * Implementa un diseño de accordion interactivo para una mejor experiencia
+ * de usuario y fácil navegación.
+ * 
+ * Funcionalidades:
+ * - Accordion interactivo con animaciones suaves
+ * - 10 preguntas frecuentes categorizadas por temas
+ * - Sección de contacto para consultas adicionales
+ * - Diseño responsive y accesible
+ * 
+ * Temas cubiertos:
+ * - Proceso de compra y métodos de pago
+ * - Envíos y política de devoluciones
+ * - Información para artistas
+ * - Autenticidad y calidad de las obras
+ * - Asesoramiento y servicios adicionales
+ * 
+ * Objetivo: Reducir consultas de soporte y mejorar la experiencia del usuario
+ * proporcionando información clara y accesible.
+ */
+
 import { useState } from 'react'
 
 export default function FaqsPage() {
