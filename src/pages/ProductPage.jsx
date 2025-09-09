@@ -92,6 +92,7 @@ export default function ProductPage() {
 
   const getStockText = () => {
     if (product.stock === 0) return 'Sin stock'
+    if (product.stock === 1) return 'Última unidad'
     if (product.stock < 5) return `Últimas ${product.stock} unidades`
     return `${product.stock} disponibles`
   }
@@ -109,21 +110,14 @@ export default function ProductPage() {
         <div className="product-detail-image-container">
           <img 
             src={imageError ? fallbackImage : product.image} 
-            alt={product.name} 
+            alt={"product.name"} 
             className="product-detail-image"
             onError={handleImageError}
           />
         </div>
         
         <div className="product-detail-info">
-          <p className="brand" style={{ 
-            fontSize: '0.9rem', 
-            textTransform: 'uppercase', 
-            letterSpacing: '0.05em',
-            marginBottom: '0.5rem' 
-          }}>
-            {product.artist}
-          </p>
+          
           
           <h1 style={{ 
             fontSize: '2.5rem', 
@@ -135,54 +129,50 @@ export default function ProductPage() {
             {product.name}
           </h1>
           
+          <p className="brand">
+            {"by " + product.artist}
+          </p>
+
+          
           <div className="price" style={{ 
             fontSize: '2.5rem', 
-            fontWeight: '700',
-            color: 'var(--accent-color)',
             marginBottom: '1.5rem'
           }}>
-            <span style={{ fontSize: '0.7em', marginRight: '0.25rem' }}>$</span>
-            {product.price.toLocaleString('es-AR')}
+            <span style={{ fontSize: '0.7em', marginRight: '0.25rem' }}></span>
+            {"$ " + product.price.toLocaleString('es-AR')}
           </div>
 
-          <div className="stock" style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: '0.5rem',
-            fontSize: '1rem',
-            marginBottom: '2rem'
-          }}>
+          <div className="stock">
             <span className={`stock-dot ${getStockStatus()}`}></span>
             {getStockText()}
           </div>
           
-          <div className="artwork-details" style={{ 
+          <p className="description">
+            {product.description}
+          </p>
+
+
+          <div style={{ 
             marginBottom: '2rem',
             padding: '1.5rem',
             background: 'var(--light-gray)',
-            borderRadius: 'var(--border-radius)'
+            borderRadius: 'var(--border-radius)',
           }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.95rem' }}>
+            <div style={{fontSize: '1rem'}}>
               <div>
-                <strong>Dimensiones:</strong> {product.dimensions}
+                <strong>Dimensiones</strong> 
+                <p>{product.dimensions}</p>
               </div>
               <div>
-                <strong>Año:</strong> {product.year}
+                <strong>Año:</strong> 
+                <p>{product.year}</p>
               </div>
-              <div style={{ gridColumn: '1 / -1' }}>
-                <strong>Técnica:</strong> {product.technique}
+              <div>
+                <strong>Técnica</strong> 
+               <p>{product.technique}</p>
               </div>
             </div>
           </div>
-          
-          <p className="description" style={{ 
-            fontSize: '1.1rem',
-            lineHeight: '1.6',
-            marginBottom: '2rem',
-            color: 'var(--text-color)'
-          }}>
-            {product.description}
-          </p>
           
           {error && (
             <div className="error-message" style={{ 
@@ -211,10 +201,6 @@ export default function ProductPage() {
           )}
 
           <div className="buy-section" style={{
-            display: 'flex',
-            gap: '1rem',
-            alignItems: 'center',
-            marginBottom: '2rem',
             padding: '2rem',
             background: 'var(--light-gray)',
             borderRadius: 'var(--border-radius)'
@@ -243,13 +229,23 @@ export default function ProductPage() {
               onClick={handleAddToCart}
               disabled={!canAdd}
               className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'} btn-lg`}
-              style={{ flex: 1 }}
+              style={{ flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
             >
-              {hasStock ? '🎨 Adquirir Obra' : 'No disponible'}
+              {hasStock ? 'Añadir al Carrito' : 'No disponible'}
+            </button>
+
+              
+            <button
+              onClick={'handleAddToWhishlist'}
+              className={'btn btn-primary btn-lg'}
+              style={{flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
+            >
+              Añadir a Favoritos
             </button>
           </div>
+        </div>
 
-          <div style={{ 
+        <div style={{ 
             display: 'flex', 
             gap: '1rem',
             borderTop: '1px solid var(--border-color)',
@@ -258,11 +254,7 @@ export default function ProductPage() {
             <Link to="/catalogo" className="btn btn-outline">
               ← Seguir explorando
             </Link>
-            <Link to="/carrito" className="btn btn-secondary">
-              Ver carrito
-            </Link>
             <Modal isOpen={showLoginModal} onClose={closeModal} onLogin={goToLogin} />
-          </div>
         </div>
       </div>
     </div>

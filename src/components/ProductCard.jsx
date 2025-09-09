@@ -29,9 +29,11 @@ export default function ProductCard({ product }) {
 
   const getStockText = () => {
     if (product.stock === 0) return 'Sin stock'
+    if (product.stock === 1) return 'Última unidad'
     if (product.stock < 5) return `Últimas ${product.stock} unidades`
     return `${product.stock} disponibles`
   }
+
 
   // Imagen de respaldo para obras de arte
   const fallbackImage = 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center'
@@ -73,10 +75,9 @@ export default function ProductCard({ product }) {
           disabled={!canAdd}
           className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'} btn-full`}
         >
-          {hasStock ? '🎨 Adquirir Obra' : 'No disponible'}
+          {hasStock ? ' Adquirir Obra' : 'No disponible'}
         </button>
       </div>
     </Link>
   )
 }
-

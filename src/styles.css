@@ -163,8 +163,8 @@ body {
 }
 
 .btn-primary {
-  background: var(--accent-color);
-  color: var(--white);
+  background: black;
+  color: white;
 }
 
 .btn-primary:hover {
@@ -491,10 +491,11 @@ body {
 .brand {
   color: var(--text-light);
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-  text-transform: uppercase;
+  font-size: 1.5rem;
+  text-transform: capitalize;
   letter-spacing: 0.05em;
   font-weight: 500;
+  font-style: 'italic';
 }
 
 .price {
@@ -513,8 +514,8 @@ body {
 
 .stock {
   color: var(--text-light);
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  margin-bottom: 2rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -538,8 +539,11 @@ body {
 .description {
   color: var(--text-color);
   line-height: 1.6;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  border-top: lightgray 0.15rem solid;
+  border-bottom:  lightgray 0.15rem solid;
+  font-style: oblique;
 }
 
 .product-actions {
@@ -758,7 +762,6 @@ body {
 }
 
 .product-detail-image-container {
-  position: sticky;
   top: 2rem;
   height: fit-content;
 }
