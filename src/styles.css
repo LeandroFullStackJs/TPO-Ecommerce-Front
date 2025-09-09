@@ -97,21 +97,6 @@ body {
   position: relative;
 }
 
-.navbar-link::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: var(--accent-color);
-  transition: width 0.3s ease;
-}
-
-.navbar-link:hover::after {
-  width: 100%;
-}
-
 .navbar-link:hover {
   color: var(--secondary-color);
 }
@@ -387,6 +372,9 @@ body {
   margin-bottom: 4rem;
   position: relative;
   overflow: hidden;
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .hero::before {
@@ -420,6 +408,26 @@ body {
   margin-bottom: 2.5rem;
   opacity: 0.9;
   line-height: 1.6;
+}
+
+.hero-search {
+  display: flex;
+  max-width: 600px;
+  margin: 2.5rem auto 0;
+  gap: 1rem;
+  align-items: center;
+}
+
+.hero-search .search-container {
+  flex-grow: 1;
+}
+
+.hero-search .search-input {
+  padding: 1rem 1rem 1rem 3rem; /* Ajuste para botón más grande */
+}
+
+.hero-search .btn {
+  flex-shrink: 0;
 }
 
 /* Productos */
