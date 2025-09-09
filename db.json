@@ -118,7 +118,7 @@
       "artist": "Isabella Torres",
       "category": "nature",
       "price": 35000,
-      "stock": 1,
+      "stock": 0,
       "image": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=600&fit=crop&crop=center",
       "description": "Interpretación moderna de la naturaleza con colores intensos y formas orgánicas fluidas.",
       "dimensions": "60x90 cm",

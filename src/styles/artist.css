@@ -1,0 +1,193 @@
+/* ================================= */
+/* === Estilos de Artistas (CSS) === */
+/* ================================= */
+
+/* --- Grid de Tarjetas de Artista --- */
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* --- Carrusel de Artistas --- */
+.artist-carousel .swiper-slide {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2.5rem; /* Espacio para la paginación */
+}
+
+/* --- Tarjeta de Artista --- */
+.artist-card {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+  text-decoration: none;
+  color: var(--text-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-width: 450px; /* Ancho máximo para la tarjeta */
+  width: 100%;
+  margin: 0 auto; /* Centrar en el slide */
+}
+
+.artist-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-hover);
+}
+
+.artist-card-header {
+  position: relative;
+  height: 160px; /* Más altura para el encabezado */
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.artist-card-avatar {
+  width: 120px; /* Avatar más grande */
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--white);
+  box-shadow: var(--shadow);
+  transform: translateY(50%);
+}
+
+.artist-card-body {
+  padding: 5rem 1.5rem 1.5rem; /* Padding superior aumentado */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.artist-card .artist-name {
+  font-size: 1.5rem; /* Nombre más grande */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.artist-card .artist-category {
+  color: var(--text-light);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  text-transform: capitalize;
+}
+
+.artist-card-stats {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.artist-card-actions {
+  margin-top: 1.5rem;
+}
+
+
+/* --- Página de Perfil de Artista --- */
+
+.artist-header {
+  height: 350px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--white);
+  padding: 2rem;
+  margin-bottom: 4rem;
+}
+
+.artist-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, rgba(44, 62, 80, 0.8), rgba(52, 73, 94, 0.5));
+  z-index: 1;
+}
+
+.artist-header-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.artist-profile-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 4px solid var(--white);
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-hover);
+  object-fit: cover;
+}
+
+.artist-header h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.artist-category {
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.9;
+}
+
+.social-links {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.social-links a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition);
+  opacity: 0.8;
+}
+
+.social-links a:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.artist-bio,
+.artist-statement,
+.artist-works {
+  margin-bottom: 4rem;
+}
+
+.artist-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border-color);
+  letter-spacing: -0.01em;
+}
+
+.artist-content p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-color);
+  max-width: 800px; /* Mejora la legibilidad */
+}
