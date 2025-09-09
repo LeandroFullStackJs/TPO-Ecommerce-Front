@@ -2,6 +2,9 @@ import { useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import { useCart } from '../context/CartContext'
+import { useUser  } from '../context/UserContext'
+import { useNavigate } from 'react-router-dom'
+import Modal from '../components/Modal'
 
 export default function ProductPage() {
   const { id } = useParams()
@@ -12,7 +15,9 @@ export default function ProductPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [imageError, setImageError] = useState(false)
-
+  const { user } = useUser()
+  const navigate = useNavigate()
+  const [showLoginModal, setShowLoginModal] = useState(false) 
   const handleImageError = () => {
     setImageError(true)
   }
@@ -52,6 +57,10 @@ export default function ProductPage() {
   const canAdd = hasStock && canAddToCart(product, qty)
 
   const handleAddToCart = () => {
+    if (!user) {
+      setShowLoginModal(true)
+      return
+    }
     try {
       setError('')
       setSuccess('')
@@ -71,6 +80,9 @@ export default function ProductPage() {
       setQty(newQty)
     }
   }
+
+  const closeModal = () => setShowLoginModal(false)
+  const goToLogin = () => navigate('/login')
 
   const getStockStatus = () => {
     if (product.stock === 0) return 'out'
@@ -249,10 +261,12 @@ export default function ProductPage() {
             <Link to="/carrito" className="btn btn-secondary">
               Ver carrito
             </Link>
+            <Modal isOpen={showLoginModal} onClose={closeModal} onLogin={goToLogin} />
           </div>
         </div>
       </div>
     </div>
+    
   )
 }
 

@@ -44,6 +44,15 @@
       "lastName": "Brunstein",
       "id": 1756765545320,
       "role": "user"
+    },
+    {
+      "username": "mbrandt",
+      "email": "mbrandt@uade.com",
+      "password": "maga1234",
+      "firstName": "magali",
+      "lastName": "brandt",
+      "id": 1757267521133,
+      "role": "user"
     }
   ],
   "products": [
@@ -194,5 +203,6 @@
       "name": "Texturizado"
     }
   ],
-  "cart": []
+  "cart": [],
+  "orders": []
 }

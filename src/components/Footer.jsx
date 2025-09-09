@@ -9,7 +9,7 @@ export default function Footer() {
           </div>
           
           <div className="footer-section">
-            <h4>Enlaces</h4>
+            <h4>Enlaces Rápidos</h4> {/* Título adaptado */}
             <ul>
               <li><a href="/catalogo">Categorías</a></li>
               <li><a href="/carrito">Carrito</a></li>

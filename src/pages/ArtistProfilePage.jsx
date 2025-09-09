@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import ProductCard from '../components/ProductCard'
+import { categoriesAPI } from '../api/categories'
+
 
 export default function ArtistProfilePage() {
   const { artistId } = useParams()
