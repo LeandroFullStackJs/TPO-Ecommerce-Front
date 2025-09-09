@@ -20,9 +20,9 @@ import './styles.css'
 export default function App() {
   return (
     <UserProvider>
-      <OrderProvider> {/* OrderProvider PRIMERO */}
+      <OrderProvider> {}
         <ProductProvider>
-          <CartProvider> {/* CartProvider después de OrderProvider */}
+          <CartProvider> {}
             <Layout>
               <Routes>
                 <Route path="/" element={<Navigate to="/home" replace />} />
