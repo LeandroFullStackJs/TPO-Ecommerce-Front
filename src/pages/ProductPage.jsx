@@ -132,8 +132,15 @@ export default function ProductPage() {
           <p className="brand">
             {"by " + product.artist}
           </p>
-
           
+          <p className="category" style={{ 
+            fontSize: '1rem',
+            color: 'var(--text-light)',
+            marginBottom: '1rem'
+          }}>
+            Categoría: {product.category}
+          </p>
+
           <div className="price" style={{ 
             fontSize: '2.5rem', 
             marginBottom: '1.5rem'

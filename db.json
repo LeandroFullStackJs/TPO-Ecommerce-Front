@@ -167,6 +167,34 @@
       "technique": "Técnica mixta con texturas",
       "year": 2023,
       "userId": 1
+    },
+    {
+      "name": "HOlaa",
+      "artist": "Lea",
+      "category": "portrait",
+      "price": 5600,
+      "stock": 2,
+      "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
+      "description": "arte para uade",
+      "dimensions": "60x60",
+      "technique": "pincel",
+      "year": "2025",
+      "userId": 3,
+      "id": "1757452130661"
+    },
+    {
+      "name": "test",
+      "artist": "lea",
+      "category": "abstract",
+      "price": 6000,
+      "stock": 2,
+      "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
+      "description": "testeo de arte",
+      "dimensions": "60x60",
+      "technique": "oleo",
+      "year": "2020",
+      "userId": 3,
+      "id": "1757452964344"
     }
   ],
   "categories": [
