@@ -16,6 +16,8 @@ import ArtistProfilePage from './pages/ArtistProfilePage'
 import MyAccountPage from './pages/MyAccountPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import RegisterPage from './pages/RegisterPage'
+import FaqsPage from './pages/FaqsPage'
+import AboutPage from './pages/AboutPage'
 import './styles.css'
 
 export default function App() {
@@ -39,6 +41,8 @@ export default function App() {
                 <Route path="/carrito" element={<CartPage />} />
                 <Route path="/my-products" element={<MyProductsPage />} />
                 <Route path="/mi-cuenta" element={<MyAccountPage />} />
+                <Route path="/faqs" element={<FaqsPage />} />
+                <Route path="/about" element={<AboutPage />} />
                 <Route path="*" element={<Navigate to="/home" replace />} />
               </Routes>
             </Layout>

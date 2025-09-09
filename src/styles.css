@@ -1,5 +1,7 @@
 /* Importar estilos de artistas */
 @import './styles/artist.css';
+/* Importar estilos de páginas */
+@import './styles/pages.css';
 
 /* Variables CSS */
 :root {
