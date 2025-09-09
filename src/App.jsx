@@ -12,6 +12,8 @@ import CartPage from './pages/CartPage'
 import MyProductsPage from './pages/MyProductsPage'
 import ArtistPage from './pages/artistPage'
 import ArtistProfilePage from './pages/ArtistProfilePage'
+import ForgotPasswordPage from './pages/ForgotPasswordPage'
+
 
 export default function App() {
   return (
@@ -25,6 +27,7 @@ export default function App() {
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/artistas" element={<ArtistPage />} />
               <Route path="/artists/:artistId" element={<ArtistProfilePage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} /> 
               <Route path="/home" element={<HomePage />} />
               <Route path="/catalogo" element={<CatalogPage />} />
               <Route path="/producto/:id" element={<ProductPage />} />
