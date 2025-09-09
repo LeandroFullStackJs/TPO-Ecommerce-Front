@@ -13,7 +13,7 @@ export const productsAPI = {
     return response.data
   },
 
-  // Crear nuevo producto
+  // Crear nuevo producto 
   create: async (productData) => {
     const response = await api.post('/products', productData)
     return response.data
