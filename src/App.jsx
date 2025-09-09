@@ -7,6 +7,7 @@ import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import CatalogPage from './pages/CatalogPage'
+import CategoriesPage from './pages/CategoriesPage'
 import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
 import MyProductsPage from './pages/MyProductsPage'
@@ -33,6 +34,7 @@ export default function App() {
                 <Route path="/artists/:artistId" element={<ArtistProfilePage />} />
                 <Route path="/home" element={<HomePage />} />
                 <Route path="/catalogo" element={<CatalogPage />} />
+                <Route path="/categorias" element={<CategoriesPage />} />
                 <Route path="/producto/:id" element={<ProductPage />} />
                 <Route path="/carrito" element={<CartPage />} />
                 <Route path="/my-products" element={<MyProductsPage />} />
