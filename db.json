@@ -76,7 +76,7 @@
       "artist": "Carlos Mendoza",
       "category": "landscape",
       "price": 38000,
-      "stock": 1,
+      "stock": 0,
       "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=center",
       "description": "Paisaje onírico que captura la esencia de la naturaleza en un momento de tranquilidad absoluta. Pintura al óleo.",
       "dimensions": "70x50 cm",
@@ -232,5 +232,26 @@
     }
   ],
   "cart": [],
-  "orders": []
+  "orders": [
+    {
+      "userId": 3,
+      "date": "2025-09-10T00:15:34.961Z",
+      "items": [
+        {
+          "productId": "landscape-dream-02",
+          "name": "Sueño de Paisaje",
+          "price": 38000,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=center",
+          "artist": "Carlos Mendoza",
+          "dimensions": "70x50 cm",
+          "year": 2023,
+          "technique": "Óleo sobre lienzo"
+        }
+      ],
+      "total": 45980,
+      "status": "completed",
+      "id": 1
+    }
+  ]
 }

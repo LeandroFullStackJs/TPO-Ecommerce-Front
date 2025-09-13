@@ -136,15 +136,27 @@ export default function HomePage() {
         {/* Carrusel de productos */}
         <Swiper
           modules={[Navigation, Pagination]}
-          spaceBetween={20}
+          spaceBetween={30}
           slidesPerView={3}
           navigation
           loop={true}
           pagination={{ clickable: true }}
           breakpoints={{
-            320: { slidesPerView: 1 },
-            640: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 }
+            320: { 
+              slidesPerView: 1,
+              spaceBetween: 20,
+              centeredSlides: true 
+            },
+            640: { 
+              slidesPerView: 2,
+              spaceBetween: 25,
+              centeredSlides: false 
+            },
+            1024: { 
+              slidesPerView: 3,
+              spaceBetween: 30,
+              centeredSlides: false 
+            }
           }}
         >
           {featuredProducts.map(p => (
@@ -173,13 +185,35 @@ export default function HomePage() {
         </div>
         <Swiper
           modules={[Navigation, Pagination]}
-          className="artist-carousel" /* Clase para estilos custom */
-          spaceBetween={50}
+          className="artist-carousel"
+          spaceBetween={40}
           slidesPerView={3}
           centeredSlides={true}
           navigation
           pagination={{ clickable: true }}
           loop={true}
+          breakpoints={{
+            320: { 
+              slidesPerView: 1,
+              spaceBetween: 20,
+              centeredSlides: true 
+            },
+            640: { 
+              slidesPerView: 2,
+              spaceBetween: 30,
+              centeredSlides: false 
+            },
+            900: { 
+              slidesPerView: 2,
+              spaceBetween: 35,
+              centeredSlides: true 
+            },
+            1024: { 
+              slidesPerView: 3,
+              spaceBetween: 40,
+              centeredSlides: true 
+            }
+          }}
         >
           {featuredArtists.map(artist => (
             <SwiperSlide key={artist.id}>
