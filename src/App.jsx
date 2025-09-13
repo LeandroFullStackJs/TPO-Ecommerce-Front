@@ -17,6 +17,7 @@ import MyAccountPage from './pages/MyAccountPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import RegisterPage from './pages/RegisterPage'
 import './styles.css'
+import { WishlistProvider } from './context/WishlistContext'
 
 export default function App() {
   return (
@@ -24,24 +25,26 @@ export default function App() {
       <OrderProvider> {/* OrderProvider PRIMERO */}
         <ProductProvider>
           <CartProvider> {/* CartProvider después de OrderProvider */}
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Navigate to="/home" replace />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                <Route path="/artistas" element={<ArtistPage />} />
-                <Route path="/artists/:artistId" element={<ArtistProfilePage />} />
-                <Route path="/home" element={<HomePage />} />
-                <Route path="/catalogo" element={<CatalogPage />} />
-                <Route path="/categorias" element={<CategoriesPage />} />
-                <Route path="/producto/:id" element={<ProductPage />} />
-                <Route path="/carrito" element={<CartPage />} />
-                <Route path="/my-products" element={<MyProductsPage />} />
-                <Route path="/mi-cuenta" element={<MyAccountPage />} />
-                <Route path="*" element={<Navigate to="/home" replace />} />
-              </Routes>
-            </Layout>
+            <WishlistProvider>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/home" replace />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+                  <Route path="/artistas" element={<ArtistPage />} />
+                  <Route path="/artists/:artistId" element={<ArtistProfilePage />} />
+                  <Route path="/home" element={<HomePage />} />
+                  <Route path="/catalogo" element={<CatalogPage />} />
+                  <Route path="/categorias" element={<CategoriesPage />} />
+                  <Route path="/producto/:id" element={<ProductPage />} />
+                  <Route path="/carrito" element={<CartPage />} />
+                  <Route path="/my-products" element={<MyProductsPage />} />
+                  <Route path="/mi-cuenta" element={<MyAccountPage />} />
+                  <Route path="*" element={<Navigate to="/home" replace />} />
+                </Routes>
+              </Layout>
+            </WishlistProvider>
           </CartProvider>
         </ProductProvider>
       </OrderProvider>
