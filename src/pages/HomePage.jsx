@@ -1,11 +1,30 @@
+/**
+ * PÁGINA DE INICIO - PANTALLA PRINCIPAL DE LA GALERÍA DE ARTE
+ * 
+ * Esta página sirve como el punto de entrada principal de la aplicación.
+ * Muestra una vista atractiva y funcional que invita a los usuarios a explorar
+ * la galería de arte y descubrir nuevas obras y artistas.
+ * 
+ * Funcionalidades principales:
+ * - Hero section con buscador prominente
+ * - Carrusel de productos destacados usando Swiper.js
+ * - Grid de categorías de arte para navegación rápida
+ * - Sección de artistas destacados
+ * - Diseño responsivo y optimizado para conversión
+ * 
+ * Librerías externas utilizadas:
+ * - Swiper.js para carruseles interactivos
+ * - React Router para navegación
+ */
+
 import { Link, useNavigate } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import { categoriesAPI } from '../api/categories'
 import ProductCard from '../components/ProductCard'
-import ArtistCard from '../components/ArtistCard' // Importar ArtistCard
+import ArtistCard from '../components/ArtistCard'
 import { useState, useEffect } from 'react'
 
-// Importar Swiper
+// Importar Swiper.js para carruseles
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
@@ -13,13 +32,20 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
 export default function HomePage() {
+  // Estados del contexto de productos
   const { products, loading } = useProducts()
+  
+  // Estados locales para categorías y búsqueda
   const [categories, setCategories] = useState([])
   const [categoriesLoading, setCategoriesLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
 
-  // Cargar categorías desde la API
+  /**
+   * EFECTO DE CARGA DE CATEGORÍAS
+   * Carga las categorías disponibles desde la API al montar el componente.
+   * Las categorías se usan para mostrar opciones de navegación rápida.
+   */
   useEffect(() => {
     const loadCategories = async () => {
       try {
@@ -110,15 +136,27 @@ export default function HomePage() {
         {/* Carrusel de productos */}
         <Swiper
           modules={[Navigation, Pagination]}
-          spaceBetween={20}
+          spaceBetween={30}
           slidesPerView={3}
           navigation
           loop={true}
           pagination={{ clickable: true }}
           breakpoints={{
-            320: { slidesPerView: 1 },
-            640: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 }
+            320: { 
+              slidesPerView: 1,
+              spaceBetween: 20,
+              centeredSlides: true 
+            },
+            640: { 
+              slidesPerView: 2,
+              spaceBetween: 25,
+              centeredSlides: false 
+            },
+            1024: { 
+              slidesPerView: 3,
+              spaceBetween: 30,
+              centeredSlides: false 
+            }
           }}
         >
           {featuredProducts.map(p => (
@@ -147,13 +185,35 @@ export default function HomePage() {
         </div>
         <Swiper
           modules={[Navigation, Pagination]}
-          className="artist-carousel" /* Clase para estilos custom */
-          spaceBetween={50}
+          className="artist-carousel"
+          spaceBetween={40}
           slidesPerView={3}
           centeredSlides={true}
           navigation
           pagination={{ clickable: true }}
           loop={true}
+          breakpoints={{
+            320: { 
+              slidesPerView: 1,
+              spaceBetween: 20,
+              centeredSlides: true 
+            },
+            640: { 
+              slidesPerView: 2,
+              spaceBetween: 30,
+              centeredSlides: false 
+            },
+            900: { 
+              slidesPerView: 2,
+              spaceBetween: 35,
+              centeredSlides: true 
+            },
+            1024: { 
+              slidesPerView: 3,
+              spaceBetween: 40,
+              centeredSlides: true 
+            }
+          }}
         >
           {featuredArtists.map(artist => (
             <SwiperSlide key={artist.id}>
