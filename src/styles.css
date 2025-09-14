@@ -854,8 +854,9 @@ body::before {
   color: var(--text-color);
   padding: 150px 20px 120px;
   text-align: center;
-  margin-bottom: 80px;
-  position: relative;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  position:relative;
   max-width: var(--container-max-width);
   margin-left: auto;
   margin-right: auto;
@@ -929,7 +930,7 @@ body::before {
 
 .hero-search {
   display: flex;
-  max-width: 500px;
+  max-width: 800px;
   margin: 50px auto 0;
   gap: 20px;
   align-items: stretch;
@@ -943,14 +944,16 @@ body::before {
 }
 
 .hero-search .search-container {
+  display: flex;
+  align-items: center;
   flex-grow: 1;
 }
 
 .hero-search .search-input {
-  padding: 18px 25px;
+  padding: 18px 25px 18px 0;
   border: none;
   background: transparent;
-  font-size: 16px;
+  font-size: 13px;
   color: var(--text-color);
   width: 100%;
   border-radius: 30px;
@@ -961,6 +964,15 @@ body::before {
 .hero-search .search-input::placeholder {
   color: var(--secondary-color);
   font-style: italic;
+}
+
+.hero-search .search-icon {
+  position: static;
+  transform: none;
+  padding: 0 10px 0 25px;
+  font-size: 1.2rem;
+  color: var(--text-light);
+  cursor: default;
 }
 
 .hero-search .btn {
@@ -992,6 +1004,8 @@ body::before {
   cursor: pointer;
   text-decoration: none;
   display: block;
+  display: flex;
+  flex-direction: column;
   box-shadow: 
     0 4px 20px rgba(184, 155, 106, 0.1),
     0 1px 4px rgba(0, 0, 0, 0.05);
@@ -1064,6 +1078,7 @@ body::before {
   padding: 25px;
   text-align: left;
   background: rgba(255, 255, 255, 0.95);
+  flex-grow: 1; /* Empuja las acciones hacia el final de la tarjeta */
   backdrop-filter: blur(10px);
   position: relative;
 }
@@ -1160,10 +1175,18 @@ body::before {
 }
 
 .product-actions {
-  padding: 0;
-  display: flex;
-  gap: 12px;
-  margin-top: 12px;
+  padding: 0; /* Resetea el padding para que el botón quede al ras */
+  margin-top: 0; /* Resetea el margen */
+  display: block; /* Asegura que ocupe todo el ancho */
+}
+
+.product-actions .btn {
+  border-radius: 0; /* Deja que la tarjeta controle el radio con overflow:hidden */
+  border-width: 1px 0 0 0; /* Usa el borde como una línea separadora */
+  border-color: var(--border-color);
+  box-shadow: none; /* Quita la sombra del botón para un look más integrado */
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 /* Información específica para obras de arte */
@@ -2917,4 +2940,41 @@ h2:not(.product-form h2) {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/*
+ * Reducción de tamaño para las cards en la sección de "Obras Destacadas".
+ * Estos estilos se aplican específicamente a los .product-card que están
+ * dentro de un elemento con la clase .featured, como en la HomePage,
+ * para hacerlas aproximadamente un 35% más pequeñas (respecto al original) y mantener la proporción.
+*/
+
+.featured .product-image {
+  height: 270px; /* Reducido de 320px */
+}
+
+.featured .product-info {
+  padding: 18px; /* Reducido de 20px */
+}
+
+.featured .product-info h3 {
+  font-size: 13px; /* Reducido de 15px */
+}
+
+.featured .brand {
+  font-size: 10px; /* Reducido de 11px */
+}
+
+.featured .price {
+  font-size: 15px; /* Reducido de 17px */
+}
+
+.featured .artwork-info,
+.featured .stock {
+  font-size: 10px; /* Reducido de 11px */
+}
+
+.featured .product-actions {
+  /* Estos estilos ya no son necesarios porque el botón ahora es un pie de página integrado. */
+  /* Los estilos base de .product-actions se aplicarán. */
 }
