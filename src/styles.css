@@ -1335,14 +1335,16 @@ body::before {
 
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  /* Limita el ancho para un máximo de 5 columnas y centra el bloque */
+  max-width: calc(4 * 180px + 4 * 1.5rem);
+  margin: 2rem auto 0;
 }
 
 .category-card {
   background: var(--white);
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 1rem;
   border-radius: var(--border-radius);
   text-decoration: none;
   color: var(--text-color);
@@ -1376,20 +1378,20 @@ body::before {
 }
 
 .category-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   color: var(--primary-color);
 }
 
 .category-card p {
   color: var(--text-light);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .category-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
   color: var(--accent-color);
 }
 

@@ -236,7 +236,7 @@ export default function HomePage() {
           </p>
         </div>
         <div className="categories-grid">
-          {categories.map(category => {
+          {categories.slice(0, 8).map(category => {
             const icons = {
               abstract: '🎨',
               landscape: '🌄',
