@@ -850,21 +850,12 @@ body::before {
   height: 70vh; /* Aumentamos la altura para un mejor impacto visual */
   min-height: 600px;
   text-align: center;
-  margin-bottom: 10px;
-  margin-top: 10px;
-  position:relative;
-  max-width: var(--container-max-width);
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 30px;
-  box-shadow: 
-    0 20px 60px rgba(184, 155, 106, 0.1),
-    0 8px 25px rgba(0, 0, 0, 0.05);
+  margin: 0; /* Eliminamos márgenes para que ocupe todo el ancho sin espacios */
+  position: relative;
   overflow: hidden;
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  /* Eliminamos flexbox para usar un método de centrado más robusto */
+  width: 100%; /* Asegura que ocupe el ancho completo del viewport */
+  /* Se eliminan max-width, márgenes laterales, border-radius y box-shadow
+     para permitir que el hero se extienda de borde a borde. */
 }
 
 .hero-content {
