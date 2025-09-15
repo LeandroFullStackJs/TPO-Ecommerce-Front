@@ -21,15 +21,17 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import { categoriesAPI } from '../api/categories'
 import ProductCard from '../components/ProductCard'
-import ArtistCard from '../components/ArtistCard'
+import ArtistCard from '../components/ArtistCard' // Importar ArtistCard
+import axios from 'axios'
 import { useState, useEffect } from 'react'
 
 // Importar Swiper.js para carruseles
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination } from 'swiper/modules'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import 'swiper/css/autoplay'
 
 export default function HomePage() {
   // Estados del contexto de productos
@@ -38,6 +40,8 @@ export default function HomePage() {
   // Estados locales para categorías y búsqueda
   const [categories, setCategories] = useState([])
   const [categoriesLoading, setCategoriesLoading] = useState(true)
+  const [heroImages, setHeroImages] = useState([])
+  const [heroImagesLoading, setHeroImagesLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const navigate = useNavigate()
 
@@ -58,6 +62,21 @@ export default function HomePage() {
       }
     }
     loadCategories()
+  }, [])
+
+  // Cargar imágenes del hero desde la API
+  useEffect(() => {
+    const loadHeroImages = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/heroImages')
+        setHeroImages(response.data)
+      } catch (error) {
+        console.error('Error al cargar imágenes del hero:', error)
+      } finally {
+        setHeroImagesLoading(false)
+      }
+    }
+    loadHeroImages()
   }, [])
 
   // Procesar artistas a partir de los productos
@@ -93,7 +112,7 @@ export default function HomePage() {
   // Obtener productos destacados (con stock disponible)
   const featuredProducts = products?.filter(p => p.stock > 0).slice(0, 6) || []
 
-  if (loading || categoriesLoading) {
+  if (loading || categoriesLoading || heroImagesLoading) {
     return (
       <section className="hero">
         <div className="hero-content">
@@ -107,22 +126,42 @@ export default function HomePage() {
   return (
     <>
       <section className="hero">
-        <div className="hero-content">
-          <h1>ArtGallery</h1>
-          <p>Descubre obras de arte únicas creadas por artistas contemporáneos. Cada pieza cuenta una historia y transforma espacios.</p>
-          <form onSubmit={handleSearch} className="hero-search">
-            <div className="search-container">
-              <div className="search-icon">🔍</div>
-              <input
-                className="search-input"
-                placeholder="Buscar obras, artistas o estilos..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <button type="submit" className="btn btn-primary btn-lg">Buscar</button>
-          </form>
-        </div>
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          className="hero-swiper"
+          spaceBetween={0}
+          slidesPerView={1}
+          loop={true}
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false
+          }}
+          pagination={{ clickable: true }}
+          navigation={true}
+        >
+          {heroImages.map((image) => (
+            <SwiperSlide key={image.id}>
+              <div className="hero-slide-image" style={{ backgroundImage: `url(${image.src})` }} aria-label={image.alt}></div>
+              <div className="hero-content">
+                <h1>ArtGallery</h1>
+                <p>Descubre obras de arte únicas creadas por artistas contemporáneos. Cada pieza cuenta una historia y transforma espacios.</p>
+                <form onSubmit={handleSearch} className="hero-search">
+                  <div className="search-container">
+                    <div className="search-icon">🔍</div>
+                    <input
+                      className="search-input"
+                      placeholder="Buscar obras, artistas o estilos..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary btn-lg">Buscar</button>
+                </form>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+        
       </section>
 
       <section className="featured section">
