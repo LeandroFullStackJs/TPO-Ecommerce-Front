@@ -139,10 +139,7 @@ export default function HomePage() {
           pagination={{ clickable: true }}
           navigation={true}
         >
-          {heroImages.map((image) => (
-            <SwiperSlide key={image.id}>
-              <div className="hero-slide-image" style={{ backgroundImage: `url(${image.src})` }} aria-label={image.alt}></div>
-              <div className="hero-content">
+          <div className="hero-content">
                 <h1>ArtGallery</h1>
                 <p>Descubre obras de arte únicas creadas por artistas contemporáneos. Cada pieza cuenta una historia y transforma espacios.</p>
                 <form onSubmit={handleSearch} className="hero-search">
@@ -157,6 +154,11 @@ export default function HomePage() {
                   </div>
                   <button type="submit" className="btn btn-primary btn-lg">Buscar</button>
                 </form>
+              </div>
+          {heroImages.map((image) => (
+            <SwiperSlide key={image.id}>
+              <div className="hero-slide-image" style={{ backgroundImage: `url(${image.src})` }} aria-label={image.alt}>
+
               </div>
             </SwiperSlide>
           ))}
