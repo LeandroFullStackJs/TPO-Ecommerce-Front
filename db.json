@@ -232,26 +232,11 @@
     }
   ],
   "cart": [],
-  "orders": [
-    {
-      "userId": 3,
-      "date": "2025-09-10T00:15:34.961Z",
-      "items": [
-        {
-          "productId": "landscape-dream-02",
-          "name": "Sueño de Paisaje",
-          "price": 38000,
-          "quantity": 1,
-          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=center",
-          "artist": "Carlos Mendoza",
-          "dimensions": "70x50 cm",
-          "year": 2023,
-          "technique": "Óleo sobre lienzo"
-        }
-      ],
-      "total": 45980,
-      "status": "completed",
-      "id": 1
-    }
+  "orders": [],
+  "heroImages": [
+    { "id": 1, "src": "public/images/ImagenGaleria.png", "alt": "Banner local de una obra de arte abstracta." },
+    { "id": 2, "src": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Interior de una galería de arte con cuadros de flores." },
+    { "id": 3, "src": "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Exhibición de arte moderno con luces de neón." },
+    { "id": 4, "src": "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Taller de un artista con un cuadro en un caballete." }
   ]
 }

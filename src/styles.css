@@ -845,47 +845,28 @@ body::before {
 
 /* Hero section - Estilo artístico elegante */
 .hero {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.95) 0%, 
-    rgba(248, 246, 240, 0.9) 50%, 
-    rgba(255, 255, 255, 0.95) 100%
-  );
-  backdrop-filter: blur(20px);
-  color: var(--text-color);
-  padding: 150px 20px 120px;
+  /* background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); */
+  color: var(--white);
+  height: 70vh; /* Aumentamos la altura para un mejor impacto visual */
+  min-height: 600px;
   text-align: center;
-  margin-bottom: 80px;
+  margin: 0; /* Eliminamos márgenes para que ocupe todo el ancho sin espacios */
   position: relative;
-  max-width: var(--container-max-width);
-  margin-left: auto;
-  margin-right: auto;
-  border-radius: 30px;
-  box-shadow: 
-    0 20px 60px rgba(184, 155, 106, 0.1),
-    0 8px 25px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(circle at 30% 20%, rgba(184, 155, 106, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 70% 80%, rgba(212, 165, 116, 0.12) 0%, transparent 50%),
-    linear-gradient(45deg, rgba(138, 118, 83, 0.08) 0%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
+  width: 100%; /* Asegura que ocupe el ancho completo del viewport */
+  /* Se eliminan max-width, márgenes laterales, border-radius y box-shadow
+     para permitir que el hero se extienda de borde a borde. */
 }
 
 .hero-content {
-  position: relative;
-  z-index: 1;
-  max-width: 700px;
-  margin: 0 auto;
+  position: absolute; /* 1. Posicionamiento absoluto */
+  top: 50%;           /* 2. Mover el borde superior al 50% del padre */
+  left: 50%;          /* 3. Mover el borde izquierdo al 50% del padre */
+  transform: translate(-50%, -80%); /* 4. Ajustar la posición para centrar el propio elemento */
+  z-index: 2;
+  width: 90%;
+  max-width: 800px;
+  text-shadow: #1a1a1a 0px 4px 6px;
 }
 
 .hero h1 {
@@ -929,7 +910,7 @@ body::before {
 
 .hero-search {
   display: flex;
-  max-width: 500px;
+  max-width: 800px;
   margin: 50px auto 0;
   gap: 20px;
   align-items: stretch;
@@ -943,14 +924,16 @@ body::before {
 }
 
 .hero-search .search-container {
+  display: flex;
+  align-items: center;
   flex-grow: 1;
 }
 
 .hero-search .search-input {
-  padding: 18px 25px;
+  padding: 18px 25px 18px 0;
   border: none;
   background: transparent;
-  font-size: 16px;
+  font-size: 13px;
   color: var(--text-color);
   width: 100%;
   border-radius: 30px;
@@ -963,12 +946,54 @@ body::before {
   font-style: italic;
 }
 
+.hero-search .search-icon {
+  position: static;
+  transform: none;
+  padding: 0 10px 0 25px;
+  font-size: 1.2rem;
+  color: var(--text-light);
+  cursor: default;
+}
+
 .hero-search .btn {
   flex-shrink: 0;
-  border-radius: 30px;
-  padding: 18px 35px;
-  font-weight: 700;
 }
+
+.hero-swiper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-slide-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.hero-slide-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Overlay for text readability */
+  z-index: 1;
+}
+
+/* Swiper navigation/pagination color for Hero */
+.hero-swiper .swiper-button-next,
+.hero-swiper .swiper-button-prev,
+.hero-swiper .swiper-pagination-bullet-active {
+  color: var(--primary-color);
+}
+
 
 /* Productos - Grid minimalista inspirado en Tappan */
 .products-grid {
@@ -992,6 +1017,8 @@ body::before {
   cursor: pointer;
   text-decoration: none;
   display: block;
+  display: flex;
+  flex-direction: column;
   box-shadow: 
     0 4px 20px rgba(184, 155, 106, 0.1),
     0 1px 4px rgba(0, 0, 0, 0.05);
@@ -1064,6 +1091,7 @@ body::before {
   padding: 25px;
   text-align: left;
   background: rgba(255, 255, 255, 0.95);
+  flex-grow: 1; /* Empuja las acciones hacia el final de la tarjeta */
   backdrop-filter: blur(10px);
   position: relative;
 }
@@ -1160,10 +1188,18 @@ body::before {
 }
 
 .product-actions {
-  padding: 0;
-  display: flex;
-  gap: 12px;
-  margin-top: 12px;
+  padding: 0; /* Resetea el padding para que el botón quede al ras */
+  margin-top: 0; /* Resetea el margen */
+  display: block; /* Asegura que ocupe todo el ancho */
+}
+
+.product-actions .btn {
+  border-radius: 0; /* Deja que la tarjeta controle el radio con overflow:hidden */
+  border-width: 1px 0 0 0; /* Usa el borde como una línea separadora */
+  border-color: var(--border-color);
+  box-shadow: none; /* Quita la sombra del botón para un look más integrado */
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 /* Información específica para obras de arte */
@@ -1312,14 +1348,16 @@ body::before {
 
 .categories-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  /* Limita el ancho para un máximo de 5 columnas y centra el bloque */
+  max-width: calc(4 * 180px + 4 * 1.5rem);
+  margin: 2rem auto 0;
 }
 
 .category-card {
   background: var(--white);
-  padding: 2.5rem 2rem;
+  padding: 1.5rem 1rem;
   border-radius: var(--border-radius);
   text-decoration: none;
   color: var(--text-color);
@@ -1353,20 +1391,20 @@ body::before {
 }
 
 .category-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
   color: var(--primary-color);
 }
 
 .category-card p {
   color: var(--text-light);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .category-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
   color: var(--accent-color);
 }
 
@@ -2917,4 +2955,41 @@ h2:not(.product-form h2) {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/*
+ * Reducción de tamaño para las cards en la sección de "Obras Destacadas".
+ * Estos estilos se aplican específicamente a los .product-card que están
+ * dentro de un elemento con la clase .featured, como en la HomePage,
+ * para hacerlas aproximadamente un 35% más pequeñas (respecto al original) y mantener la proporción.
+*/
+
+.featured .product-image {
+  height: 270px; /* Reducido de 320px */
+}
+
+.featured .product-info {
+  padding: 18px; /* Reducido de 20px */
+}
+
+.featured .product-info h3 {
+  font-size: 13px; /* Reducido de 15px */
+}
+
+.featured .brand {
+  font-size: 10px; /* Reducido de 11px */
+}
+
+.featured .price {
+  font-size: 15px; /* Reducido de 17px */
+}
+
+.featured .artwork-info,
+.featured .stock {
+  font-size: 10px; /* Reducido de 11px */
+}
+
+.featured .product-actions {
+  /* Estos estilos ya no son necesarios porque el botón ahora es un pie de página integrado. */
+  /* Los estilos base de .product-actions se aplicarán. */
 }
