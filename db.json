@@ -90,7 +90,7 @@
       "artist": "Ana Silvestre",
       "category": "portrait",
       "price": 52000,
-      "stock": 1,
+      "stock": 0,
       "image": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800&h=600&fit=crop&crop=center",
       "description": "Retrato contemporáneo que refleja la vida urbana moderna. Expresividad única con técnicas de acuarela.",
       "dimensions": "50x70 cm",
@@ -204,5 +204,26 @@
     }
   ],
   "cart": [],
-  "orders": []
+  "orders": [
+    {
+      "userId": 1,
+      "date": "2025-09-09T22:04:32.573Z",
+      "items": [
+        {
+          "productId": "urban-portrait-03",
+          "name": "Retrato Urbano",
+          "price": 52000,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800&h=600&fit=crop&crop=center",
+          "artist": "Ana Silvestre",
+          "dimensions": "50x70 cm",
+          "year": 2024,
+          "technique": "Acuarela sobre papel"
+        }
+      ],
+      "total": 62920,
+      "status": "completed",
+      "id": 1
+    }
+  ]
 }
