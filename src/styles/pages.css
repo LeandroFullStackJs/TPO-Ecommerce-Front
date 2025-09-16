@@ -1,0 +1,294 @@
+/* FAQs Page Styles */
+.faqs-page {
+  padding: 2rem 0;
+}
+
+.faqs-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.faq-item {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1.5rem;
+  background: white;
+  border: none;
+  text-align: left;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.faq-question:hover {
+  background: var(--light-gray);
+}
+
+.faq-question.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.faq-icon {
+  font-size: 1.5rem;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: center;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  background: var(--light-gray);
+  transition: max-height 0.3s ease;
+}
+
+.faq-answer.open {
+  max-height: 500px;
+}
+
+.faq-answer p {
+  padding: 1.5rem;
+  margin: 0;
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+.contact-section {
+  margin-top: 4rem;
+  padding: 2rem;
+  background: var(--light-gray);
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+
+.contact-section h3 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.contact-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.contact-item {
+  padding: 1rem;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* About Page Styles */
+.about-page {
+  padding: 2rem 0;
+}
+
+.about-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.about-section {
+  margin-bottom: 4rem;
+}
+
+.about-section h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.about-section p {
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  color: var(--text-color);
+}
+
+.mission-points {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.mission-point {
+  padding: 2rem;
+  background: var(--light-gray);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.mission-point h4 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.value-item {
+  text-align: center;
+  padding: 2rem;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  border-top: 4px solid var(--primary-color);
+}
+
+.value-item h4 {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.team-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.stat {
+  text-align: center;
+  padding: 2rem;
+  background: var(--primary-color);
+  color: white;
+  border-radius: var(--border-radius);
+}
+
+.stat h3 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.stat p {
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.categories-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.category-item {
+  padding: 1.5rem;
+  background: var(--light-gray);
+  border-radius: var(--border-radius);
+  border-left: 4px solid var(--primary-color);
+}
+
+.category-item strong {
+  color: var(--primary-color);
+}
+
+.contact-cta {
+  text-align: center;
+  padding: 3rem;
+  background: linear-gradient(135deg, var(--primary-color), #c0392b);
+  color: white;
+  border-radius: var(--border-radius);
+  margin-top: 3rem;
+}
+
+.contact-cta h2 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.contact-cta p {
+  color: white;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-buttons .btn {
+  min-width: 200px;
+}
+
+.cta-buttons .btn-outline {
+  background: transparent;
+  color: white;
+  border: 2px solid white;
+}
+
+.cta-buttons .btn-outline:hover {
+  background: white;
+  color: var(--primary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .faqs-container,
+  .about-content {
+    padding: 0 1rem;
+  }
+  
+  .faq-question {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  .faq-answer p {
+    padding: 1rem;
+  }
+  
+  .mission-points,
+  .values-grid,
+  .team-stats,
+  .categories-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-info {
+    grid-template-columns: 1fr;
+  }
+  
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .about-section h2 {
+    font-size: 1.5rem;
+  }
+  
+  .stat h3 {
+    font-size: 2rem;
+  }
+}

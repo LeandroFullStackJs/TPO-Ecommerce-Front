@@ -5,11 +5,13 @@ import { useCart } from '../context/CartContext'
 import { useUser  } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 import Modal from '../components/Modal'
+import { useWishlist } from '../context/WishlistContext'
 
 export default function ProductPage() {
   const { id } = useParams()
   const { products, loading } = useProducts()
   const { addToCart, canAddToCart } = useCart()
+  const { addToWishlist } = useWishlist()
   const product = useMemo(() => products.find(p => p.id === id), [id, products])
   const [qty, setQty] = useState(1)
   const [error, setError] = useState('')
@@ -73,6 +75,23 @@ export default function ProductPage() {
     }
   }
 
+  const handleAddToWhishlist = () => {
+    if (!user) {
+      setShowLoginModal(true)
+      return
+    }
+    try {
+      setError('')
+      setSuccess('')
+      addToWishlist(product)
+      setSuccess(`¡Obra agregada a wishlist!`)
+      setTimeout(() => setSuccess(''), 3000)
+    } catch (error) {
+      setError(error.message)
+      setTimeout(() => setError(''), 5000)
+    }
+  }   
+  
   const handleQuantityChange = (newQty) => {
     setError('')
     setSuccess('')
@@ -132,8 +151,15 @@ export default function ProductPage() {
           <p className="brand">
             {"by " + product.artist}
           </p>
-
           
+          <p className="category" style={{ 
+            fontSize: '1rem',
+            color: 'var(--text-light)',
+            marginBottom: '1rem'
+          }}>
+            Categoría: {product.category}
+          </p>
+
           <div className="price" style={{ 
             fontSize: '2.5rem', 
             marginBottom: '1.5rem'
@@ -234,15 +260,14 @@ export default function ProductPage() {
               {hasStock ? 'Añadir al Carrito' : 'No disponible'}
             </button>
 
-              
             <button
-              onClick={'handleAddToWhishlist'}
+              onClick={handleAddToWhishlist}
               className={'btn btn-primary btn-lg'}
               style={{flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
             >
-              Añadir a Favoritos
-            </button>
-          </div>
+              Añadir a Wishlist
+            </button> 
+          </div> 
         </div>
 
         <div style={{ 
@@ -261,4 +286,3 @@ export default function ProductPage() {
     
   )
 }
-

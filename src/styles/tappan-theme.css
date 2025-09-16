@@ -1,0 +1,302 @@
+/**
+ * TEMA TAPPAN - ESTILOS ADICIONALES INSPIRADOS EN TAPPAN COLLECTIVE
+ * 
+ * Este archivo contiene estilos adicionales específicos para replicar
+ * el diseño elegante y minimalista de Tappan Collective.
+ */
+
+/* HOMEPAGE HERO - Estilo banner Tappan */
+.hero-banner {
+  background: var(--light-gray);
+  padding: 120px 20px;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.hero-banner .featured-collection {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hero-banner h2 {
+  font-size: 36px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.hero-banner p {
+  font-size: 14px;
+  color: var(--text-light);
+  margin-bottom: 40px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* NAVEGACIÓN SECUNDARIA - Estilo categorías Tappan */
+.category-nav {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  padding: 40px 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 60px;
+}
+
+.category-nav a {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  color: var(--text-light);
+  transition: var(--transition);
+}
+
+.category-nav a:hover,
+.category-nav a.active {
+  color: var(--text-color);
+}
+
+/* GRID DE ARTISTAS - Estilo minimalista */
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  padding: 0 20px;
+  max-width: var(--container-max-width);
+  margin: 0 auto 80px;
+}
+
+.artist-card {
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.artist-card:hover {
+  opacity: 0.7;
+}
+
+.artist-card .artist-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  margin-bottom: 20px;
+  background: var(--light-gray);
+}
+
+.artist-card h3 {
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  margin-bottom: 8px;
+}
+
+.artist-card .artist-info {
+  font-size: 12px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* PÁGINA DE PRODUCTO INDIVIDUAL */
+.product-detail {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+.product-detail .product-image-main {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+}
+
+.product-detail .product-info-main {
+  padding-top: 40px;
+}
+
+.product-detail .product-info-main h1 {
+  font-size: 24px;
+  font-weight: 400;
+  margin-bottom: 12px;
+}
+
+.product-detail .artist-name {
+  font-size: 14px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  margin-bottom: 20px;
+}
+
+.product-detail .price-main {
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.product-detail .description-main {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-light);
+  margin-bottom: 40px;
+}
+
+.product-detail .artwork-specs {
+  border-top: 1px solid var(--border-color);
+  padding-top: 20px;
+  margin-bottom: 40px;
+}
+
+.product-detail .spec-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.product-detail .spec-item:last-child {
+  border-bottom: none;
+}
+
+.product-detail .spec-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--text-light);
+}
+
+.product-detail .spec-value {
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .product-detail {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px 20px;
+  }
+  
+  .category-nav {
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  
+  .artists-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+  }
+  
+  .hero-banner h2 {
+    font-size: 24px;
+  }
+  
+  .section-title {
+    font-size: 18px;
+    margin-bottom: 40px;
+  }
+}
+
+/* FORMULARIOS - Estilo minimalista */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--text-color);
+  margin-bottom: 8px;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  background: var(--white);
+  transition: var(--transition);
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: var(--text-color);
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* ALERTAS Y MENSAJES */
+.alert {
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.alert-success {
+  background: #f0f8f0;
+  color: #2d5a2d;
+  border-color: #c3e6c3;
+}
+
+.alert-error {
+  background: #fdf2f2;
+  color: #842029;
+  border-color: #f5c6cb;
+}
+
+.alert-info {
+  background: #f0f8ff;
+  color: #0c5460;
+  border-color: #b8daff;
+}
+
+/* LOADING STATES */
+.loading {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-light);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* EMPTY STATES */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-light);
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.empty-state p {
+  font-size: 14px;
+  margin-bottom: 40px;
+}
