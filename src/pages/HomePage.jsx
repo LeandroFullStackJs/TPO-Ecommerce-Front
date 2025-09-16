@@ -23,7 +23,6 @@ import { categoriesAPI } from '../api/categories'
 import ProductCard from '../components/ProductCard'
 import ArtistCard from '../components/ArtistCard' // Importar ArtistCard
 import axios from 'axios'
-import ArtistCard from '../components/ArtistCard'
 import { useState, useEffect } from 'react'
 
 // Importar Swiper.js para carruseles
@@ -276,7 +275,7 @@ export default function HomePage() {
           </p>
         </div>
         <div className="categories-grid">
-          {categories.map(category => {
+          {categories.slice(0, 8).map(category => {
             const icons = {
               abstract: '🎨',
               landscape: '🌄',

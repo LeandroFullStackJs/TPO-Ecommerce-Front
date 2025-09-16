@@ -232,7 +232,6 @@
     }
   ],
   "cart": [],
-  
   "heroImages": [
     { "id": 1, "src": "public/images/ImagenGaleria.png", "alt": "Banner local de una obra de arte abstracta." },
     { "id": 2, "src": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Interior de una galería de arte con cuadros de flores." },
