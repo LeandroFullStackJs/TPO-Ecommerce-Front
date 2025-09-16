@@ -994,6 +994,7 @@ body::before {
   color: var(--primary-color);
 }
 
+
 /* Productos - Grid minimalista inspirado en Tappan */
 .products-grid {
   display: grid;
