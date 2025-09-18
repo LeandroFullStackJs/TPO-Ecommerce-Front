@@ -54,7 +54,7 @@ export function WishlistProvider({ children }) {
   };
 
   // Verificar si un producto está en la wishlist
-  const isInWishlist = (product) => {
+  const isInWishlist = (productId) => { // Cambiado 'product' a 'productId'
     return wishlist.some((item) => item.id === productId);
   };
 
