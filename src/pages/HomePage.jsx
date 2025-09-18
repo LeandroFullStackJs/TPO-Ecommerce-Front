@@ -101,11 +101,13 @@ export default function HomePage() {
   // Función para obtener el nombre de la categoría
   const getCategoryName = categoryId => {
     const category = categories.find(c => c.id === categoryId)
-    return category ? category.name : 'Sin categoría'}
+    return category ? category.name : 'Sin categoría'
+  }
+
   const handleSearch = (e) => {
     e.preventDefault()
     if (searchQuery.trim()) {
-      navigate(`/catalogo?q=${encodeURIComponent(searchQuery.trim())}`)
+      navigate(`/categorias?q=${encodeURIComponent(searchQuery.trim())}`) // Cambiado a /categorias
     }
   }
 
@@ -140,30 +142,27 @@ export default function HomePage() {
           navigation={true}
         >
           <div className="hero-content">
-                <h1>ArtGallery</h1>
-                <p>Descubre obras de arte únicas creadas por artistas contemporáneos. Cada pieza cuenta una historia y transforma espacios.</p>
-                <form onSubmit={handleSearch} className="hero-search">
-                  <div className="search-container">
-                    <div className="search-icon">🔍</div>
-                    <input
-                      className="search-input"
-                      placeholder="Buscar obras, artistas o estilos..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-primary btn-lg">Buscar</button>
-                </form>
+            <h1>ArtGallery</h1>
+            <p>Descubre obras de arte únicas creadas por artistas contemporáneos. Cada pieza cuenta una historia y transforma espacios.</p>
+            <form onSubmit={handleSearch} className="hero-search">
+              <div className="search-container">
+                <div className="search-icon">🔍</div>
+                <input
+                  className="search-input"
+                  placeholder="Buscar obras, artistas o estilos..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
+              <button type="submit" className="btn btn-primary btn-lg">Buscar</button>
+            </form>
+          </div>
           {heroImages.map((image) => (
             <SwiperSlide key={image.id}>
-              <div className="hero-slide-image" style={{ backgroundImage: `url(${image.src})` }} aria-label={image.alt}>
-
-              </div>
+              <div className="hero-slide-image" style={{ backgroundImage: `url(${image.src})` }} aria-label={image.alt} />
             </SwiperSlide>
           ))}
         </Swiper>
-        
       </section>
 
       <section className="featured section">
@@ -208,14 +207,11 @@ export default function HomePage() {
         </Swiper>
 
         <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-          <Link className="btn btn-outline btn-lg" to="/catalogo">
+          <Link className="btn btn-outline btn-lg" to="/categorias"> {/* Cambiado a /categorias */}
             Ver Toda la Colección
           </Link>
         </div>
-      </section>
-
-      
-
+      </section>
 
       <section className="featured section">
         <div className="section-header">
@@ -290,7 +286,7 @@ export default function HomePage() {
             }
 
             return (
-              <Link key={category.id} to={`/catalogo?cat=${category.id}`} className="category-card">
+              <Link key={category.id} to={`/categorias?cat=${category.id}`} className="category-card"> {/* Cambiado a /categorias */}
                 <div className="category-icon">{icons[category.id] || '🎨'}</div>
                 <h3>{category.name}</h3>
                 <p>Explorar obras</p>

@@ -37,7 +37,7 @@ export default function Footer() {
           <div className="footer-section">
             <h4>Enlaces Rápidos</h4>
             <ul>
-              <li><a href="/catalogo">Catálogo</a></li>
+              <li><a href="/categorias">Categorias</a></li>
               <li><a href="/artistas">Artistas</a></li>
               <li><a href="/carrito">Carrito</a></li>
               <li><a href="/login">Iniciar sesión</a></li>

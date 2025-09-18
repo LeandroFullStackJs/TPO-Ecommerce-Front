@@ -103,9 +103,6 @@ export default function Navbar() {
           <Link to="/home" className="navbar-link" onClick={closeMobileMenu}>
             Inicio
           </Link>
-          <Link to="/catalogo" className="navbar-link" onClick={closeMobileMenu}>
-            Catálogo
-          </Link>
           <Link to="/artistas" className="navbar-link" onClick={closeMobileMenu}>
             Artistas
           </Link>
