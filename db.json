@@ -60,6 +60,7 @@
       "id": "abstract-colors-01",
       "name": "Colores Abstractos",
       "artist": "María González",
+      "artistId": 1,
       "category": "abstract",
       "price": 45000,
       "stock": 1,
@@ -74,6 +75,7 @@
       "id": "landscape-dream-02",
       "name": "Sueño de Paisaje",
       "artist": "Carlos Mendoza",
+      "artistId": 2,
       "category": "landscape",
       "price": 38000,
       "stock": 0,
@@ -88,6 +90,7 @@
       "id": "urban-portrait-03",
       "name": "Retrato Urbano",
       "artist": "Ana Silvestre",
+      "artistId": 3,
       "category": "portrait",
       "price": 52000,
       "stock": 1,
@@ -102,6 +105,7 @@
       "id": "geometric-symphony-04",
       "name": "Sinfonía Geométrica",
       "artist": "Roberto Klein",
+      "artistId": 4,
       "category": "geometric",
       "price": 41000,
       "stock": 2,
@@ -116,6 +120,7 @@
       "id": "floral-explosion-05",
       "name": "Explosión Floral",
       "artist": "Isabella Torres",
+      "artistId": 5,
       "category": "nature",
       "price": 35000,
       "stock": 0,
@@ -130,6 +135,7 @@
       "id": "minimalist-essence-06",
       "name": "Esencia Minimalista",
       "artist": "Diego Vargas",
+      "artistId": 6,
       "category": "minimalist",
       "price": 48000,
       "stock": 1,
@@ -144,6 +150,7 @@
       "id": "contemporary-motion-07",
       "name": "Movimiento Contemporáneo",
       "artist": "Lucia Fernández",
+      "artistId": 7,
       "category": "contemporary",
       "price": 55000,
       "stock": 1,
@@ -158,6 +165,7 @@
       "id": "textured-dreams-08",
       "name": "Sueños Texturizados",
       "artist": "Miguel Santos",
+      "artistId": 8,
       "category": "textured",
       "price": 42000,
       "stock": 1,
@@ -171,6 +179,7 @@
     {
       "name": "HOlaa",
       "artist": "Lea",
+      "artistId": 9,
       "category": "portrait",
       "price": 5600,
       "stock": 2,
@@ -185,6 +194,7 @@
     {
       "name": "test",
       "artist": "lea",
+      "artistId": 9,
       "category": "abstract",
       "price": 6000,
       "stock": 2,
@@ -195,6 +205,62 @@
       "year": "2020",
       "userId": 3,
       "id": "1757452964344"
+    }
+  ],
+  "artists": [
+    {
+      "id": 1,
+      "name": "María González",
+      "biography": "Artista contemporánea con una trayectoria destacada en el mundo del arte abstracto. Su obra explora la interacción del color y la forma.",
+      "profileImage": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 2,
+      "name": "Carlos Mendoza",
+      "biography": "Pintor paisajista conocido por sus representaciones oníricas de la naturaleza. Utiliza principalmente la técnica del óleo sobre lienzo.",
+      "profileImage": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 3,
+      "name": "Ana Silvestre",
+      "biography": "Especialista en retratos urbanos, Ana captura la esencia de la vida moderna con una expresividad única a través de la acuarela.",
+      "profileImage": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 4,
+      "name": "Roberto Klein",
+      "biography": "Su trabajo se centra en la composición geométrica, explorando la armonía entre líneas, ángulos y espacios negativos con acrílico.",
+      "profileImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 5,
+      "name": "Isabella Torres",
+      "biography": "Con una paleta de colores intensos, Isabella ofrece una interpretación moderna de la naturaleza a través de formas orgánicas y fluidas.",
+      "profileImage": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 6,
+      "name": "Diego Vargas",
+      "biography": "Artista minimalista que encuentra la belleza en la simplicidad. Su obra se caracteriza por el uso del espacio negativo y la pureza de la forma.",
+      "profileImage": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 7,
+      "name": "Lucia Fernández",
+      "biography": "Lucia expresa el movimiento y la energía contemporánea a través de pinceladas dinámicas y una paleta de colores vibrantes.",
+      "profileImage": "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 8,
+      "name": "Miguel Santos",
+      "biography": "Su obra es una exploración de texturas y relieves, invitando al espectador a una experiencia táctil y visual única.",
+      "profileImage": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 9,
+      "name": "Lea",
+      "biography": "Artista emergente con un enfoque en el retrato y el arte abstracto, explorando nuevas formas de expresión.",
+      "profileImage": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&h=160&fit=crop&crop=faces"
     }
   ],
   "categories": [

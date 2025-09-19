@@ -892,6 +892,7 @@ body::before {
 
 .hero h1 {
   font-size: 60px;
+  color: var(--white);
   margin-bottom: 30px;
   font-weight: 800;
   letter-spacing: var(--letter-spacing-wide);
@@ -902,7 +903,7 @@ body::before {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-family: var(--font-accent);
-  text-shadow: 0 4px 8px rgba(184, 155, 106, 0.3);
+  text-shadow: 0 4px 8px rgba(100, 81, 47, 0.3);
   animation: fadeInUp 1s ease-out;
 }
 
@@ -920,7 +921,7 @@ body::before {
 .hero p {
   font-size: 20px;
   margin-bottom: 50px;
-  color: var(--secondary-color);
+  color: var(--white);
   line-height: 1.6;
   font-weight: 500;
   max-width: 500px;
