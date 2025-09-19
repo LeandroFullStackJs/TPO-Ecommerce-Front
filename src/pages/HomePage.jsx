@@ -23,7 +23,7 @@ import { categoriesAPI } from '../api/categories'
 import ProductCard from '../components/ProductCard'
 import ArtistCard from '../components/ArtistCard' // Importar ArtistCard
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 
 // Importar Swiper.js para carruseles
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -38,6 +38,8 @@ export default function HomePage() {
   const { products, loading } = useProducts()
   
   // Estados locales para categorías y búsqueda
+  const [artists, setArtists] = useState([])
+  const [artistsLoading, setArtistsLoading] = useState(true)
   const [categories, setCategories] = useState([])
   const [categoriesLoading, setCategoriesLoading] = useState(true)
   const [heroImages, setHeroImages] = useState([])
@@ -64,6 +66,21 @@ export default function HomePage() {
     loadCategories()
   }, [])
 
+  // Cargar artistas desde la API
+  useEffect(() => {
+    const loadArtists = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/artists')
+        setArtists(response.data)
+      } catch (error) {
+        console.error('Error al cargar artistas:', error)
+      } finally {
+        setArtistsLoading(false)
+      }
+    }
+    loadArtists()
+  }, [])
+
   // Cargar imágenes del hero desde la API
   useEffect(() => {
     const loadHeroImages = async () => {
@@ -79,24 +96,24 @@ export default function HomePage() {
     loadHeroImages()
   }, [])
 
-  // Procesar artistas a partir de los productos
-  const featuredArtists = products
-    ? Object.values(
-        products.reduce((acc, product) => {
-          if (!acc[product.artist]) {
-            acc[product.artist] = {
-              id: product.artist.toLowerCase().replace(/\s+/g, '-'),
-              name: product.artist,
-              category: product.category,
-              works: [],
-              profileImage: null
-            }
-          }
-          acc[product.artist].works.push(product)
-          return acc
-        }, {})
-      ).slice(0, 6)
-    : []
+  // Combinar artistas con sus obras para obtener los destacados
+  const featuredArtists = useMemo(() => {
+    if (artistsLoading || loading) return []
+
+    // Mapear artistas y añadir sus obras
+    const artistsWithWorks = artists.map(artist => {
+      const works = products.filter(p => p.artistId === artist.id)
+      const primaryCategory = works.length > 0 ? works[0].category : 'unknown'
+      return {
+        ...artist,
+        works,
+        category: primaryCategory
+      }
+    })
+
+    // Ordenar por cantidad de obras y tomar los 6 primeros
+    return artistsWithWorks.sort((a, b) => b.works.length - a.works.length).slice(0, 6)
+  }, [artists, products, artistsLoading, loading])
 
   // Función para obtener el nombre de la categoría
   const getCategoryName = categoryId => {
@@ -114,7 +131,7 @@ export default function HomePage() {
   // Obtener productos destacados (con stock disponible)
   const featuredProducts = products?.filter(p => p.stock > 0).slice(0, 6) || []
 
-  if (loading || categoriesLoading || heroImagesLoading) {
+  if (loading || categoriesLoading || heroImagesLoading || artistsLoading) {
     return (
       <section className="hero">
         <div className="hero-content">
