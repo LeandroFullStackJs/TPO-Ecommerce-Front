@@ -114,7 +114,7 @@ export function CartProvider({ children }) {
   
   // Acceso a contextos dependientes para funcionalidad completa
   const { products, decrementProductStock } = useProducts()
-  const { user } = useUser()
+  const { user, isAuthenticated } = useUser() // Añadido isAuthenticated
   const { addOrder } = useOrders()
   // Teoría: useEffect para Persistencia de Datos (LocalStorage)
   // Este efecto se ejecuta una vez al montar el componente para cargar el carrito desde localStorage.
@@ -173,6 +173,15 @@ export function CartProvider({ children }) {
   // Recorre todos los items en el carrito y verifica que la cantidad de cada uno
   // no exceda el stock actual del producto (obtenido del ProductContext).
   const canCheckout = () => {
+    // Primero, verifica si hay items en el carrito
+    if (state.items.length === 0) {
+      return false; // No se puede hacer checkout si el carrito está vacío
+    }
+    // Luego, verifica si el usuario está autenticado
+    if (!isAuthenticated) {
+      return false; // No se puede hacer checkout si el usuario no está logueado
+    }
+    // Finalmente, verifica el stock de cada producto
     return state.items.every(item => {
       const product = products.find(p => p.id === item.id)
       return product && item.quantity <= product.stock
@@ -182,12 +191,13 @@ export function CartProvider({ children }) {
   // Funcionamiento: Proceso de checkout
   // Esta función es asíncrona porque interactúa con la API para descontar stock.
   const checkout = async () => {
-    if (!canCheckout()) {
-      throw new Error('No hay stock suficiente para algunos productos') // Lanza un error si la validación falla.
-    }
-    if (!user || !user.id) {
+    if (!isAuthenticated || !user?.id) { // Asegurarse de que el usuario esté autenticado antes de proceder
       throw new Error('Debes iniciar sesión para finalizar la compra.')
     }
+    if (!canCheckout()) {
+      throw new Error('No hay stock suficiente para algunos productos o el carrito está vacío.') // Mensaje más descriptivo
+    }
+    
     try {
       // Funcionamiento: Descuento de stock
       // Crea un array de promesas, donde cada promesa es una llamada a 'decrementProductStock'
@@ -220,7 +230,11 @@ export function CartProvider({ children }) {
       dispatch({ type: 'CHECKOUT' })
     } catch (error) {
       console.error('Error en checkout:', error)
-      throw new Error('Error al procesar la compra. Inténtalo de nuevo.') // Relanza el error para que el componente UI lo maneje.
+      // Bug fix: Si el error es de la API (ej. stock ya no disponible), relanzar con un mensaje más amigable.
+      if (error.response && error.response.data && error.response.data.message) {
+        throw new Error(error.response.data.message);
+      }
+      throw new Error('Error al procesar la compra. Inténtalo de nuevo. Asegúrate de tener stock suficiente y estar logueado.'); // Relanza el error para que el componente UI lo maneje.
     }
   }
 
@@ -232,6 +246,7 @@ export function CartProvider({ children }) {
     items: state.items, // Items actuales en el carrito.
     addToCart: (product, quantity = 1) => {
       // Funcionamiento: Lógica para agregar al carrito con validación de stock.
+      // Eliminada la validación de usuario aquí para permitir añadir al carrito sin login.
       if (canAddToCart(product, quantity)) {
         dispatch({ type: 'ADD', product, quantity })
       } else {
@@ -256,7 +271,7 @@ export function CartProvider({ children }) {
     canCheckout, // Función de validación para checkout.
     checkout, // Función para finalizar la compra.
     totals, // Objeto con los totales calculados.
-  }), [state.items, totals, products, decrementProductStock]) // Dependencias del useMemo.
+  }), [state.items, totals, products, decrementProductStock, isAuthenticated, user]) // Dependencias del useMemo.
 
   return (
     // Funcionamiento: El Provider envuelve a los componentes hijos y les proporciona el 'value'.

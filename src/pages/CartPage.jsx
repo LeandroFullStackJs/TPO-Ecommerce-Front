@@ -12,7 +12,7 @@ export default function CartPage() {
   const [error, setError] = useState('') // Estado para mensajes de error.
   const [success, setSuccess] = useState('') // Estado para mensajes de éxito.
   const [loading, setLoading] = useState(false) // Estado para indicar si una operación está en curso.
-  const { user } = useUser() // Obtiene el objeto de usuario del contexto.
+  const { user, isAuthenticated } = useUser() // Obtiene el objeto de usuario y el estado de autenticación del contexto.
   const navigate = useNavigate() // Función para navegar a otras rutas.
   const [showLoginModal, setShowLoginModal] = useState(false) // Estado para controlar la visibilidad del modal de inicio de sesión.
 
@@ -21,10 +21,16 @@ export default function CartPage() {
   const handleCheckout = async () => {
     // Teoría: Protección de Ruta / Autenticación
     // Si el usuario no está logueado, se muestra un modal pidiéndole que inicie sesión.
-    if (!user) {
+    if (!isAuthenticated) { // Usar isAuthenticated del UserContext
       setShowLoginModal(true)
       return
     }
+    // Si el carrito está vacío, no permitir checkout
+    if (items.length === 0) {
+      setError('Tu carrito está vacío. Agrega productos antes de finalizar la compra.')
+      return;
+    }
+
     try {
       setLoading(true) // Activa el estado de carga.
       setError('') // Limpia mensajes de error previos.
@@ -32,8 +38,9 @@ export default function CartPage() {
 
       // Teoría: Validación de Stock
       // Antes de proceder, se verifica si hay suficiente stock para todos los productos en el carrito.
+      // canCheckout ya incluye la verificación de autenticación y carrito vacío.
       if (!canCheckout()) {
-        setError('No hay stock suficiente para algunos productos. Por favor, ajusta las cantidades.')
+        setError('No se puede finalizar la compra. Revisa el stock de los productos o asegúrate de estar logueado.')
         return
       }
 
@@ -42,7 +49,8 @@ export default function CartPage() {
       await checkout()
       setSuccess('¡Compra realizada con éxito! El stock ha sido actualizado.') // Muestra mensaje de éxito.
     } catch (err) {
-      setError(err.message || 'Error al procesar la compra') // Captura y muestra errores.
+      console.error("Error during checkout:", err); // Log detallado del error
+      setError(err.message || 'Error al procesar la compra. Inténtalo de nuevo.') // Captura y muestra errores.
     } finally {
       setLoading(false) // Desactiva el estado de carga.
     }
@@ -50,7 +58,10 @@ export default function CartPage() {
 
   // Funcionamiento: Funciones para el modal
   const closeModal = () => setShowLoginModal(false) // Cierra el modal.
-  const goToLogin = () => navigate('/login') // Navega a la página de login.
+  const goToLogin = () => {
+    closeModal(); // Cerrar el modal antes de navegar
+    navigate('/login'); // Navega a la página de login.
+  }
 
   // Funcionamiento: Manejo del cambio de cantidad de un producto
   // Actualiza la cantidad de un producto en el carrito, con validación de stock.
@@ -223,12 +234,12 @@ export default function CartPage() {
             </div>
             
             {/* Funcionamiento: Botón de finalizar compra */}
-            {/* Deshabilitado si no se puede hacer checkout (por stock) o si está cargando. */}
+            {/* Deshabilitado si no se puede hacer checkout (por stock o no logueado) o si está cargando. */}
             {/* Al hacer clic, llama a 'handleCheckout'. */}
             <button 
               className="btn btn-primary btn-full btn-lg"
               onClick={handleCheckout}
-              disabled={!canCheckout() || loading}
+              disabled={!canCheckout() && isAuthenticated || loading || items.length === 0} // Deshabilitar si no se puede hacer checkout Y está logueado (para evitar doble modal), o si está cargando, o si el carrito está vacío.
               style={{ marginTop: '1.5rem' }}
             >
               {loading ? 'Procesando...' : '🎨 Finalizar compra'}
