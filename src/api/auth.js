@@ -1,60 +1,141 @@
+/**
+ * API DE AUTENTICACIÓN Y GESTIÓN DE USUARIOS
+ * 
+ * Este módulo gestiona todas las operaciones relacionadas con usuarios:
+ * - Autenticación (login/logout)
+ * - Registro de nuevos usuarios
+ * - Actualización de datos de usuario
+ * - Cambio de contraseñas
+ * 
+ * Utiliza json-server como backend simulado para desarrollo.
+ * En producción, estas operaciones serían manejadas por un backend real
+ * con validaciones de seguridad, encriptación de contraseñas y JWT tokens.
+ * 
+ * Patrón de diseño: API Object con métodos específicos para cada operación
+ * Beneficios: Separación de responsabilidades y fácil testing
+ */
+
 import api from './index'
 
-//esto es lo que se comunica directamente con db.json que es en donde estan todos pre-seteados los usuarios que seria el json-server
+/**
+ * OBJETO API DE AUTENTICACIÓN
+ * 
+ * Contiene todos los métodos para operaciones de usuario y autenticación.
+ * Cada método es una función async que devuelve una Promise.
+ */
 export const authAPI = {
-  // Login de usuario
+  /**
+   * INICIO DE SESIÓN
+   * 
+   * Autentica a un usuario verificando email y contraseña contra la base de datos.
+   * En un entorno de producción, esto incluiría hashing de contraseñas y JWT tokens.
+   * 
+   * @param {string} email - Email del usuario
+   * @param {string} password - Contraseña del usuario
+   * @returns {Promise<Object>} Usuario sin contraseña
+   * @throws {Error} Si las credenciales son inválidas
+   */
   login: async (email, password) => {
-    const response = await api.get('/users') //trae todos los usuarios
-    const user = response.data.find(u => u.email === email && u.password === password)//busca el usuario con los parametros pasados en la funcion
+    // Obtener todos los usuarios (en producción sería un endpoint específico)
+    const response = await api.get('/users')
+    
+    // Buscar usuario que coincida con email y contraseña
+    const user = response.data.find(u => u.email === email && u.password === password)
+    
     if (!user) {
       throw new Error('Credenciales inválidas')
     }
 
-    // No enviar password en la respuesta, para no filtrarla en texto plano
+    // Remover contraseña por seguridad antes de devolver el usuario
     const { password: _, ...userWithoutPassword } = user
     return userWithoutPassword
   },
 
-  // Registro de usuario
+  /**
+   * REGISTRO DE NUEVO USUARIO
+   * 
+   * Crea una nueva cuenta de usuario verificando que el email no esté en uso.
+   * Asigna un ID único y rol por defecto.
+   * 
+   * @param {Object} userData - Datos del nuevo usuario
+   * @param {string} userData.email - Email único del usuario
+   * @param {string} userData.password - Contraseña del usuario
+   * @param {string} userData.name - Nombre del usuario
+   * @returns {Promise<Object>} Usuario creado sin contraseña
+   * @throws {Error} Si el email ya está registrado
+   */
   register: async (userData) => {
-    // Verificar si el email ya existe
-    const existingUsers = await api.get('/users')//los obtiene todos para no crear uno ya existente
-    const emailExists = existingUsers.data.some(u => u.email === userData.email)//valida existencia
+    // Verificar si el email ya está en uso
+    const existingUsers = await api.get('/users')
+    const emailExists = existingUsers.data.some(u => u.email === userData.email)
     
     if (emailExists) {
       throw new Error('El email ya está registrado')
     }
 
-    // Crear nuevo usuario
-    const newUser   = {
+    // Crear nuevo usuario con datos adicionales
+    const newUser = {
       ...userData,
-      id: Date.now(),//es tipo timestamp
-      role: 'user'
+      id: Date.now(), // ID único basado en timestamp
+      role: 'user'    // Rol por defecto
     }
 
-    const response = await api.post('/users', newUser)//hace un post en el json-server (db.json)
+    // Guardar en la base de datos
+    const response = await api.post('/users', newUser)
+    
+    // Devolver usuario sin contraseña por seguridad
     const { password: _, ...userWithoutPassword } = response.data
     return userWithoutPassword
   },
 
-  // Obtener usuario por ID
+  /**
+   * OBTENER USUARIO POR ID
+   * 
+   * Recupera los datos de un usuario específico por su ID.
+   * Útil para obtener información actualizada del perfil.
+   * 
+   * @param {number} id - ID único del usuario
+   * @returns {Promise<Object>} Usuario sin contraseña
+   */
   getUserById: async (id) => {
     const response = await api.get(`/users/${id}`)
     const { password: _, ...userWithoutPassword } = response.data
     return userWithoutPassword
   },
 
-  // Actualizar usuario (nombre, email, etc.)
-  updateUser : async (id, userData) => {
+  /**
+   * ACTUALIZAR DATOS DE USUARIO
+   * 
+   * Actualiza la información del perfil de usuario (nombre, email, etc.)
+   * excepto la contraseña que tiene su propio método.
+   * 
+   * @param {number} id - ID del usuario a actualizar
+   * @param {Object} userData - Nuevos datos del usuario
+   * @returns {Promise<Object>} Usuario actualizado sin contraseña
+   */
+  updateUser: async (id, userData) => {
     const response = await api.put(`/users/${id}`, userData)
     const { password: _, ...userWithoutPassword } = response.data
     return userWithoutPassword
   },
 
-  // Cambiar contraseña
+  /**
+   * CAMBIAR CONTRASEÑA
+   * 
+   * Actualiza la contraseña de un usuario. En producción incluiría
+   * verificación de la contraseña actual y hashing de la nueva.
+   * 
+   * @param {number} id - ID del usuario
+   * @param {string} currentPassword - Contraseña actual (para verificación)
+   * @param {string} newPassword - Nueva contraseña
+   * @returns {Promise<Object>} Usuario actualizado sin contraseña
+   * 
+   * @note En producción, el backend debe verificar currentPassword
+   *       y encriptar newPassword antes de guardarlo
+   */
   changePassword: async (id, currentPassword, newPassword) => {
-    // Nota: En producción, el backend debe verificar currentPassword
-    // Aquí solo se actualiza la contraseña directamente
+    // NOTA: En producción, se debe verificar currentPassword
+    // y hacer hash de newPassword antes de guardarlo
     const response = await api.patch(`/users/${id}`, { password: newPassword })
     const { password: _, ...userWithoutPassword } = response.data
     return userWithoutPassword

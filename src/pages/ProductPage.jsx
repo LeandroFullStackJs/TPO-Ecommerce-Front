@@ -17,7 +17,7 @@ export default function ProductPage() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [imageError, setImageError] = useState(false)
-  const { user } = useUser()
+  const { user, isAuthenticated } = useUser() // Añadido isAuthenticated
   const navigate = useNavigate()
   const [showLoginModal, setShowLoginModal] = useState(false) 
   const handleImageError = () => {
@@ -59,10 +59,7 @@ export default function ProductPage() {
   const canAdd = hasStock && canAddToCart(product, qty)
 
   const handleAddToCart = () => {
-    if (!user) {
-      setShowLoginModal(true)
-      return
-    }
+    // Eliminada la validación de usuario aquí para permitir añadir al carrito sin login.
     try {
       setError('')
       setSuccess('')
@@ -76,7 +73,7 @@ export default function ProductPage() {
   }
 
   const handleAddToWhishlist = () => {
-    if (!user) {
+    if (!isAuthenticated) { // Usar isAuthenticated
       setShowLoginModal(true)
       return
     }
@@ -101,7 +98,10 @@ export default function ProductPage() {
   }
 
   const closeModal = () => setShowLoginModal(false)
-  const goToLogin = () => navigate('/login')
+  const goToLogin = () => {
+    closeModal(); // Cerrar el modal antes de navegar
+    navigate('/login');
+  }
 
   const getStockStatus = () => {
     if (product.stock === 0) return 'out'
@@ -151,8 +151,15 @@ export default function ProductPage() {
           <p className="brand">
             {"by " + product.artist}
           </p>
-
           
+          <p className="category" style={{ 
+            fontSize: '1rem',
+            color: 'var(--text-light)',
+            marginBottom: '1rem'
+          }}>
+            Categoría: {product.category}
+          </p>
+
           <div className="price" style={{ 
             fontSize: '2.5rem', 
             marginBottom: '1.5rem'

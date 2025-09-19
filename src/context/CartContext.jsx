@@ -1,65 +1,120 @@
+/**
+ * CONTEXTO DEL CARRITO DE COMPRAS - GESTIÓN COMPLETA DEL CARRITO
+ * 
+ * Este contexto maneja todo lo relacionado con el carrito de compras:
+ * - Agregado y eliminación de productos
+ * - Cálculo de totales y cantidades
+ * - Persistencia en localStorage
+ * - Validación de stock disponible
+ * - Integración con contextos de usuario, productos y órdenes
+ * 
+ * Utiliza useReducer para manejar estados complejos de manera predecible
+ * y optimizada, siguiendo el patrón Redux.
+ */
+
 import { createContext, useContext, useEffect, useMemo, useReducer } from 'react'
-import { useProducts } from './ProductContext' // Teoría: Dependencia de otro contexto para acceder a la información de productos y funciones de stock.
+// Dependencias de otros contextos para funcionalidad completa
+import { useProducts } from './ProductContext' 
 import { useUser } from '../context/UserContext'
 import { useOrders } from '../context/OrderContext'
 
-// Teoría: Context API
-// createContext crea un objeto Context. Los componentes pueden suscribirse a él para leer cambios en el contexto.
+// Crear el contexto del carrito
 const CartContext = createContext(null)
 
-// Teoría: Reducer (useReducer)
-// Una función reducer es una alternativa a useState para manejar estados más complejos.
-// Recibe el estado actual y una acción, y devuelve un nuevo estado.
-// Esto centraliza la lógica de actualización del estado del carrito.
+/**
+ * REDUCER DEL CARRITO - MANEJO CENTRALIZADO DEL ESTADO
+ * 
+ * Utiliza el patrón Reducer para manejar estados complejos de manera predecible.
+ * Cada acción produce un nuevo estado inmutable, facilitando el debugging
+ * y manteniendo la consistencia de datos.
+ * 
+ * @param {Object} state - Estado actual del carrito
+ * @param {Object} action - Acción a ejecutar con su tipo y payload
+ * @returns {Object} Nuevo estado del carrito
+ */
 function cartReducer(state, action) {
   switch (action.type) {
+    // Acción: AGREGAR PRODUCTO AL CARRITO
     case 'ADD': {
       const { product, quantity } = action
       const existing = state.items.find(i => i.id === product.id)
       let newItems
-      // Funcionamiento: Si el producto ya está en el carrito, incrementa su cantidad.
-      // Si no, lo añade como un nuevo item.
+      
       if (existing) {
-        newItems = state.items.map(i => i.id === product.id ? { ...i, quantity: i.quantity + quantity } : i)
+        // Si el producto ya existe, incrementar su cantidad
+        newItems = state.items.map(i => 
+          i.id === product.id 
+            ? { ...i, quantity: i.quantity + quantity } 
+            : i
+        )
       } else {
+        // Si es nuevo, agregarlo al carrito
         newItems = [...state.items, { ...product, quantity }]
       }
-      return { ...state, items: newItems } // Devuelve un nuevo estado inmutable.
+      
+      // Retornar nuevo estado inmutable
+      return { ...state, items: newItems }
     }
+    
+    // Acción: ELIMINAR PRODUCTO DEL CARRITO
     case 'REMOVE': {
-      // Funcionamiento: Filtra el array de items para eliminar el producto con el 'id' especificado.
-      return { ...state, items: state.items.filter(i => i.id !== action.id) }
+      // Filtrar para eliminar el producto especificado
+      return { 
+        ...state, 
+        items: state.items.filter(i => i.id !== action.id) 
+      }
     }
+    
+    // Acción: ESTABLECER CANTIDAD ESPECÍFICA
     case 'SET_QTY': {
       const { id, quantity } = action
-      // Funcionamiento: Mapea el array de items para actualizar la cantidad de un producto específico.
-      return { ...state, items: state.items.map(i => i.id === id ? { ...i, quantity } : i) }
+      // Actualizar la cantidad de un producto específico en el carrito
+      return { 
+        ...state, 
+        items: state.items.map(i => 
+          i.id === id ? { ...i, quantity } : i
+        ) 
+      }
     }
+    
+    // Acción: LIMPIAR TODO EL CARRITO
     case 'CLEAR': {
-      // Funcionamiento: Vacía el array de items del carrito.
+      // Vaciar completamente el carrito
       return { ...state, items: [] }
     }
+    
+    // Acción: CHECKOUT COMPLETADO
     case 'CHECKOUT': {
-      // Funcionamiento: También vacía el carrito después de un checkout exitoso.
+      // Limpiar carrito después de una compra exitosa
       return { ...state, items: [] }
     }
+    
+    // Acción por defecto: no modificar el estado
     default:
-      return state // En caso de acción desconocida, devuelve el estado sin cambios.
+      return state
   }
 }
 
-// Teoría: Provider (CartProvider)
-// El componente Provider es el que envuelve a los componentes que necesitan acceder al contexto.
-// Recibe 'children' y proporciona el 'value' del contexto a todos sus descendientes.
+/**
+ * PROVEEDOR DEL CONTEXTO DEL CARRITO
+ * 
+ * Componente que proporciona la funcionalidad completa del carrito
+ * a toda la aplicación. Maneja la persistencia, validaciones y
+ * la integración con otros contextos.
+ */
 export function CartProvider({ children }) {
-  // Teoría: useReducer Hook
-  // Inicializa el estado del carrito y la función 'dispatch' para enviar acciones al reducer.
+  /**
+   * INICIALIZACIÓN DEL ESTADO CON REDUCER
+   * 
+   * useReducer es preferible a useState para estados complejos
+   * porque centraliza la lógica de actualización y hace el código
+   * más predecible y fácil de debuggear.
+   */
   const [state, dispatch] = useReducer(cartReducer, { items: [] })
-  // Teoría: Consumo de otro Contexto
-  // Accede a 'products' y 'decrementProductStock' del ProductContext.
-  // Esto permite que el CartContext interactúe con el stock de productos.
+  
+  // Acceso a contextos dependientes para funcionalidad completa
   const { products, decrementProductStock } = useProducts()
-  const { user } = useUser ()
+  const { user, isAuthenticated } = useUser() // Añadido isAuthenticated
   const { addOrder } = useOrders()
   // Teoría: useEffect para Persistencia de Datos (LocalStorage)
   // Este efecto se ejecuta una vez al montar el componente para cargar el carrito desde localStorage.
@@ -118,6 +173,15 @@ export function CartProvider({ children }) {
   // Recorre todos los items en el carrito y verifica que la cantidad de cada uno
   // no exceda el stock actual del producto (obtenido del ProductContext).
   const canCheckout = () => {
+    // Primero, verifica si hay items en el carrito
+    if (state.items.length === 0) {
+      return false; // No se puede hacer checkout si el carrito está vacío
+    }
+    // Luego, verifica si el usuario está autenticado
+    if (!isAuthenticated) {
+      return false; // No se puede hacer checkout si el usuario no está logueado
+    }
+    // Finalmente, verifica el stock de cada producto
     return state.items.every(item => {
       const product = products.find(p => p.id === item.id)
       return product && item.quantity <= product.stock
@@ -127,12 +191,13 @@ export function CartProvider({ children }) {
   // Funcionamiento: Proceso de checkout
   // Esta función es asíncrona porque interactúa con la API para descontar stock.
   const checkout = async () => {
-    if (!canCheckout()) {
-      throw new Error('No hay stock suficiente para algunos productos') // Lanza un error si la validación falla.
-    }
-    if (!user || !user.id) {
+    if (!isAuthenticated || !user?.id) { // Asegurarse de que el usuario esté autenticado antes de proceder
       throw new Error('Debes iniciar sesión para finalizar la compra.')
     }
+    if (!canCheckout()) {
+      throw new Error('No hay stock suficiente para algunos productos o el carrito está vacío.') // Mensaje más descriptivo
+    }
+    
     try {
       // Funcionamiento: Descuento de stock
       // Crea un array de promesas, donde cada promesa es una llamada a 'decrementProductStock'
@@ -165,7 +230,11 @@ export function CartProvider({ children }) {
       dispatch({ type: 'CHECKOUT' })
     } catch (error) {
       console.error('Error en checkout:', error)
-      throw new Error('Error al procesar la compra. Inténtalo de nuevo.') // Relanza el error para que el componente UI lo maneje.
+      // Bug fix: Si el error es de la API (ej. stock ya no disponible), relanzar con un mensaje más amigable.
+      if (error.response && error.response.data && error.response.data.message) {
+        throw new Error(error.response.data.message);
+      }
+      throw new Error('Error al procesar la compra. Inténtalo de nuevo. Asegúrate de tener stock suficiente y estar logueado.'); // Relanza el error para que el componente UI lo maneje.
     }
   }
 
@@ -177,6 +246,7 @@ export function CartProvider({ children }) {
     items: state.items, // Items actuales en el carrito.
     addToCart: (product, quantity = 1) => {
       // Funcionamiento: Lógica para agregar al carrito con validación de stock.
+      // Eliminada la validación de usuario aquí para permitir añadir al carrito sin login.
       if (canAddToCart(product, quantity)) {
         dispatch({ type: 'ADD', product, quantity })
       } else {
@@ -201,7 +271,7 @@ export function CartProvider({ children }) {
     canCheckout, // Función de validación para checkout.
     checkout, // Función para finalizar la compra.
     totals, // Objeto con los totales calculados.
-  }), [state.items, totals, products, decrementProductStock]) // Dependencias del useMemo.
+  }), [state.items, totals, products, decrementProductStock, isAuthenticated, user]) // Dependencias del useMemo.
 
   return (
     // Funcionamiento: El Provider envuelve a los componentes hijos y les proporciona el 'value'.
