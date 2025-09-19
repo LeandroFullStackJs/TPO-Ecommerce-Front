@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useUser   } from "../context/UserContext"; // Teoría: Hook de Contexto para acceso global al estado del usuario.
 import { useOrders } from "../context/OrderContext";
 import { useWishlist } from "../context/WishlistContext";
+import {Link} from 'react-router-dom'
 
 // Componente Perfil: muestra datos del usuario y permite editar nombre y email
 function Perfil({ user }) {
@@ -397,6 +398,7 @@ function Wishlist() {
                 padding: "1rem",
               }}
             >
+              <Link to={`/producto/${item.id}`}>
               <img
                 src={item.image}
                 alt={item.name}
@@ -408,6 +410,7 @@ function Wishlist() {
                   marginRight: "1rem",
                 }}
               />
+              </Link>
               <span style={{ flex: 1 }}>{item.name}</span>
               <button
                 className="btn btn-danger"
