@@ -162,7 +162,7 @@ export default function ProductPage() {
             {product.name}
           </h1>
           
-          <Link to={`/artists/${product.artist}`} className="brand">
+          <Link to={`/artists/${product.artistId}`} className="brand">
             {"by " + product.artist}
           </Link>
           
