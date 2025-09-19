@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import ArtistCard from '../components/ArtistCard'
 import { useProducts } from '../context/ProductContext'
 import { categoriesAPI } from '../api/categories'
-import axios from 'axios'
+import { artistsAPI } from '../api/artists'
 
 export default function ArtistPage() {
   const { products, loading: productsLoading } = useProducts()
@@ -16,10 +16,11 @@ export default function ArtistPage() {
   useEffect(() => {
     const loadArtists = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/artists')
-        setArtists(response.data)
+        const data = await artistsAPI.getAll()
+        setArtists(data)
       } catch (error) {
         console.error('Error al cargar artistas:', error)
+        setArtists([]) // Set empty array on error for better UX
       } finally {
         setArtistsLoading(false)
       }
@@ -35,6 +36,7 @@ export default function ArtistPage() {
         setCategories(data)
       } catch (error) {
         console.error('Error al cargar categorías:', error)
+        setCategories([]) // Set empty array on error for better UX
       }
     }
     loadCategories()
