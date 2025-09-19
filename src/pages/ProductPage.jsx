@@ -11,7 +11,7 @@ export default function ProductPage() {
   const { id } = useParams()
   const { products, loading } = useProducts()
   const { addToCart, canAddToCart } = useCart()
-  const { addToWishlist } = useWishlist()
+  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist()
   const product = useMemo(() => products.find(p => p.id === id), [id, products])
   const [qty, setQty] = useState(1)
   const [error, setError] = useState('')
@@ -57,6 +57,7 @@ export default function ProductPage() {
 
   const hasStock = product.stock > 0
   const canAdd = hasStock && canAddToCart(product, qty)
+  const inWishlist = isInWishlist(product.id) // Verificar si el producto está en la wishlist
 
   const handleAddToCart = () => {
     // Eliminada la validación de usuario aquí para permitir añadir al carrito sin login.
@@ -89,6 +90,19 @@ export default function ProductPage() {
     }
   }   
   
+  const handleRemoveFromWishlist = () => {
+  try {
+    setError('');
+    setSuccess('');
+    removeFromWishlist(product.id);
+    setSuccess('¡Obra eliminada de la wishlist!');
+    setTimeout(() => setSuccess(''), 3000);
+  } catch (error) {
+    setError(error.message);
+    setTimeout(() => setError(''), 5000);
+  }
+};
+
   const handleQuantityChange = (newQty) => {
     setError('')
     setSuccess('')
@@ -148,9 +162,9 @@ export default function ProductPage() {
             {product.name}
           </h1>
           
-          <p className="brand">
+          <Link to={`/artists/${product.artist}`} className="brand">
             {"by " + product.artist}
-          </p>
+          </Link>
           
           <p className="category" style={{ 
             fontSize: '1rem',
@@ -261,11 +275,11 @@ export default function ProductPage() {
             </button>
 
             <button
-              onClick={handleAddToWhishlist}
-              className={'btn btn-primary btn-lg'}
+              onClick={inWishlist ? handleRemoveFromWishlist : handleAddToWhishlist}
+              className={`btn ${!inWishlist ? 'btn-primary' : 'btn-secondary'} btn-lg`}
               style={{flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
             >
-              Añadir a Wishlist
+              {inWishlist ? 'Quitar de la Wishlist' : 'Agregar a Wishlist'}
             </button> 
           </div> 
         </div>
