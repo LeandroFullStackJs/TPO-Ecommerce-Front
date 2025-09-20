@@ -617,15 +617,12 @@ body::before {
 
 /* Carrusel general */
 .swiper {
-  padding-bottom: 60px;
-  margin: 40px 0;
   overflow: visible;
 }
 
 .swiper-slide {
   display: flex;
   height: auto;
-  padding: 0 10px;
   transition: all 0.3s ease;
 }
 
