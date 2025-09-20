@@ -133,9 +133,9 @@ export default function ProductPage() {
   return (
     <div className="section">
       {/* Breadcrumb */}
-      <div style={{ marginBottom: '2rem', fontSize: '0.9rem', color: 'var(--text-light)' }}>
+      <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-light)' }}>
         <Link to="/" style={{ color: 'var(--text-light)' }}>Inicio</Link> / 
-        <Link to="/catalogo" style={{ color: 'var(--text-light)', margin: '0 0.5rem' }}>Galería</Link> / 
+        <Link to="/categorias" style={{ color: 'var(--text-light)', margin: '0 0.5rem' }}>Galería</Link> / 
         <span style={{ color: 'var(--text-color)' }}>{product.name}</span>
       </div>
 
@@ -150,8 +150,7 @@ export default function ProductPage() {
         </div>
         
         <div className="product-detail-info">
-          
-          
+                    
           <h1 style={{ 
             fontSize: '2.5rem', 
             fontWeight: '700', 
@@ -174,14 +173,6 @@ export default function ProductPage() {
             Categoría: {product.category}
           </p>
 
-          <div className="price" style={{ 
-            fontSize: '2.5rem', 
-            marginBottom: '1.5rem'
-          }}>
-            <span style={{ fontSize: '0.7em', marginRight: '0.25rem' }}></span>
-            {"$ " + product.price.toLocaleString('es-AR')}
-          </div>
-
           <div className="stock">
             <span className={`stock-dot ${getStockStatus()}`}></span>
             {getStockText()}
@@ -190,7 +181,6 @@ export default function ProductPage() {
           <p className="description">
             {product.description}
           </p>
-
 
           <div style={{ 
             marginBottom: '2rem',
@@ -240,6 +230,14 @@ export default function ProductPage() {
             </div>
           )}
 
+          <div className="price" style={{ 
+            fontSize: '2.5rem', 
+            marginBottom: '1.5rem',
+          }}>
+            <span style={{ fontSize: '0.3em', marginRight: '0.25rem'}}></span>
+            {"$ " + product.price.toLocaleString('es-AR')}
+          </div>
+
           <div className="buy-section" style={{
             padding: '2rem',
             background: 'var(--light-gray)',
@@ -268,7 +266,7 @@ export default function ProductPage() {
             <button 
               onClick={handleAddToCart}
               disabled={!canAdd}
-              className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'} btn-lg`}
+              className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'}`}
               style={{ flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
             >
               {hasStock ? 'Añadir al Carrito' : 'No disponible'}
@@ -276,7 +274,7 @@ export default function ProductPage() {
 
             <button
               onClick={inWishlist ? handleRemoveFromWishlist : handleAddToWhishlist}
-              className={`btn ${!inWishlist ? 'btn-primary' : 'btn-secondary'} btn-lg`}
+              className={`btn ${!inWishlist ? 'btn-primary' : 'btn-secondary'}`}
               style={{flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
             >
               {inWishlist ? 'Quitar de la Wishlist' : 'Agregar a Wishlist'}
@@ -290,7 +288,7 @@ export default function ProductPage() {
             borderTop: '1px solid var(--border-color)',
             paddingTop: '2rem'
           }}>
-            <Link to="/catalogo" className="btn btn-outline">
+            <Link to="/categorias" className="btn btn-outline">
               ← Seguir explorando
             </Link>
             <Modal isOpen={showLoginModal} onClose={closeModal} onLogin={goToLogin} />

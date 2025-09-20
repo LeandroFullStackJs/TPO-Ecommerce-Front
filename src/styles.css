@@ -1539,8 +1539,8 @@ body::before {
 .product-detail {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  margin-top: 2rem;
+  gap: 2rem;
+  /*margin-top: 10rem;*/
 }
 
 .product-detail-image-container {
