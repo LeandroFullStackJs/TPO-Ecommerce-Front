@@ -1435,7 +1435,7 @@ body::before {
 
 .search-input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 30px;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   font-size: 14px;
@@ -1452,11 +1452,12 @@ body::before {
 
 .search-icon {
   position: absolute;
-  left: 1rem;
+  left: 0.25rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-light);
   font-size: 1.1rem;
+  
 }
 
 .category-filter {
@@ -2172,6 +2173,49 @@ body::before {
 .search-button:hover {
   color: var(--accent-color);
 }
+
+.categories-main {
+  display: flex;
+  flex-direction: column; /* organiza barra + grid en columna */
+  gap: 1rem; /* espacio entre barra y grid */
+}
+
+.categories-search-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 0;
+  position: relative;
+  width: 100%;
+}
+
+.categories-search-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 0;
+  position: relative;
+  width: 100%;
+}
+
+.categories-search-input {
+  width: 250px;
+  padding: 0.5rem 1rem 0.5rem 2.2rem; /* espacio a la izquierda para la lupa */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Lupa dentro del input */
+.search-iconCategories {
+  position: absolute;
+  left: calc(100% - 250px + 8px); /* 8px de margen interno */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 0.9rem;
+  pointer-events: none; /* no bloquea escribir en el input */
+}
+
+
 
 .view-options {
   display: flex;

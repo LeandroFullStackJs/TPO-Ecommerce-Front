@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import ProductCard from '../components/ProductCard'
 import { categoriesAPI } from '../api/categories'
 import { useProducts } from '../context/ProductContext'
+import { FaSearch } from "react-icons/fa";
 
 
 export default function CategoriesPage() {
@@ -254,25 +255,41 @@ export default function CategoriesPage() {
           ))}
         </div>
 
-        {/* === LISTADO DE PRODUCTOS === */}
-        <div className="categories-main">
-          {filtered.length === 0 ? (
-            <p>No se encontraron resultados</p>
-          ) : (
-            filtered.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))
-          )}
+{/* === LISTADO DE PRODUCTOS === */}
+<div className="categories-main">
 
-          {/* Botón de cargar más */}
-          <div className="load-more-container">
-            <button className="load-more-btn">
-              Load more products
-            </button>
-          </div>
-        </div>
+  {/* Contenedor de la barra de búsqueda */}
+  <div className="categories-search-container">
+    <FaSearch className="search-iconCategories" />
+    <input
+      type="text"
+      placeholder="Buscar obras o artistas..."
+      value={q}
+      onChange={(e) => setQ(e.target.value)}
+      className="categories-search-input"
+    />
+
+  </div>
+
+  {/* Grilla de productos */}
+  <div className="products-grid">
+    {filtered.length === 0 ? (
+      <p>No se encontraron resultados</p>
+    ) : (
+      filtered.map(product => (
+        <ProductCard key={product.id} product={product} />
+      ))
+    )}
+  </div>
+
+  {/* Botón de cargar más */}
+  <div className="load-more-container">
+    <button className="load-more-btn">
+      Load more products
+    </button>
+  </div>
+</div>
       </div>
     </div>
   )
 }
-
