@@ -113,11 +113,6 @@ export default function Navbar() {
             Categorías
           </Link>
           
-          {/* ENLACE AL CARRITO CON CONTADOR */}
-          <Link to="/carrito" className="navbar-link cart-link" onClick={closeMobileMenu}>
-            🛒 Carrito ({totals.count})
-          </Link>
-          
           {/* SECCIÓN DE AUTENTICACIÓN EN MÓVILES */}
           <div className="navbar-auth-mobile">
             {isAuthenticated ? (
@@ -135,6 +130,9 @@ export default function Navbar() {
                 <button onClick={handleLogout} className="btn btn-outline btn-sm">
                   Cerrar sesión
                 </button>
+                <Link to="/carrito" className="navbar-link" onClick={closeMobileMenu}>
+                  🛒 Carrito ({totals.count})
+                </Link>
               </div>
             ) : (
               // BOTONES PARA USUARIOS NO AUTENTICADOS
@@ -145,6 +143,9 @@ export default function Navbar() {
                 <Link to="/register" className="btn btn-primary btn-sm" onClick={closeMobileMenu}>
                   Registrarse
                 </Link>
+                <Link to="/carrito" className="navbar-link" onClick={closeMobileMenu}>
+                  🛒 Carrito ({totals.count})
+                </Link>
               </div>
             )}
           </div>
@@ -153,25 +154,26 @@ export default function Navbar() {
         {/* SECCIÓN DE AUTENTICACIÓN PARA DESKTOP */}
         <div className="navbar-auth">
           {isAuthenticated ? (
-            // MENÚ DE USUARIO AUTENTICADO
-            <div 
-              className="user-dropdown" 
-              onMouseEnter={() => setIsUserMenuOpen(true)}
-              onMouseLeave={() => setIsUserMenuOpen(false)}
-            >
-              <div className="user-dropdown-toggle">
-                {user.firstName}
-                <span className={`dropdown-arrow ${isUserMenuOpen ? 'open' : ''}`}>▼</span>
-              </div>
-              {isUserMenuOpen && (
-                <div className="user-dropdown-menu">
-                  <Link to="/mi-cuenta" onClick={() => setIsUserMenuOpen(false)}>Mi Cuenta</Link>
-                  <Link to="/my-products" onClick={() => setIsUserMenuOpen(false)}>Mis Obras</Link>
-                  <div className="dropdown-divider"></div>
-                  <button onClick={handleLogout}>Cerrar sesión</button>
+            <>
+              <div 
+                className="user-dropdown" 
+                onMouseEnter={() => setIsUserMenuOpen(true)}
+                onMouseLeave={() => setIsUserMenuOpen(false)}
+              >
+                <div className="user-dropdown-toggle">
+                  {user.firstName}
+                  <span className={`dropdown-arrow ${isUserMenuOpen ? 'open' : ''}`}>▼</span>
                 </div>
-              )}
-            </div>
+                {isUserMenuOpen && (
+                  <div className="user-dropdown-menu">
+                    <Link to="/mi-cuenta" onClick={() => setIsUserMenuOpen(false)}>Mi Cuenta</Link>
+                    <Link to="/my-products" onClick={() => setIsUserMenuOpen(false)}>Mis Obras</Link>
+                    <div className="dropdown-divider"></div>
+                    <button onClick={handleLogout}>Cerrar sesión</button>
+                  </div>
+                )}
+              </div>
+            </>
           ) : (
             // BOTONES PARA USUARIOS NO AUTENTICADOS
             <div className="auth-buttons">
@@ -183,6 +185,9 @@ export default function Navbar() {
               </Link>
             </div>
           )}
+          <Link to="/carrito" className="navbar-cart-icon">
+            🛒 ({totals.count})
+          </Link>
         </div>
       </div>
     </nav>

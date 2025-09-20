@@ -266,6 +266,7 @@ body::before {
   width: 100%;
 }
 
+/*
 .cart-link {
   display: flex;
   align-items: center;
@@ -289,6 +290,7 @@ body::before {
   box-shadow: 0 8px 25px rgba(184, 155, 106, 0.3);
   border-color: var(--primary-color);
 }
+  */
 
 .navbar-auth {
   display: flex;
@@ -400,14 +402,27 @@ body::before {
   background-color: #fdf2f2;
 }
 
+/* Icono del carrito en la Navbar (Desktop) */
+.navbar-cart-icon {
+  display: flex;
+  align-items: center;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: var(--transition);
+  padding: 8px 12px;
+}
+
+.navbar-cart-icon:hover {
+  transform: scale(1.1);
+  color: var(--primary-color);
+}
+
 /* Estilos para móviles ocultos por defecto */
 .navbar-auth-mobile,
 .user-menu-mobile,
 .auth-buttons-mobile {
-  display: none;
-}
-
-.cart-link::after {
   display: none;
 }
 
@@ -661,6 +676,10 @@ body::before {
     z-index: 1000;
     transition: all 0.3s ease-in-out;
     box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-cart-icon {
+    display: none; /* Ocultar el ícono del carrito de desktop en móvil */
   }
 
   .navbar-menu.active {
@@ -3095,9 +3114,4 @@ h2:not(.product-form h2) {
 .featured .artwork-info,
 .featured .stock {
   font-size: 10px; /* Reducido de 11px */
-}
-
-.featured .product-actions {
-  /* Estos estilos ya no son necesarios porque el botón ahora es un pie de página integrado. */
-  /* Los estilos base de .product-actions se aplicarán. */
 }
