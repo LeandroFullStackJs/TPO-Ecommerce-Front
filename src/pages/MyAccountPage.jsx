@@ -38,7 +38,7 @@ function Perfil({ user }) {
 
   return (
     <section aria-labelledby="tab-perfil">
-      <h1 className="section-title" style={{ marginBottom: "1.5rem" }}>
+      <h1 className="section-title" style={{ marginBottom: "1.5rem", textAlign: "center" }}>
         Perfil
       </h1>
       <form
@@ -49,6 +49,8 @@ function Perfil({ user }) {
           borderRadius: "var(--border-radius)",
           padding: "2rem",
           maxWidth: 700,
+          marginLeft: "auto",
+          marginRight: "auto",
         }}
       >
         {/* Funcionamiento: Renderizado condicional de mensajes */}
@@ -264,7 +266,7 @@ function Configuracion() {
 
   return (
     <section aria-labelledby="tab-configuracion">
-      <h1 className="section-title" style={{ marginBottom: "1.5rem" }}>
+      <h1 className="section-title" style={{ marginBottom: "1.5rem", textAlign: "center" }}>
         Configuración
       </h1>
       <form
@@ -275,6 +277,8 @@ function Configuracion() {
           borderRadius: "var(--border-radius)",
           padding: "2rem",
           maxWidth: 700,
+          marginLeft: "auto",
+          marginRight: "auto",
         }}
       >
         {/* Renderizado condicional de mensajes */}
@@ -352,14 +356,14 @@ function Wishlist() {
 
   return (
     <section aria-labelledby="tab-wishlist">
-      <h1 className="section-title" style={{ marginBottom: "1.5rem" }}>
+      <h1 className="section-title" style={{ marginBottom: "1.5rem", textAlign: "center" }}>
         Wishlist
       </h1>
       {/* Renderizado condicional de mensajes */} 
       {message && (
         <div
           className={message.type === "success" ? "success-message" : "error-message"}
-          style={{ marginBottom: "1rem" }}
+          style={{ marginBottom: "1rem", maxWidth: 700, marginLeft: "auto", marginRight: "auto" }}
         >
           {message.text}
         </div>
@@ -379,12 +383,14 @@ function Wishlist() {
             justifyContent: "center",
             color: "var(--text-light)",
             fontStyle: "italic",
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
         >
           Tu wishlist está vacía.
         </div>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0, maxWidth: 700 }}>
+        <ul style={{ listStyle: "none", padding: 0, maxWidth: 700, marginLeft: "auto", marginRight: "auto" }}>
           {wishlist.map((item) => (
             <li
               key={item.id}
@@ -492,7 +498,7 @@ export default function MyAccountPage() {
             { id: "perfil", label: "Perfil" },
             { id: "compras", label: "Mis Compras" },
             { id: "configuracion", label: "Configuración" },
-            {id: "wishlist", label: "Wishlist" },
+            { id: "wishlist", label: "Wishlist" },
           ].map(({ id, label }) => (
             <button
               key={id}
