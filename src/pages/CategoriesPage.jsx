@@ -23,7 +23,7 @@ export default function CategoriesPage() {
     style: false,
     artist: false,
     dimensions: false,
-    palette: false,
+    pallette: false,
     price: false
   })
 
@@ -33,7 +33,7 @@ export default function CategoriesPage() {
     style: [],
     artist: [],
     dimensions: [],
-    palette: [],
+    pallette: [],
     price: []
   })
 
@@ -106,7 +106,7 @@ export default function CategoriesPage() {
         const matchStyle = filters.style.length === 0 || filters.style.includes(p.style)
         const matchArtist = filters.artist.length === 0 || filters.artist.includes(p.artist)
         const matchSize= filters.dimensions.length === 0 || filters.dimensions.includes(p.dimensions)
-        const matchPalette = filters.palette.length === 0 || filters.palette.includes(p.palette)
+        const matchPallette = filters.pallette.length === 0 || filters.pallette.includes(p.pallette)
         const matchPrice = filters.price.length === 0 || checkPriceMatch(p.price, filters.price)
 
         return (
@@ -116,7 +116,7 @@ export default function CategoriesPage() {
           matchStyle &&
           matchArtist &&
           matchSize &&
-          matchPalette &&
+          matchPallette &&
           matchPrice
         )
       })
@@ -132,7 +132,7 @@ export default function CategoriesPage() {
       style: [],
       artist: [],
       dimensions: [],
-      palette: [],
+      pallette: [],
       price: []
     })
   }
@@ -152,7 +152,7 @@ export default function CategoriesPage() {
     artist: ['Inés', 'Javier', 'Gabriel', 'Luis', 'Van Gogh', 'Picasso'],
     //size: ['Pequeño (20x30cm)', 'Mediano (40x60cm)', 'Grande (80x120cm)', 'Extra Grande (100x150cm)'],
     dimensions: ['60x80 cm', '70x50 cm', '50x70 cm', '80x80 cm', '60x90 cm', '100x70 cm', '75x60 cm', '65x85 cm', '60x60'],
-    palette: ['Monocromático', 'Colorido', 'Pasteles', 'Neutros', 'Cálidos', 'Fríos'],
+    pallette: ['Monocromático', 'Colorido', 'Pasteles', 'Neutros', 'Cálidos', 'Fríos'],
     price: ['$0 - $50.000', '$50.000 - $100.000', '$100.000 - $200.000', '$200.000+']
   }
 

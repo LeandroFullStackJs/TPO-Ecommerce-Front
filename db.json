@@ -219,9 +219,9 @@
       "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
       "description": "testeo de arte",
       "dimensions": "60x60",
+      "pallette": "Pasteles",
       "technique": "Óleo",
       "style": "Abstracto",
-      "pallette": "Pasteles",
       "year": "2020",
       "userId": 3,
       "id": "1757452964344"
