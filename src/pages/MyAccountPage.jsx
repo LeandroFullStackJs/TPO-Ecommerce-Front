@@ -49,6 +49,7 @@ function Perfil({ user }) {
           borderRadius: "var(--border-radius)",
           padding: "2rem",
           maxWidth: 700,
+          margin: "0 auto",
         }}
       >
         {/* Funcionamiento: Renderizado condicional de mensajes */}
@@ -275,6 +276,7 @@ function Configuracion() {
           borderRadius: "var(--border-radius)",
           padding: "2rem",
           maxWidth: 700,
+          margin: "0 auto",
         }}
       >
         {/* Renderizado condicional de mensajes */}
@@ -373,6 +375,7 @@ function Wishlist() {
             borderRadius: "var(--border-radius)",
             padding: "2rem",
             maxWidth: 700,
+            margin: "0 auto",
             minHeight: 150,
             display: "flex",
             alignItems: "center",
@@ -384,7 +387,7 @@ function Wishlist() {
           Tu wishlist está vacía.
         </div>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0, maxWidth: 700 }}>
+        <ul style={{ listStyle: "none", padding: 0, maxWidth: 700, margin: "0 auto" }}>
           {wishlist.map((item) => (
             <li
               key={item.id}
