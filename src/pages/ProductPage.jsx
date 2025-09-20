@@ -147,6 +147,9 @@ export default function ProductPage() {
             className="product-detail-image"
             onError={handleImageError}
           />
+          <Link to="/categorias" className="btn btn-outline" style={{ marginTop: '1.5rem', width: '100%' }}>
+            ← Seguir explorando
+          </Link>
         </div>
         
         <div className="product-detail-info">
@@ -241,7 +244,10 @@ export default function ProductPage() {
           <div className="buy-section" style={{
             padding: '2rem',
             background: 'var(--light-gray)',
-            borderRadius: 'var(--border-radius)'
+            borderRadius: 'var(--border-radius)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem'
           }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Cantidad:</label>
@@ -267,30 +273,28 @@ export default function ProductPage() {
               onClick={handleAddToCart}
               disabled={!canAdd}
               className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'}`}
-              style={{ flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
+              style={{ flexGrow: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
             >
               {hasStock ? 'Añadir al Carrito' : 'No disponible'}
             </button>
 
             <button
               onClick={inWishlist ? handleRemoveFromWishlist : handleAddToWhishlist}
-              className={`btn ${!inWishlist ? 'btn-primary' : 'btn-secondary'}`}
-              style={{flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
+              className={`wishlist-icon-btn ${inWishlist ? 'active' : ''}`}
+              aria-label={inWishlist ? 'Quitar de la wishlist' : 'Agregar a la wishlist'}
             >
-              {inWishlist ? 'Quitar de la Wishlist' : 'Agregar a Wishlist'}
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
             </button> 
           </div> 
         </div>
 
         <div style={{ 
-            display: 'flex', 
-            gap: '1rem',
             borderTop: '1px solid var(--border-color)',
-            paddingTop: '2rem'
+            paddingTop: '2rem',
+            gridColumn: '1 / -1' // Asegura que ocupe todo el ancho de la grilla
           }}>
-            <Link to="/categorias" className="btn btn-outline">
-              ← Seguir explorando
-            </Link>
             <Modal isOpen={showLoginModal} onClose={closeModal} onLogin={goToLogin} />
         </div>
       </div>
