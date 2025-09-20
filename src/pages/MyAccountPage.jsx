@@ -377,6 +377,7 @@ function Wishlist() {
             borderRadius: "var(--border-radius)",
             padding: "2rem",
             maxWidth: 700,
+            margin: "0 auto",
             minHeight: 150,
             display: "flex",
             alignItems: "center",
