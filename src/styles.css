@@ -311,9 +311,11 @@ body::before {
 }
 
 .user-name {
-  color: var(--primary-color);
+  color: var(--text-color);
   font-weight: 600;
   font-size: 14px;
+  font-weight: 500;
+
 }
 
 .auth-buttons {
@@ -344,10 +346,7 @@ body::before {
   gap: 1rem;
 }
 
-.user-name {
-  font-weight: 500;
-  color: var(--text-color);
-}
+
 
 .auth-buttons {
   display: flex;
