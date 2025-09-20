@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import ProductCard from '../components/ProductCard'
 import { categoriesAPI } from '../api/categories'
-
+import { artistsAPI } from '../api/artists'
 
 export default function ArtistProfilePage() {
   const { artistId } = useParams()
-  const { products } = useProducts()
+  const { products, loading: productsLoading } = useProducts()
   const [artist, setArtist] = useState(null)
+  const [artistLoading, setArtistLoading] = useState(true)
 
   const [categories, setCategories] = useState([])
   
@@ -31,27 +32,45 @@ export default function ArtistProfilePage() {
     }
 
   useEffect(() => {
-    // Encontrar todas las obras del artista
-    const artistWorks = products.filter(p => p.id.split('-')[0] === artistId)
-    
-    if (artistWorks.length > 0) {
-      // Crear el objeto del artista con la primera obra
-      const firstWork = artistWorks[0]
-      setArtist({
-        id: artistId,
-        name: firstWork.artist,
-        category: firstWork.category,
-        works: artistWorks,
-        // Estos datos deberían venir de una API real
-        biography: "Artista contemporáneo con una trayectoria destacada en el mundo del arte...",
-        statement: "Mi obra busca expresar la conexión entre la naturaleza y la experiencia humana...",
-        coverImage: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200&h=400&fit=crop",
-      })
+    const fetchArtistData = async () => {
+      if (!artistId) return
+      setArtistLoading(true)
+      try {
+        // 1. Fetch artist details from the API
+        const artistData = await artistsAPI.getById(artistId)
+
+        // 2. Filter products for this artist (once products are loaded)
+        if (!productsLoading && products.length > 0) {
+          const artistWorks = products.filter(p => p.artistId == artistId) // Use == for type coercion
+
+          // 3. Combine data and set state
+          setArtist({
+            ...artistData, // Use real data from API (name, bio, profileImage)
+            works: artistWorks,
+            category: artistWorks.length > 0 ? artistWorks[0].category : 'unknown',
+            coverImage: artistData.coverImage || "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200&h=400&fit=crop",
+          })
+        }
+      } catch (error) {
+        console.error('Error al cargar el perfil del artista:', error)
+        setArtist(null) // Set to null on error
+      } finally {
+        setArtistLoading(false)
+      }
     }
-  }, [artistId, products])
+
+    // Run fetch only when products are not loading to ensure works are available
+    if (!productsLoading) {
+      fetchArtistData()
+    }
+  }, [artistId, products, productsLoading])
+
+  if (artistLoading || productsLoading) {
+    return <div className="loading">Cargando perfil del artista...</div>
+  }
 
   if (!artist) {
-    return <div className="loading">Cargando perfil del artista...</div>
+    return <div className="loading">No se encontró el perfil del artista.</div>
   }
 
   return (
@@ -59,7 +78,7 @@ export default function ArtistProfilePage() {
       <div className="artist-header" style={{ backgroundImage: `url(${artist.coverImage})` }}>
         <div className="artist-header-content">
           <img 
-            src={`https://ui-avatars.com/api/?name=${encodeURIComponent(artist.name)}&size=200`} 
+            src={artist.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(artist.name)}&size=200`} 
             alt={artist.name}
             className="artist-profile-avatar"
           />

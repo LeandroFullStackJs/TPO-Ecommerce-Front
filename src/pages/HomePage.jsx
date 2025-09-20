@@ -20,10 +20,11 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import { categoriesAPI } from '../api/categories'
+import { artistsAPI } from '../api/artists'
+import { heroAPI } from '../api/hero'
 import ProductCard from '../components/ProductCard'
 import ArtistCard from '../components/ArtistCard' // Importar ArtistCard
-import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 
 // Importar Swiper.js para carruseles
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -38,6 +39,8 @@ export default function HomePage() {
   const { products, loading } = useProducts()
   
   // Estados locales para categorías y búsqueda
+  const [artists, setArtists] = useState([])
+  const [artistsLoading, setArtistsLoading] = useState(true)
   const [categories, setCategories] = useState([])
   const [categoriesLoading, setCategoriesLoading] = useState(true)
   const [heroImages, setHeroImages] = useState([])
@@ -64,14 +67,31 @@ export default function HomePage() {
     loadCategories()
   }, [])
 
+  // Cargar artistas desde la API
+  useEffect(() => {
+    const loadArtists = async () => {
+      try {
+        const data = await artistsAPI.getAll()
+        setArtists(data)
+      } catch (error) {
+        console.error('Error al cargar artistas:', error)
+        setArtists([]) // Set empty array on error for better UX
+      } finally {
+        setArtistsLoading(false)
+      }
+    }
+    loadArtists()
+  }, [])
+
   // Cargar imágenes del hero desde la API
   useEffect(() => {
     const loadHeroImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/heroImages')
-        setHeroImages(response.data)
+        const data = await heroAPI.getHeroImages()
+        setHeroImages(data)
       } catch (error) {
         console.error('Error al cargar imágenes del hero:', error)
+        setHeroImages([]) // Set empty array on error for better UX
       } finally {
         setHeroImagesLoading(false)
       }
@@ -79,40 +99,42 @@ export default function HomePage() {
     loadHeroImages()
   }, [])
 
-  // Procesar artistas a partir de los productos
-  const featuredArtists = products
-    ? Object.values(
-        products.reduce((acc, product) => {
-          if (!acc[product.artist]) {
-            acc[product.artist] = {
-              id: product.artist.toLowerCase().replace(/\s+/g, '-'),
-              name: product.artist,
-              category: product.category,
-              works: [],
-              profileImage: null
-            }
-          }
-          acc[product.artist].works.push(product)
-          return acc
-        }, {})
-      ).slice(0, 6)
-    : []
+  // Combinar artistas con sus obras para obtener los destacados
+  const featuredArtists = useMemo(() => {
+    if (artistsLoading || loading) return []
+
+    // Mapear artistas y añadir sus obras
+    const artistsWithWorks = artists.map(artist => {
+      const works = products.filter(p => p.artistId === artist.id)
+      const primaryCategory = works.length > 0 ? works[0].category : 'unknown'
+      return {
+        ...artist,
+        works,
+        category: primaryCategory
+      }
+    })
+
+    // Ordenar por cantidad de obras y tomar los 6 primeros
+    return artistsWithWorks.sort((a, b) => b.works.length - a.works.length).slice(0, 6)
+  }, [artists, products, artistsLoading, loading])
 
   // Función para obtener el nombre de la categoría
   const getCategoryName = categoryId => {
     const category = categories.find(c => c.id === categoryId)
-    return category ? category.name : 'Sin categoría'}
+    return category ? category.name : 'Sin categoría'
+  }
+
   const handleSearch = (e) => {
     e.preventDefault()
     if (searchQuery.trim()) {
-      navigate(`/catalogo?q=${encodeURIComponent(searchQuery.trim())}`)
+      navigate(`/categorias?q=${encodeURIComponent(searchQuery.trim())}`) // Cambiado a /categorias
     }
   }
 
   // Obtener productos destacados (con stock disponible)
   const featuredProducts = products?.filter(p => p.stock > 0).slice(0, 6) || []
 
-  if (loading || categoriesLoading || heroImagesLoading) {
+  if (loading || categoriesLoading || heroImagesLoading || artistsLoading) {
     return (
       <section className="hero">
         <div className="hero-content">
@@ -140,30 +162,27 @@ export default function HomePage() {
           navigation={true}
         >
           <div className="hero-content">
-                <h1>ArtGallery</h1>
-                <p>Descubre obras de arte únicas creadas por artistas contemporáneos. Cada pieza cuenta una historia y transforma espacios.</p>
-                <form onSubmit={handleSearch} className="hero-search">
-                  <div className="search-container">
-                    <div className="search-icon">🔍</div>
-                    <input
-                      className="search-input"
-                      placeholder="Buscar obras, artistas o estilos..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-                  <button type="submit" className="btn btn-primary btn-lg">Buscar</button>
-                </form>
+            <h1>ArtGallery</h1>
+            <p>Descubre obras de arte únicas creadas por artistas contemporáneos. Cada pieza cuenta una historia y transforma espacios.</p>
+            <form onSubmit={handleSearch} className="hero-search">
+              <div className="search-container">
+                <div className="search-icon">🔍</div>
+                <input
+                  className="search-input"
+                  placeholder="Buscar obras, artistas o estilos..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
               </div>
+              <button type="submit" className="btn btn-primary btn-lg">Buscar</button>
+            </form>
+          </div>
           {heroImages.map((image) => (
             <SwiperSlide key={image.id}>
-              <div className="hero-slide-image" style={{ backgroundImage: `url(${image.src})` }} aria-label={image.alt}>
-
-              </div>
+              <div className="hero-slide-image" style={{ backgroundImage: `url(${image.src})` }} aria-label={image.alt} />
             </SwiperSlide>
           ))}
         </Swiper>
-        
       </section>
 
       <section className="featured section">
@@ -208,14 +227,11 @@ export default function HomePage() {
         </Swiper>
 
         <div style={{ textAlign: 'center', marginTop: '3rem' }}>
-          <Link className="btn btn-outline btn-lg" to="/catalogo">
+          <Link className="btn btn-outline btn-lg" to="/categorias"> {/* Cambiado a /categorias */}
             Ver Toda la Colección
           </Link>
         </div>
-      </section>
-
-      
-
+      </section>
 
       <section className="featured section">
         <div className="section-header">
@@ -290,7 +306,7 @@ export default function HomePage() {
             }
 
             return (
-              <Link key={category.id} to={`/catalogo?cat=${category.id}`} className="category-card">
+              <Link key={category.id} to={`/categorias?cat=${category.id}`} className="category-card"> {/* Cambiado a /categorias */}
                 <div className="category-icon">{icons[category.id] || '🎨'}</div>
                 <h3>{category.name}</h3>
                 <p>Explorar obras</p>

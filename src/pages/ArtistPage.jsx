@@ -2,25 +2,31 @@ import { useState, useEffect, useMemo } from 'react'
 import ArtistCard from '../components/ArtistCard'
 import { useProducts } from '../context/ProductContext'
 import { categoriesAPI } from '../api/categories'
+import { artistsAPI } from '../api/artists'
 
 export default function ArtistPage() {
-  const { products, loading } = useProducts()
+  const { products, loading: productsLoading } = useProducts()
+  const [artists, setArtists] = useState([])
+  const [artistsLoading, setArtistsLoading] = useState(true)
   const [filter, setFilter] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
   const [categories, setCategories] = useState([])
 
-  // Obtener artistas únicos de los productos
-  const artists = [...new Map(
-    products.map(product => [
-      product.artist,
-      {
-        id: product.id.split('-')[0],
-        name: product.artist,
-        category: product.category,
-        works: products.filter(p => p.artist === product.artist)
+  // Cargar artistas desde la API
+  useEffect(() => {
+    const loadArtists = async () => {
+      try {
+        const data = await artistsAPI.getAll()
+        setArtists(data)
+      } catch (error) {
+        console.error('Error al cargar artistas:', error)
+        setArtists([]) // Set empty array on error for better UX
+      } finally {
+        setArtistsLoading(false)
       }
-    ])
-  ).values()]
+    }
+    loadArtists()
+  }, [])
 
   // Cargar categorías
   useEffect(() => {
@@ -30,10 +36,26 @@ export default function ArtistPage() {
         setCategories(data)
       } catch (error) {
         console.error('Error al cargar categorías:', error)
+        setCategories([]) // Set empty array on error for better UX
       }
     }
     loadCategories()
   }, [])
+
+  // Combinar artistas con sus obras
+  const allArtistsWithWorks = useMemo(() => {
+    if (artistsLoading || productsLoading) return []
+
+    return artists.map(artist => {
+      const works = products.filter(p => p.artistId === artist.id)
+      const primaryCategory = works.length > 0 ? works[0].category : 'unknown'
+      return {
+        ...artist,
+        works,
+        category: primaryCategory
+      }
+    })
+  }, [artists, products, artistsLoading, productsLoading])
 
   const getCategoryName = (categoryId) => {
     const category = categories.find((c) => c.id === categoryId);
@@ -42,18 +64,19 @@ export default function ArtistPage() {
 
   // Filtrar artistas según búsqueda y categoría
   const filteredArtists = useMemo(() => {
-    return artists.filter(artist => {
+    return allArtistsWithWorks.filter(artist => {
       const matchesSearch = artist.name.toLowerCase().includes(filter.toLowerCase())
       const matchesCategory = !selectedCategory || artist.category === selectedCategory
       return matchesSearch && matchesCategory
     })
-  }, [artists, filter, selectedCategory])
+  }, [allArtistsWithWorks, filter, selectedCategory])
 
   const clearFilters = () => {
     setFilter('')
     setSelectedCategory('')
   }
 
+  const loading = artistsLoading || productsLoading
   if (loading) {
     return (
       <section className="section">

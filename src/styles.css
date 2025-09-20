@@ -266,6 +266,7 @@ body::before {
   width: 100%;
 }
 
+/*
 .cart-link {
   display: flex;
   align-items: center;
@@ -289,6 +290,7 @@ body::before {
   box-shadow: 0 8px 25px rgba(184, 155, 106, 0.3);
   border-color: var(--primary-color);
 }
+  */
 
 .navbar-auth {
   display: flex;
@@ -313,14 +315,114 @@ body::before {
   gap: 12px;
 }
 
+/* Menú Desplegable de Usuario */
+.user-dropdown {
+  position: relative;
+}
+
+.user-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary-color);
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.user-dropdown-toggle:hover {
+  background-color: var(--light-gray);
+}
+
+.dropdown-arrow {
+  font-size: 0.6rem;
+  transition: transform 0.3s ease;
+  margin-left: 4px;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 1px); /* Reducido el espacio para evitar que el menú se cierre al mover el mouse */
+  right: 0;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-hover);
+  border: 1px solid var(--border-color);
+  width: 220px;
+  z-index: 1010;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInDown 0.2s ease-out;
+  padding: 8px 0;
+}
+
+.user-dropdown-menu a,
+.user-dropdown-menu button {
+  padding: 12px 20px;
+  text-align: left;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+}
+
+.user-dropdown-menu a:hover,
+.user-dropdown-menu button:hover {
+  background-color: var(--light-gray);
+  color: var(--primary-color);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 8px 0;
+}
+
+.user-dropdown-menu button {
+  color: #c84c4c;
+}
+
+.user-dropdown-menu button:hover {
+  background-color: #fdf2f2;
+}
+
+/* Icono del carrito en la Navbar (Desktop) */
+.navbar-cart-icon {
+  display: flex;
+  align-items: center;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: var(--transition);
+  padding: 8px 12px;
+}
+
+.navbar-cart-icon:hover {
+  transform: scale(1.1);
+  color: var(--primary-color);
+}
+
 /* Estilos para móviles ocultos por defecto */
 .navbar-auth-mobile,
 .user-menu-mobile,
 .auth-buttons-mobile {
-  display: none;
-}
-
-.cart-link::after {
   display: none;
 }
 
@@ -574,6 +676,10 @@ body::before {
     z-index: 1000;
     transition: all 0.3s ease-in-out;
     box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-cart-icon {
+    display: none; /* Ocultar el ícono del carrito de desktop en móvil */
   }
 
   .navbar-menu.active {
@@ -853,6 +959,27 @@ body::before {
   margin: 0; /* Eliminamos márgenes para que ocupe todo el ancho sin espacios */
   position: relative;
   overflow: hidden;
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  /* Eliminamos flexbox para usar un método de centrado más robusto */
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 30% 20%, rgba(184, 155, 106, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(212, 165, 116, 0.12) 0%, transparent 50%),
+    linear-gradient(45deg, rgba(138, 118, 83, 0.08) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+
+
   width: 100%; /* Asegura que ocupe el ancho completo del viewport */
   /* Se eliminan max-width, márgenes laterales, border-radius y box-shadow
      para permitir que el hero se extienda de borde a borde. */
@@ -871,6 +998,7 @@ body::before {
 
 .hero h1 {
   font-size: 60px;
+  color: var(--white);
   margin-bottom: 30px;
   font-weight: 800;
   letter-spacing: var(--letter-spacing-wide);
@@ -881,7 +1009,7 @@ body::before {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   font-family: var(--font-accent);
-  text-shadow: 0 4px 8px rgba(184, 155, 106, 0.3);
+  text-shadow: 0 4px 8px rgba(100, 81, 47, 0.3);
   animation: fadeInUp 1s ease-out;
 }
 
@@ -899,7 +1027,7 @@ body::before {
 .hero p {
   font-size: 20px;
   margin-bottom: 50px;
-  color: var(--secondary-color);
+  color: var(--white);
   line-height: 1.6;
   font-weight: 500;
   max-width: 500px;
@@ -993,7 +1121,6 @@ body::before {
 .hero-swiper .swiper-pagination-bullet-active {
   color: var(--primary-color);
 }
-
 
 /* Productos - Grid minimalista inspirado en Tappan */
 .products-grid {
@@ -2987,9 +3114,4 @@ h2:not(.product-form h2) {
 .featured .artwork-info,
 .featured .stock {
   font-size: 10px; /* Reducido de 11px */
-}
-
-.featured .product-actions {
-  /* Estos estilos ya no son necesarios porque el botón ahora es un pie de página integrado. */
-  /* Los estilos base de .product-actions se aplicarán. */
 }

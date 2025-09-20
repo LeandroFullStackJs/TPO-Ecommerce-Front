@@ -53,9 +53,9 @@ api.interceptors.response.use(
     }
     
     // Propagar el error para manejo específico en componentes
-    return Promise.reject(error)
+    return Promise.reject(error) // Necesario para que los componentes puedan capturar errores con try/catch
   }
 )
 
 // Exportar la instancia configurada para uso en toda la aplicación
-export default api
+export default api // Exportación por defecto de la instancia configurada de axios

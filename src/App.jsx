@@ -6,7 +6,7 @@
  * 
  * Características principales:
  * - Configuración de React Router para la navegación
- * - Jerarquía de contextos (User, Order, Product, Cart, Wishlist)
+ * - Jerarquía de contextos (User , Order, Product, Cart, Wishlist)
  * - Layout principal que envuelve todas las páginas
  * - Rutas protegidas y públicas
  */
@@ -23,7 +23,7 @@ import { WishlistProvider } from './context/WishlistContext'
 import Layout from './components/Layout'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
-import CatalogPage from './pages/CatalogPage'
+// import CatalogPage from './pages/CatalogPage'  // Eliminado
 import CategoriesPage from './pages/CategoriesPage'
 import ProductPage from './pages/ProductPage'
 import CartPage from './pages/CartPage'
@@ -39,16 +39,6 @@ import './styles.css'
 
 export default function App() {
   return (
-    /**
-     * JERARQUÍA DE CONTEXTOS
-     * 
-     * El orden de los proveedores es importante:
-     * 1. UserProvider: Maneja la autenticación y datos del usuario
-     * 2. OrderProvider: Gestiona el historial de pedidos
-     * 3. ProductProvider: Controla el catálogo de productos
-     * 4. WishlistProvider: Maneja la lista de deseos (depende de UserProvider)
-     * 5. CartProvider: Maneja el carrito de compras (depende de los anteriores)
-     */
     <UserProvider>
       <OrderProvider>
         <ProductProvider>
@@ -63,7 +53,7 @@ export default function App() {
                   <Route path="/artistas" element={<ArtistPage />} />
                   <Route path="/artists/:artistId" element={<ArtistProfilePage />} />
                   <Route path="/home" element={<HomePage />} />
-                  <Route path="/catalogo" element={<CatalogPage />} />
+                  {/* Eliminada ruta /catalogo */}
                   <Route path="/categorias" element={<CategoriesPage />} />
                   <Route path="/producto/:id" element={<ProductPage />} />
                   <Route path="/carrito" element={<CartPage />} />
