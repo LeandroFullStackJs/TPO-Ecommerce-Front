@@ -31,7 +31,7 @@ import { useCart } from '../context/CartContext'
  */
 export default function Navbar() {
   // Obtener datos del usuario y funciones de autenticación
-  const { user, isAuthenticated, logout } = useUser()
+  const { user, isAuthenticated, logout } = useUser();
   
   // Obtener totales del carrito para mostrar contador
   const { totals } = useCart()
@@ -74,6 +74,9 @@ export default function Navbar() {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
   }
+
+  // Solo mostrar "Mis Obras" si el usuario es admin
+  const isAdmin = user?.role === "admin";
 
   return (
     <nav className="navbar">
@@ -124,9 +127,11 @@ export default function Navbar() {
                 <Link to="/mi-cuenta" className="navbar-link" onClick={closeMobileMenu}>
                   Mi Cuenta
                 </Link>
-                <Link to="/my-products" className="navbar-link" onClick={closeMobileMenu}>
-                  Mis Obras
-                </Link>
+                {isAdmin && (
+                  <Link to="/my-products" className="navbar-link" onClick={closeMobileMenu}>
+                    Mis Obras
+                  </Link>
+                )}
                 <button onClick={handleLogout} className="btn btn-outline btn-sm">
                   Cerrar sesión
                 </button>
@@ -167,7 +172,9 @@ export default function Navbar() {
                 {isUserMenuOpen && (
                   <div className="user-dropdown-menu">
                     <Link to="/mi-cuenta" onClick={() => setIsUserMenuOpen(false)}>Mi Cuenta</Link>
-                    <Link to="/my-products" onClick={() => setIsUserMenuOpen(false)}>Mis Obras</Link>
+                    {isAdmin && (
+                      <Link to="/my-products" onClick={() => setIsUserMenuOpen(false)}>Mis Obras</Link>
+                    )}
                     <div className="dropdown-divider"></div>
                     <button onClick={handleLogout}>Cerrar sesión</button>
                   </div>
