@@ -22,6 +22,10 @@ import api from './index'
  * 
  * Contiene todos los métodos para operaciones de usuario y autenticación.
  * Cada método es una función async que devuelve una Promise.
+ * una funcion async es una funcion que trabaja de manera asincronica , 
+ * es decir que puede pausar su ejecucion en ciertos puntos (usando la palabra clave await) 
+ * hasta que una promesa se resuelva o rechace, permitiendo escribir codigo asincronico de manera mas sencilla 
+ * y legible, como si fuera sincrono.
  */
 export const authAPI = {
   /**

@@ -107,6 +107,7 @@ body::before {
 .section-title {
   font-size: 24px;
   font-weight: 400;
+  padding-top: 20px;
   text-align: center;
   margin-bottom: 60px;
   text-transform: uppercase;
@@ -116,11 +117,18 @@ body::before {
 
 .section-subtitle {
   font-size: 14px;
-  color: var(--text-light);
+  color: var(--primary-color);
+  
   text-align: center;
   margin-bottom: 40px;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wide);
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 /* Navbar - Estilo artístico elegante con responsive */
@@ -257,6 +265,51 @@ body::before {
   transform: translateX(-50%);
 }
 
+/* Botón de Wishlist (Corazón) en la página de producto */
+.wishlist-icon-btn {
+  background: transparent;
+  border: 2px solid var(--border-color);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-light);
+  flex-shrink: 0; /* Evita que el botón se encoja */
+}
+
+.wishlist-icon-btn:hover {
+  background: var(--light-gray);
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.wishlist-icon-btn svg {
+  transition: var(--transition);
+  fill: none;
+  stroke: currentColor;
+}
+
+.wishlist-icon-btn.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--white);
+  animation: heartBeat 0.4s ease-out;
+}
+
+.wishlist-icon-btn.active svg {
+  fill: currentColor;
+}
+
+@keyframes heartBeat {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
 .navbar-link:hover {
   color: var(--primary-color);
   transform: translateY(-2px);
@@ -266,6 +319,7 @@ body::before {
   width: 100%;
 }
 
+/*
 .cart-link {
   display: flex;
   align-items: center;
@@ -289,6 +343,7 @@ body::before {
   box-shadow: 0 8px 25px rgba(184, 155, 106, 0.3);
   border-color: var(--primary-color);
 }
+  */
 
 .navbar-auth {
   display: flex;
@@ -303,14 +358,120 @@ body::before {
 }
 
 .user-name {
-  color: var(--primary-color);
+  color: var(--text-color);
   font-weight: 600;
   font-size: 14px;
+  font-weight: 500;
+
 }
 
 .auth-buttons {
   display: flex;
   gap: 12px;
+}
+
+/* Menú Desplegable de Usuario */
+.user-dropdown {
+  position: relative;
+}
+
+.user-dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-primary);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--primary-color);
+  padding: 8px 12px;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.user-dropdown-toggle:hover {
+  background-color: var(--light-gray);
+}
+
+.dropdown-arrow {
+  font-size: 0.6rem;
+  transition: transform 0.3s ease;
+  margin-left: 4px;
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+.user-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 1px); /* Reducido el espacio para evitar que el menú se cierre al mover el mouse */
+  right: 0;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-hover);
+  border: 1px solid var(--border-color);
+  width: 220px;
+  z-index: 1010;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInDown 0.2s ease-out;
+  padding: 8px 0;
+}
+
+.user-dropdown-menu a,
+.user-dropdown-menu button {
+  padding: 12px 20px;
+  text-align: left;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-weight: 500;
+}
+
+.user-dropdown-menu a:hover,
+.user-dropdown-menu button:hover {
+  background-color: var(--light-gray);
+  color: var(--primary-color);
+}
+
+.dropdown-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 8px 0;
+}
+
+.user-dropdown-menu button {
+  color: #c84c4c;
+}
+
+.user-dropdown-menu button:hover {
+  background-color: #fdf2f2;
+}
+
+/* Icono del carrito en la Navbar (Desktop) */
+.navbar-cart-icon {
+  display: flex;
+  align-items: center;
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: var(--transition);
+  padding: 8px 12px;
+}
+
+.navbar-cart-icon:hover {
+  transform: scale(1.1);
+  color: var(--primary-color);
 }
 
 /* Estilos para móviles ocultos por defecto */
@@ -320,10 +481,6 @@ body::before {
   display: none;
 }
 
-.cart-link::after {
-  display: none;
-}
-
 .navbar-auth {
   display: flex;
   align-items: center;
@@ -336,10 +493,7 @@ body::before {
   gap: 1rem;
 }
 
-.user-name {
-  font-weight: 500;
-  color: var(--text-color);
-}
+
 
 .auth-buttons {
   display: flex;
@@ -463,15 +617,12 @@ body::before {
 
 /* Carrusel general */
 .swiper {
-  padding-bottom: 60px;
-  margin: 40px 0;
   overflow: visible;
 }
 
 .swiper-slide {
   display: flex;
   height: auto;
-  padding: 0 10px;
   transition: all 0.3s ease;
 }
 
@@ -518,7 +669,7 @@ body::before {
 .swiper-pagination-bullet {
   width: 12px;
   height: 12px;
-  background: rgba(184, 155, 106, 0.3);
+  background: rgb(139, 118, 80);
   border-radius: 50%;
   transition: all 0.3s ease;
 }
@@ -574,6 +725,10 @@ body::before {
     z-index: 1000;
     transition: all 0.3s ease-in-out;
     box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .navbar-cart-icon {
+    display: none; /* Ocultar el ícono del carrito de desktop en móvil */
   }
 
   .navbar-menu.active {
@@ -852,7 +1007,6 @@ body::before {
   text-align: center;
   margin: 0; /* Eliminamos márgenes para que ocupe todo el ancho sin espacios */
   position: relative;
-  overflow: hidden;
   width: 100vw;
   left: 50%;
   transform: translateX(-50%);
@@ -1281,7 +1435,7 @@ body::before {
 
 .search-input {
   width: 100%;
-  padding: 12px 16px;
+  padding: 12px 30px;
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   font-size: 14px;
@@ -1298,11 +1452,12 @@ body::before {
 
 .search-icon {
   position: absolute;
-  left: 1rem;
+  left: 0.25rem;
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-light);
   font-size: 1.1rem;
+  
 }
 
 .category-filter {
@@ -1339,14 +1494,7 @@ body::before {
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
 }
-
-.section-subtitle {
-  font-size: 1.1rem;
-  color: var(--text-light);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
+  
 
 /* Productos destacados */
 .featured {
@@ -1433,8 +1581,8 @@ body::before {
 .product-detail {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
-  margin-top: 2rem;
+  gap: 2rem;
+  /*margin-top: 10rem;*/
 }
 
 .product-detail-image-container {
@@ -1976,11 +2124,13 @@ body::before {
   gap: 0.5rem;
 }
 
-/* Área principal */
 .categories-main {
-  padding: 2rem;
-  background: var(--background-color);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); 
+  gap: 20px;
+  align-items: start;
 }
+
 
 .search-bar-container {
   margin-bottom: 2rem;
@@ -2023,6 +2173,49 @@ body::before {
 .search-button:hover {
   color: var(--accent-color);
 }
+
+.categories-main {
+  display: flex;
+  flex-direction: column; /* organiza barra + grid en columna */
+  gap: 1rem; /* espacio entre barra y grid */
+}
+
+.categories-search-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 0;
+  position: relative;
+  width: 100%;
+}
+
+.categories-search-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 1rem 0;
+  position: relative;
+  width: 100%;
+}
+
+.categories-search-input {
+  width: 250px;
+  padding: 0.5rem 1rem 0.5rem 2.2rem; /* espacio a la izquierda para la lupa */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+/* Lupa dentro del input */
+.search-iconCategories {
+  position: absolute;
+  left: calc(100% - 250px + 8px); /* 8px de margen interno */
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 0.9rem;
+  pointer-events: none; /* no bloquea escribir en el input */
+}
+
+
 
 .view-options {
   display: flex;
@@ -3008,9 +3201,4 @@ h2:not(.product-form h2) {
 .featured .artwork-info,
 .featured .stock {
   font-size: 10px; /* Reducido de 11px */
-}
-
-.featured .product-actions {
-  /* Estos estilos ya no son necesarios porque el botón ahora es un pie de página integrado. */
-  /* Los estilos base de .product-actions se aplicarán. */
 }

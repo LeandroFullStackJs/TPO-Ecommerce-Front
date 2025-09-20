@@ -31,7 +31,7 @@ import { useCart } from '../context/CartContext'
  */
 export default function Navbar() {
   // Obtener datos del usuario y funciones de autenticación
-  const { user, isAuthenticated, logout } = useUser()
+  const { user, isAuthenticated, logout } = useUser();
   
   // Obtener totales del carrito para mostrar contador
   const { totals } = useCart()
@@ -41,6 +41,8 @@ export default function Navbar() {
   
   // Estado para controlar el menú móvil
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  // Estado para controlar el menú de usuario
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
   /**
    * MANEJAR CIERRE DE SESIÓN
@@ -50,6 +52,7 @@ export default function Navbar() {
    */
   const handleLogout = () => {
     logout()               // Ejecutar logout del UserContext
+    setIsUserMenuOpen(false) // Cerrar menú de usuario
     navigate('/login')     // Redirigir al login
     setIsMobileMenuOpen(false) // Cerrar menú móvil
   }
@@ -71,6 +74,9 @@ export default function Navbar() {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
   }
+
+  // Solo mostrar "Mis Obras" si el usuario es admin
+  const isAdmin = user?.role === "admin";
 
   return (
     <nav className="navbar">
@@ -110,24 +116,6 @@ export default function Navbar() {
             Categorías
           </Link>
           
-          {/* ENLACES SOLO PARA USUARIOS AUTENTICADOS */}
-          {isAuthenticated && (
-            <Link to="/my-products" className="navbar-link" onClick={closeMobileMenu}>
-              Mis Obras
-            </Link>
-          )}
-
-          {isAuthenticated && (
-            <Link to="/mi-cuenta" className="navbar-link" onClick={closeMobileMenu}>
-              Mi Cuenta
-            </Link>
-          )}
-          
-          {/* ENLACE AL CARRITO CON CONTADOR */}
-          <Link to="/carrito" className="navbar-link cart-link" onClick={closeMobileMenu}>
-            🛒 Carrito ({totals.count})
-          </Link>
-          
           {/* SECCIÓN DE AUTENTICACIÓN EN MÓVILES */}
           <div className="navbar-auth-mobile">
             {isAuthenticated ? (
@@ -136,9 +124,20 @@ export default function Navbar() {
                 <span className="user-name-mobile">
                   Hola, {user.firstName}
                 </span>
+                <Link to="/mi-cuenta" className="navbar-link" onClick={closeMobileMenu}>
+                  Mi Cuenta
+                </Link>
+                {isAdmin && (
+                  <Link to="/my-products" className="navbar-link" onClick={closeMobileMenu}>
+                    Mis Obras
+                  </Link>
+                )}
                 <button onClick={handleLogout} className="btn btn-outline btn-sm">
                   Cerrar sesión
                 </button>
+                <Link to="/carrito" className="navbar-link" onClick={closeMobileMenu}>
+                  🛒 Carrito ({totals.count})
+                </Link>
               </div>
             ) : (
               // BOTONES PARA USUARIOS NO AUTENTICADOS
@@ -149,6 +148,9 @@ export default function Navbar() {
                 <Link to="/register" className="btn btn-primary btn-sm" onClick={closeMobileMenu}>
                   Registrarse
                 </Link>
+                <Link to="/carrito" className="navbar-link" onClick={closeMobileMenu}>
+                  🛒 Carrito ({totals.count})
+                </Link>
               </div>
             )}
           </div>
@@ -157,15 +159,28 @@ export default function Navbar() {
         {/* SECCIÓN DE AUTENTICACIÓN PARA DESKTOP */}
         <div className="navbar-auth">
           {isAuthenticated ? (
-            // MENÚ DE USUARIO AUTENTICADO
-            <div className="user-menu">
-              <span className="user-name">
-                Hola, {user.firstName}
-              </span>
-              <button onClick={handleLogout} className="btn btn-outline btn-sm">
-                Cerrar sesión
-              </button>
-            </div>
+            <>
+              <div 
+                className="user-dropdown" 
+                onMouseEnter={() => setIsUserMenuOpen(true)}
+                onMouseLeave={() => setIsUserMenuOpen(false)}
+              >
+                <div className="user-dropdown-toggle">
+                  {user.firstName}
+                  <span className={`dropdown-arrow ${isUserMenuOpen ? 'open' : ''}`}>▼</span>
+                </div>
+                {isUserMenuOpen && (
+                  <div className="user-dropdown-menu">
+                    <Link to="/mi-cuenta" onClick={() => setIsUserMenuOpen(false)}>Mi Cuenta</Link>
+                    {isAdmin && (
+                      <Link to="/my-products" onClick={() => setIsUserMenuOpen(false)}>Mis Obras</Link>
+                    )}
+                    <div className="dropdown-divider"></div>
+                    <button onClick={handleLogout}>Cerrar sesión</button>
+                  </div>
+                )}
+              </div>
+            </>
           ) : (
             // BOTONES PARA USUARIOS NO AUTENTICADOS
             <div className="auth-buttons">
@@ -177,6 +192,9 @@ export default function Navbar() {
               </Link>
             </div>
           )}
+          <Link to="/carrito" className="navbar-cart-icon">
+            🛒 ({totals.count})
+          </Link>
         </div>
       </div>
     </nav>

@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import ProductCard from '../components/ProductCard'
 import { categoriesAPI } from '../api/categories'
-import axios from 'axios'
+import { artistsAPI } from '../api/artists'
 
 export default function ArtistProfilePage() {
   const { artistId } = useParams()
@@ -37,8 +37,7 @@ export default function ArtistProfilePage() {
       setArtistLoading(true)
       try {
         // 1. Fetch artist details from the API
-        const artistResponse = await axios.get(`http://localhost:5000/artists/${artistId}`)
-        const artistData = artistResponse.data
+        const artistData = await artistsAPI.getById(artistId)
 
         // 2. Filter products for this artist (once products are loaded)
         if (!productsLoading && products.length > 0) {

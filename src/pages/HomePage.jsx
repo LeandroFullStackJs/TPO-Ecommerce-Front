@@ -20,9 +20,10 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import { categoriesAPI } from '../api/categories'
+import { artistsAPI } from '../api/artists'
+import { heroAPI } from '../api/hero'
 import ProductCard from '../components/ProductCard'
 import ArtistCard from '../components/ArtistCard' // Importar ArtistCard
-import axios from 'axios'
 import { useState, useEffect, useMemo } from 'react'
 
 // Importar Swiper.js para carruseles
@@ -70,10 +71,11 @@ export default function HomePage() {
   useEffect(() => {
     const loadArtists = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/artists')
-        setArtists(response.data)
+        const data = await artistsAPI.getAll()
+        setArtists(data)
       } catch (error) {
         console.error('Error al cargar artistas:', error)
+        setArtists([]) // Set empty array on error for better UX
       } finally {
         setArtistsLoading(false)
       }
@@ -85,10 +87,11 @@ export default function HomePage() {
   useEffect(() => {
     const loadHeroImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/heroImages')
-        setHeroImages(response.data)
+        const data = await heroAPI.getHeroImages()
+        setHeroImages(data)
       } catch (error) {
         console.error('Error al cargar imágenes del hero:', error)
+        setHeroImages([]) // Set empty array on error for better UX
       } finally {
         setHeroImagesLoading(false)
       }

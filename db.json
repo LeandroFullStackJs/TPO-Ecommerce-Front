@@ -68,6 +68,8 @@
       "description": "Obra abstracta vibrante que juega con la interacción de colores primarios y formas geométricas. Técnica mixta sobre lienzo.",
       "dimensions": "60x80 cm",
       "technique": "Técnica mixta sobre lienzo",
+      "pallette": "Colorido",
+      "style": "Clásico",
       "year": 2024,
       "userId": 1
     },
@@ -82,7 +84,9 @@
       "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=center",
       "description": "Paisaje onírico que captura la esencia de la naturaleza en un momento de tranquilidad absoluta. Pintura al óleo.",
       "dimensions": "70x50 cm",
-      "technique": "Óleo sobre lienzo",
+      "technique": "Óleo",
+      "style": "Impresionista",
+      "pallette": "Pasteles",
       "year": 2023,
       "userId": 1
     },
@@ -97,7 +101,9 @@
       "image": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800&h=600&fit=crop&crop=center",
       "description": "Retrato contemporáneo que refleja la vida urbana moderna. Expresividad única con técnicas de acuarela.",
       "dimensions": "50x70 cm",
-      "technique": "Acuarela sobre papel",
+      "technique": "Acuarela",
+      "style": "Abstracto",
+      "pallette": "Neutros",
       "year": 2024,
       "userId": 1
     },
@@ -112,7 +118,9 @@
       "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop&crop=center",
       "description": "Composición geométrica que explora la armonía entre líneas, ángulos y espacios negativos.",
       "dimensions": "80x80 cm",
-      "technique": "Acrílico sobre lienzo",
+      "technique": "Acrílico",
+      "style": "Moderno",
+      "pallette": "Monocromático",
       "year": 2024,
       "userId": 1
     },
@@ -128,6 +136,8 @@
       "description": "Interpretación moderna de la naturaleza con colores intensos y formas orgánicas fluidas.",
       "dimensions": "60x90 cm",
       "technique": "Técnica mixta",
+      "style": "Realista",
+      "pallette": "Cálidos",
       "year": 2023,
       "userId": 1
     },
@@ -142,7 +152,9 @@
       "image": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800&h=600&fit=crop&crop=center",
       "description": "Obra minimalista que encuentra la belleza en la simplicidad y el espacio negativo.",
       "dimensions": "100x70 cm",
-      "technique": "Óleo sobre lienzo",
+      "technique": "Óleo",
+      "style": "Realista",
+      "pallette": "Neutros",
       "year": 2024,
       "userId": 1
     },
@@ -157,7 +169,9 @@
       "image": "https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&h=600&fit=crop&crop=center",
       "description": "Expresión del movimiento y la energía contemporránea a través de pinceladas dinámicas.",
       "dimensions": "75x60 cm",
-      "technique": "Acrílico sobre lienzo",
+      "technique": "Acrílico",
+      "style": "Contemporáneo",
+      "pallette": "Colorido",
       "year": 2024,
       "userId": 1
     },
@@ -173,6 +187,8 @@
       "description": "Exploración de texturas y relieves que invitan al espectador a una experiencia táctil visual.",
       "dimensions": "65x85 cm",
       "technique": "Técnica mixta con texturas",
+      "style": "Moderno",
+      "pallette": "Fríos",
       "year": 2023,
       "userId": 1
     },
@@ -186,7 +202,9 @@
       "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
       "description": "arte para uade",
       "dimensions": "60x60",
-      "technique": "pincel",
+      "technique": "Pincel",
+      "style": "Abstracto",
+      "pallette": "Fríos",
       "year": "2025",
       "userId": 3,
       "id": "1757452130661"
@@ -201,7 +219,9 @@
       "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
       "description": "testeo de arte",
       "dimensions": "60x60",
-      "technique": "oleo",
+      "pallette": "Pasteles",
+      "technique": "Óleo",
+      "style": "Abstracto",
       "year": "2020",
       "userId": 3,
       "id": "1757452964344"
