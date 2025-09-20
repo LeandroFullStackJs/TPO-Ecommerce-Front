@@ -41,6 +41,8 @@ export default function Navbar() {
   
   // Estado para controlar el menú móvil
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  // Estado para controlar el menú de usuario
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
 
   /**
    * MANEJAR CIERRE DE SESIÓN
@@ -50,6 +52,7 @@ export default function Navbar() {
    */
   const handleLogout = () => {
     logout()               // Ejecutar logout del UserContext
+    setIsUserMenuOpen(false) // Cerrar menú de usuario
     navigate('/login')     // Redirigir al login
     setIsMobileMenuOpen(false) // Cerrar menú móvil
   }
@@ -110,19 +113,6 @@ export default function Navbar() {
             Categorías
           </Link>
           
-          {/* ENLACES SOLO PARA USUARIOS AUTENTICADOS */}
-          {isAuthenticated && (
-            <Link to="/my-products" className="navbar-link" onClick={closeMobileMenu}>
-              Mis Obras
-            </Link>
-          )}
-
-          {isAuthenticated && (
-            <Link to="/mi-cuenta" className="navbar-link" onClick={closeMobileMenu}>
-              Mi Cuenta
-            </Link>
-          )}
-          
           {/* ENLACE AL CARRITO CON CONTADOR */}
           <Link to="/carrito" className="navbar-link cart-link" onClick={closeMobileMenu}>
             🛒 Carrito ({totals.count})
@@ -136,6 +126,12 @@ export default function Navbar() {
                 <span className="user-name-mobile">
                   Hola, {user.firstName}
                 </span>
+                <Link to="/mi-cuenta" className="navbar-link" onClick={closeMobileMenu}>
+                  Mi Cuenta
+                </Link>
+                <Link to="/my-products" className="navbar-link" onClick={closeMobileMenu}>
+                  Mis Obras
+                </Link>
                 <button onClick={handleLogout} className="btn btn-outline btn-sm">
                   Cerrar sesión
                 </button>
@@ -158,13 +154,23 @@ export default function Navbar() {
         <div className="navbar-auth">
           {isAuthenticated ? (
             // MENÚ DE USUARIO AUTENTICADO
-            <div className="user-menu">
-              <span className="user-name">
-                Hola, {user.firstName}
-              </span>
-              <button onClick={handleLogout} className="btn btn-outline btn-sm">
-                Cerrar sesión
-              </button>
+            <div 
+              className="user-dropdown" 
+              onMouseEnter={() => setIsUserMenuOpen(true)}
+              onMouseLeave={() => setIsUserMenuOpen(false)}
+            >
+              <div className="user-dropdown-toggle">
+                {user.firstName}
+                <span className={`dropdown-arrow ${isUserMenuOpen ? 'open' : ''}`}>▼</span>
+              </div>
+              {isUserMenuOpen && (
+                <div className="user-dropdown-menu">
+                  <Link to="/mi-cuenta" onClick={() => setIsUserMenuOpen(false)}>Mi Cuenta</Link>
+                  <Link to="/my-products" onClick={() => setIsUserMenuOpen(false)}>Mis Obras</Link>
+                  <div className="dropdown-divider"></div>
+                  <button onClick={handleLogout}>Cerrar sesión</button>
+                </div>
+              )}
             </div>
           ) : (
             // BOTONES PARA USUARIOS NO AUTENTICADOS
