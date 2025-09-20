@@ -107,6 +107,7 @@ body::before {
 .section-title {
   font-size: 24px;
   font-weight: 400;
+  padding-top: 20px;
   text-align: center;
   margin-bottom: 60px;
   text-transform: uppercase;
@@ -116,11 +117,18 @@ body::before {
 
 .section-subtitle {
   font-size: 14px;
-  color: var(--text-light);
+  color: var(--primary-color);
+  
   text-align: center;
   margin-bottom: 40px;
   text-transform: uppercase;
   letter-spacing: var(--letter-spacing-wide);
+  font-weight: 600;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
 }
 
 /* Navbar - Estilo artístico elegante con responsive */
@@ -518,7 +526,7 @@ body::before {
 .swiper-pagination-bullet {
   width: 12px;
   height: 12px;
-  background: rgba(184, 155, 106, 0.3);
+  background: rgb(139, 118, 80);
   border-radius: 50%;
   transition: all 0.3s ease;
 }
@@ -852,7 +860,6 @@ body::before {
   text-align: center;
   margin: 0; /* Eliminamos márgenes para que ocupe todo el ancho sin espacios */
   position: relative;
-  overflow: hidden;
   width: 100vw;
   left: 50%;
   transform: translateX(-50%);
@@ -1339,14 +1346,7 @@ body::before {
   margin-bottom: 1rem;
   letter-spacing: -0.02em;
 }
-
-.section-subtitle {
-  font-size: 1.1rem;
-  color: var(--text-light);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-}
+  
 
 /* Productos destacados */
 .featured {
