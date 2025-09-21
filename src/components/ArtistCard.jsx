@@ -24,7 +24,7 @@ export default function ArtistCard({ artist, getCategoryName }) {
 
         <div className="artist-card-actions">
           <Link to={`/artists/${artist.id}`} className="btn btn-outline btn-sm">
-            Ver Perfil Completo
+            Ver Perfil Completo 
           </Link>
         </div>
       </div>
@@ -34,7 +34,7 @@ export default function ArtistCard({ artist, getCategoryName }) {
 
 ArtistCard.propTypes = {
   artist: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     name: PropTypes.string.isRequired,
     category: PropTypes.string.isRequired,
     profileImage: PropTypes.string,

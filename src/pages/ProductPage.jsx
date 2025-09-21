@@ -5,17 +5,19 @@ import { useCart } from '../context/CartContext'
 import { useUser  } from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 import Modal from '../components/Modal'
+import { useWishlist } from '../context/WishlistContext'
 
 export default function ProductPage() {
   const { id } = useParams()
   const { products, loading } = useProducts()
   const { addToCart, canAddToCart } = useCart()
+  const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist()
   const product = useMemo(() => products.find(p => p.id === id), [id, products])
   const [qty, setQty] = useState(1)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [imageError, setImageError] = useState(false)
-  const { user } = useUser()
+  const { user, isAuthenticated } = useUser() // Añadido isAuthenticated
   const navigate = useNavigate()
   const [showLoginModal, setShowLoginModal] = useState(false) 
   const handleImageError = () => {
@@ -55,12 +57,10 @@ export default function ProductPage() {
 
   const hasStock = product.stock > 0
   const canAdd = hasStock && canAddToCart(product, qty)
+  const inWishlist = isInWishlist(product.id) // Verificar si el producto está en la wishlist
 
   const handleAddToCart = () => {
-    if (!user) {
-      setShowLoginModal(true)
-      return
-    }
+    // Eliminada la validación de usuario aquí para permitir añadir al carrito sin login.
     try {
       setError('')
       setSuccess('')
@@ -73,6 +73,36 @@ export default function ProductPage() {
     }
   }
 
+  const handleAddToWhishlist = () => {
+    if (!isAuthenticated) { // Usar isAuthenticated
+      setShowLoginModal(true)
+      return
+    }
+    try {
+      setError('')
+      setSuccess('')
+      addToWishlist(product)
+      setSuccess(`¡Obra agregada a wishlist!`)
+      setTimeout(() => setSuccess(''), 3000)
+    } catch (error) {
+      setError(error.message)
+      setTimeout(() => setError(''), 5000)
+    }
+  }   
+  
+  const handleRemoveFromWishlist = () => {
+  try {
+    setError('');
+    setSuccess('');
+    removeFromWishlist(product.id);
+    setSuccess('¡Obra eliminada de la wishlist!');
+    setTimeout(() => setSuccess(''), 3000);
+  } catch (error) {
+    setError(error.message);
+    setTimeout(() => setError(''), 5000);
+  }
+};
+
   const handleQuantityChange = (newQty) => {
     setError('')
     setSuccess('')
@@ -82,7 +112,10 @@ export default function ProductPage() {
   }
 
   const closeModal = () => setShowLoginModal(false)
-  const goToLogin = () => navigate('/login')
+  const goToLogin = () => {
+    closeModal(); // Cerrar el modal antes de navegar
+    navigate('/login');
+  }
 
   const getStockStatus = () => {
     if (product.stock === 0) return 'out'
@@ -100,9 +133,9 @@ export default function ProductPage() {
   return (
     <div className="section">
       {/* Breadcrumb */}
-      <div style={{ marginBottom: '2rem', fontSize: '0.9rem', color: 'var(--text-light)' }}>
+      <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-light)' }}>
         <Link to="/" style={{ color: 'var(--text-light)' }}>Inicio</Link> / 
-        <Link to="/catalogo" style={{ color: 'var(--text-light)', margin: '0 0.5rem' }}>Galería</Link> / 
+        <Link to="/categorias" style={{ color: 'var(--text-light)', margin: '0 0.5rem' }}>Galería</Link> / 
         <span style={{ color: 'var(--text-color)' }}>{product.name}</span>
       </div>
 
@@ -114,11 +147,13 @@ export default function ProductPage() {
             className="product-detail-image"
             onError={handleImageError}
           />
+          <Link to="/categorias" className="btn btn-outline" style={{ marginTop: '1.5rem', width: '100%' }}>
+            ← Seguir explorando
+          </Link>
         </div>
         
         <div className="product-detail-info">
-          
-          
+                    
           <h1 style={{ 
             fontSize: '2.5rem', 
             fontWeight: '700', 
@@ -129,18 +164,17 @@ export default function ProductPage() {
             {product.name}
           </h1>
           
-          <p className="brand">
+          <Link to={`/artists/${product.artistId}`} className="brand">
             {"by " + product.artist}
-          </p>
-
+          </Link>
           
-          <div className="price" style={{ 
-            fontSize: '2.5rem', 
-            marginBottom: '1.5rem'
+          <p className="category" style={{ 
+            fontSize: '1rem',
+            color: 'var(--text-light)',
+            marginBottom: '1rem'
           }}>
-            <span style={{ fontSize: '0.7em', marginRight: '0.25rem' }}></span>
-            {"$ " + product.price.toLocaleString('es-AR')}
-          </div>
+            Categoría: {product.category}
+          </p>
 
           <div className="stock">
             <span className={`stock-dot ${getStockStatus()}`}></span>
@@ -150,7 +184,6 @@ export default function ProductPage() {
           <p className="description">
             {product.description}
           </p>
-
 
           <div style={{ 
             marginBottom: '2rem',
@@ -200,10 +233,21 @@ export default function ProductPage() {
             </div>
           )}
 
+          <div className="price" style={{ 
+            fontSize: '2.5rem', 
+            marginBottom: '1.5rem',
+          }}>
+            <span style={{ fontSize: '0.3em', marginRight: '0.25rem'}}></span>
+            {"$ " + product.price.toLocaleString('es-AR')}
+          </div>
+
           <div className="buy-section" style={{
             padding: '2rem',
             background: 'var(--light-gray)',
-            borderRadius: 'var(--border-radius)'
+            borderRadius: 'var(--border-radius)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem'
           }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Cantidad:</label>
@@ -228,32 +272,29 @@ export default function ProductPage() {
             <button 
               onClick={handleAddToCart}
               disabled={!canAdd}
-              className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'} btn-lg`}
-              style={{ flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
+              className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ flexGrow: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
             >
               {hasStock ? 'Añadir al Carrito' : 'No disponible'}
             </button>
 
-              
             <button
-              onClick={'handleAddToWhishlist'}
-              className={'btn btn-primary btn-lg'}
-              style={{flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
+              onClick={inWishlist ? handleRemoveFromWishlist : handleAddToWhishlist}
+              className={`wishlist-icon-btn ${inWishlist ? 'active' : ''}`}
+              aria-label={inWishlist ? 'Quitar de la wishlist' : 'Agregar a la wishlist'}
             >
-              Añadir a Favoritos
-            </button>
-          </div>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
+            </button> 
+          </div> 
         </div>
 
         <div style={{ 
-            display: 'flex', 
-            gap: '1rem',
             borderTop: '1px solid var(--border-color)',
-            paddingTop: '2rem'
+            paddingTop: '2rem',
+            gridColumn: '1 / -1' // Asegura que ocupe todo el ancho de la grilla
           }}>
-            <Link to="/catalogo" className="btn btn-outline">
-              ← Seguir explorando
-            </Link>
             <Modal isOpen={showLoginModal} onClose={closeModal} onLogin={goToLogin} />
         </div>
       </div>
@@ -261,4 +302,3 @@ export default function ProductPage() {
     
   )
 }
-

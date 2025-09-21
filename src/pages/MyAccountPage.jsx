@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useUser   } from "../context/UserContext"; // Teoría: Hook de Contexto para acceso global al estado del usuario.
 import { useOrders } from "../context/OrderContext";
+import { useWishlist } from "../context/WishlistContext";
+import {Link} from 'react-router-dom'
 
 // Componente Perfil: muestra datos del usuario y permite editar nombre y email
 function Perfil({ user }) {
@@ -36,7 +38,7 @@ function Perfil({ user }) {
 
   return (
     <section aria-labelledby="tab-perfil">
-      <h1 className="section-title" style={{ marginBottom: "1.5rem" }}>
+      <h1 className="section-title" style={{ marginBottom: "1.5rem", textAlign: "center" }}>
         Perfil
       </h1>
       <form
@@ -47,6 +49,8 @@ function Perfil({ user }) {
           borderRadius: "var(--border-radius)",
           padding: "2rem",
           maxWidth: 700,
+          marginLeft: "auto",
+          marginRight: "auto",
         }}
       >
         {/* Funcionamiento: Renderizado condicional de mensajes */}
@@ -262,7 +266,7 @@ function Configuracion() {
 
   return (
     <section aria-labelledby="tab-configuracion">
-      <h1 className="section-title" style={{ marginBottom: "1.5rem" }}>
+      <h1 className="section-title" style={{ marginBottom: "1.5rem", textAlign: "center" }}>
         Configuración
       </h1>
       <form
@@ -273,6 +277,8 @@ function Configuracion() {
           borderRadius: "var(--border-radius)",
           padding: "2rem",
           maxWidth: 700,
+          marginLeft: "auto",
+          marginRight: "auto",
         }}
       >
         {/* Renderizado condicional de mensajes */}
@@ -322,6 +328,109 @@ function Configuracion() {
           {loading ? "Cambiando..." : "Cambiar contraseña"}
         </button>
       </form>
+    </section>
+  );
+}
+
+  // Componente Wishlist: muestra la lista de productos favoritos del usuario
+function Wishlist() {
+  // Teoría: Acceso a la wishlist y función para eliminar productos desde contexto
+  // Suponiendo que existe un contexto de usuario con 'wishlist' y 'removeFromWishlist'
+  const { wishlist, removeFromWishlist } = useWishlist();
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  // Funcionamiento: Eliminar producto de la wishlist
+  const handleRemove = async (productId) => {
+    setLoading(true);
+    setMessage(null);
+    try {
+      await removeFromWishlist(productId);
+      setMessage({ type: "success", text: "Producto eliminado de tu wishlist." });
+    } catch (error) {
+      setMessage({ type: "error", text: error.message || "Error al eliminar producto." });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <section aria-labelledby="tab-wishlist">
+      <h1 className="section-title" style={{ marginBottom: "1.5rem", textAlign: "center" }}>
+        Wishlist
+      </h1>
+      {/* Renderizado condicional de mensajes */} 
+      {message && (
+        <div
+          className={message.type === "success" ? "success-message" : "error-message"}
+          style={{ marginBottom: "1rem", maxWidth: 700, marginLeft: "auto", marginRight: "auto" }}
+        >
+          {message.text}
+        </div>
+      )}
+      {/* Mostrar mensaje si la wishlist está vacía */} 
+      {(!wishlist || wishlist.length === 0) ? (
+        <div
+          style={{
+            backgroundColor: "var(--white)",
+            boxShadow: "var(--shadow)",
+            borderRadius: "var(--border-radius)",
+            padding: "2rem",
+            maxWidth: 700,
+            margin: "0 auto",
+            minHeight: 150,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "var(--text-light)",
+            fontStyle: "italic",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
+          Tu wishlist está vacía.
+        </div>
+      ) : (
+        <ul style={{ listStyle: "none", padding: 0, maxWidth: 700, marginLeft: "auto", marginRight: "auto" }}>
+          {wishlist.map((item) => (
+            <li
+              key={item.id}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "1rem",
+                backgroundColor: "var(--white)",
+                boxShadow: "var(--shadow)",
+                borderRadius: "var(--border-radius)",
+                padding: "1rem",
+              }}
+            >
+              <Link to={`/producto/${item.id}`}>
+              <img
+                src={item.image}
+                alt={item.name}
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  objectFit: "cover",
+                  borderRadius: "4px",
+                  marginRight: "1rem",
+                }}
+              />
+              </Link>
+              <span style={{ flex: 1 }}>{item.name}</span>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleRemove(item.id)}
+                disabled={loading}
+                style={{ marginLeft: "1rem" }}
+              >
+                {loading ? "Eliminando..." : "Eliminar"}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }
@@ -390,6 +499,7 @@ export default function MyAccountPage() {
             { id: "perfil", label: "Perfil" },
             { id: "compras", label: "Mis Compras" },
             { id: "configuracion", label: "Configuración" },
+            { id: "wishlist", label: "Wishlist" },
           ].map(({ id, label }) => (
             <button
               key={id}
@@ -434,6 +544,7 @@ export default function MyAccountPage() {
         {activeTab === "perfil" && <Perfil user={user} />}
         {activeTab === "compras" && <MisCompras />}
         {activeTab === "configuracion" && <Configuracion />}
+        {activeTab === "wishlist" && <Wishlist />}
       </main>
     </div>
   );

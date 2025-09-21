@@ -60,6 +60,7 @@
       "id": "abstract-colors-01",
       "name": "Colores Abstractos",
       "artist": "María González",
+      "artistId": 1,
       "category": "abstract",
       "price": 45000,
       "stock": 1,
@@ -67,6 +68,8 @@
       "description": "Obra abstracta vibrante que juega con la interacción de colores primarios y formas geométricas. Técnica mixta sobre lienzo.",
       "dimensions": "60x80 cm",
       "technique": "Técnica mixta sobre lienzo",
+      "pallette": "Colorido",
+      "style": "Clásico",
       "year": 2024,
       "userId": 1
     },
@@ -74,13 +77,16 @@
       "id": "landscape-dream-02",
       "name": "Sueño de Paisaje",
       "artist": "Carlos Mendoza",
+      "artistId": 2,
       "category": "landscape",
       "price": 38000,
-      "stock": 1,
+      "stock": 0,
       "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=center",
       "description": "Paisaje onírico que captura la esencia de la naturaleza en un momento de tranquilidad absoluta. Pintura al óleo.",
       "dimensions": "70x50 cm",
-      "technique": "Óleo sobre lienzo",
+      "technique": "Óleo",
+      "style": "Impresionista",
+      "pallette": "Pasteles",
       "year": 2023,
       "userId": 1
     },
@@ -88,13 +94,16 @@
       "id": "urban-portrait-03",
       "name": "Retrato Urbano",
       "artist": "Ana Silvestre",
+      "artistId": 3,
       "category": "portrait",
       "price": 52000,
       "stock": 1,
       "image": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800&h=600&fit=crop&crop=center",
       "description": "Retrato contemporáneo que refleja la vida urbana moderna. Expresividad única con técnicas de acuarela.",
       "dimensions": "50x70 cm",
-      "technique": "Acuarela sobre papel",
+      "technique": "Acuarela",
+      "style": "Abstracto",
+      "pallette": "Neutros",
       "year": 2024,
       "userId": 1
     },
@@ -102,13 +111,16 @@
       "id": "geometric-symphony-04",
       "name": "Sinfonía Geométrica",
       "artist": "Roberto Klein",
+      "artistId": 4,
       "category": "geometric",
       "price": 41000,
       "stock": 2,
       "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop&crop=center",
       "description": "Composición geométrica que explora la armonía entre líneas, ángulos y espacios negativos.",
       "dimensions": "80x80 cm",
-      "technique": "Acrílico sobre lienzo",
+      "technique": "Acrílico",
+      "style": "Moderno",
+      "pallette": "Monocromático",
       "year": 2024,
       "userId": 1
     },
@@ -116,6 +128,7 @@
       "id": "floral-explosion-05",
       "name": "Explosión Floral",
       "artist": "Isabella Torres",
+      "artistId": 5,
       "category": "nature",
       "price": 35000,
       "stock": 0,
@@ -123,6 +136,8 @@
       "description": "Interpretación moderna de la naturaleza con colores intensos y formas orgánicas fluidas.",
       "dimensions": "60x90 cm",
       "technique": "Técnica mixta",
+      "style": "Realista",
+      "pallette": "Cálidos",
       "year": 2023,
       "userId": 1
     },
@@ -130,13 +145,16 @@
       "id": "minimalist-essence-06",
       "name": "Esencia Minimalista",
       "artist": "Diego Vargas",
+      "artistId": 6,
       "category": "minimalist",
       "price": 48000,
       "stock": 1,
       "image": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800&h=600&fit=crop&crop=center",
       "description": "Obra minimalista que encuentra la belleza en la simplicidad y el espacio negativo.",
       "dimensions": "100x70 cm",
-      "technique": "Óleo sobre lienzo",
+      "technique": "Óleo",
+      "style": "Realista",
+      "pallette": "Neutros",
       "year": 2024,
       "userId": 1
     },
@@ -144,13 +162,16 @@
       "id": "contemporary-motion-07",
       "name": "Movimiento Contemporáneo",
       "artist": "Lucia Fernández",
+      "artistId": 7,
       "category": "contemporary",
       "price": 55000,
       "stock": 1,
       "image": "https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&h=600&fit=crop&crop=center",
       "description": "Expresión del movimiento y la energía contemporránea a través de pinceladas dinámicas.",
       "dimensions": "75x60 cm",
-      "technique": "Acrílico sobre lienzo",
+      "technique": "Acrílico",
+      "style": "Contemporáneo",
+      "pallette": "Colorido",
       "year": 2024,
       "userId": 1
     },
@@ -158,6 +179,7 @@
       "id": "textured-dreams-08",
       "name": "Sueños Texturizados",
       "artist": "Miguel Santos",
+      "artistId": 8,
       "category": "textured",
       "price": 42000,
       "stock": 1,
@@ -165,8 +187,100 @@
       "description": "Exploración de texturas y relieves que invitan al espectador a una experiencia táctil visual.",
       "dimensions": "65x85 cm",
       "technique": "Técnica mixta con texturas",
+      "style": "Moderno",
+      "pallette": "Fríos",
       "year": 2023,
       "userId": 1
+    },
+    {
+      "name": "HOlaa",
+      "artist": "Lea",
+      "artistId": 9,
+      "category": "portrait",
+      "price": 5600,
+      "stock": 2,
+      "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
+      "description": "arte para uade",
+      "dimensions": "60x60",
+      "technique": "Pincel",
+      "style": "Abstracto",
+      "pallette": "Fríos",
+      "year": "2025",
+      "userId": 3,
+      "id": "1757452130661"
+    },
+    {
+      "name": "test",
+      "artist": "lea",
+      "artistId": 9,
+      "category": "abstract",
+      "price": 6000,
+      "stock": 2,
+      "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
+      "description": "testeo de arte",
+      "dimensions": "60x60",
+      "pallette": "Pasteles",
+      "technique": "Óleo",
+      "style": "Abstracto",
+      "year": "2020",
+      "userId": 3,
+      "id": "1757452964344"
+    }
+  ],
+  "artists": [
+    {
+      "id": 1,
+      "name": "María González",
+      "biography": "Artista contemporánea con una trayectoria destacada en el mundo del arte abstracto. Su obra explora la interacción del color y la forma.",
+      "profileImage": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 2,
+      "name": "Carlos Mendoza",
+      "biography": "Pintor paisajista conocido por sus representaciones oníricas de la naturaleza. Utiliza principalmente la técnica del óleo sobre lienzo.",
+      "profileImage": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 3,
+      "name": "Ana Silvestre",
+      "biography": "Especialista en retratos urbanos, Ana captura la esencia de la vida moderna con una expresividad única a través de la acuarela.",
+      "profileImage": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 4,
+      "name": "Roberto Klein",
+      "biography": "Su trabajo se centra en la composición geométrica, explorando la armonía entre líneas, ángulos y espacios negativos con acrílico.",
+      "profileImage": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 5,
+      "name": "Isabella Torres",
+      "biography": "Con una paleta de colores intensos, Isabella ofrece una interpretación moderna de la naturaleza a través de formas orgánicas y fluidas.",
+      "profileImage": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 6,
+      "name": "Diego Vargas",
+      "biography": "Artista minimalista que encuentra la belleza en la simplicidad. Su obra se caracteriza por el uso del espacio negativo y la pureza de la forma.",
+      "profileImage": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 7,
+      "name": "Lucia Fernández",
+      "biography": "Lucia expresa el movimiento y la energía contemporánea a través de pinceladas dinámicas y una paleta de colores vibrantes.",
+      "profileImage": "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 8,
+      "name": "Miguel Santos",
+      "biography": "Su obra es una exploración de texturas y relieves, invitando al espectador a una experiencia táctil y visual única.",
+      "profileImage": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&h=160&fit=crop&crop=faces"
+    },
+    {
+      "id": 9,
+      "name": "Lea",
+      "biography": "Artista emergente con un enfoque en el retrato y el arte abstracto, explorando nuevas formas de expresión.",
+      "profileImage": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&h=160&fit=crop&crop=faces"
     }
   ],
   "categories": [
@@ -204,5 +318,32 @@
     }
   ],
   "cart": [],
-  "orders": []
+  "heroImages": [
+    { "id": 1, "src": "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Taller de un artista con un cuadro en un caballete." },
+    { "id": 2, "src": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Interior de una galería de arte con cuadros de flores." },
+    { "id": 3, "src": "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Exhibición de arte moderno con luces de neón." },
+    { "id": 4, "src": "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Taller de un artista con un cuadro en un caballete." }
+  ],
+    "orders": [
+    {
+      "userId": 3,
+      "date": "2025-09-10T00:15:34.961Z",
+      "items": [
+        {
+          "productId": "landscape-dream-02",
+          "name": "Sueño de Paisaje",
+          "price": 38000,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=center",
+          "artist": "Carlos Mendoza",
+          "dimensions": "70x50 cm",
+          "year": 2023,
+          "technique": "Óleo sobre lienzo"
+        }
+      ],
+      "total": 45980,
+      "status": "completed",
+      "id": 1
+    }
+  ]
 }
