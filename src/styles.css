@@ -1474,7 +1474,7 @@ body {
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   }
-}
+
 
 @media (max-width: 768px) {
   .navbar-container {
@@ -1618,8 +1618,8 @@ body {
   .btn-lg {
     padding: 0.875rem 2rem;
     font-size: 1rem;
-  }
-
+  } 
+}
 
 @media (max-width: 480px) {
   .auth-card {
@@ -1651,12 +1651,8 @@ body {
     margin: 0 1rem;
     padding: 1.5rem;
   }
-<<<<<<< Updated upstream
-
-  
-=======
->>>>>>> Stashed changes
 }
+
 /*OLVIDE MI CONTRASEÑA */
 .auth-containerForgot {
   width: 100%;
@@ -1927,4 +1923,5 @@ body {
 
 .auth-cardRegister .auth-link:hover {
   text-decoration: underline;
+}
 }
