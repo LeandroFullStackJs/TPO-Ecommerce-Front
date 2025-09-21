@@ -248,9 +248,43 @@ export default function ProductPage() {
             {getStockText()}
           </div>
           
-          <p className="description">
-            {product.description}
-          </p>
+          <div className="product-description" style={{
+            marginBottom: '2rem',
+            padding: '1.5rem',
+            backgroundColor: '#f8f6f1',
+            borderRadius: '8px',
+            border: '1px solid #e0e0e0',
+            minHeight: '120px',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <h3 style={{ 
+              fontSize: '1.2rem', 
+              fontWeight: '600', 
+              marginBottom: '1rem',
+              color: '#333',
+              borderBottom: '2px solid #007bff',
+              paddingBottom: '0.5rem'
+            }}>
+               Descripción de la obra
+            </h3>
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+              <p style={{
+                fontSize: '1rem',
+                lineHeight: '1.6',
+                color: '#555',
+                margin: 0,
+                fontStyle: product.description ? 'normal' : 'italic',
+                opacity: product.description ? 1 : 0.8
+              }}>
+                {product.description || 'Esta obra única refleja la visión artística contemporánea con técnicas tradicionales y un enfoque moderno que captura la esencia del arte actual.'}
+              </p>
+            </div>
+          </div>
 
           <div style={{ 
             marginBottom: '2rem',
