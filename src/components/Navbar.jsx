@@ -30,6 +30,10 @@ export default function Navbar() {
             Artistas
           </Link>
           
+          <Link to="/categorias" className="navbar-link">
+            Categorías
+          </Link>
+          
 
           {isAuthenticated && (
             <Link to="/my-products" className="navbar-link">
