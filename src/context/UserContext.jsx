@@ -28,58 +28,101 @@ export function UserProvider({ children }) {
   const [loading, setLoading] = useState(true)     // Estado de carga inicial
 
   /**
-   * EFECTO DE INICIALIZACIÓN
-   * Carga los datos del usuario desde localStorage al montar el componente.
-   * Esto permite mantener la sesión activa entre recargas de página.
+   * EFECTO DE INICIALIZACIÓN - PERSISTENCIA DE SESIÓN
+   * 
+   * Este useEffect se ejecuta UNA SOLA VEZ al montar el componente.
+   * Su propósito es verificar si hay una sesión guardada en localStorage
+   * y restaurar automáticamente el estado del usuario.
+   * 
+   * Casos de uso:
+   * - Usuario cierra y abre el navegador
+   * - Usuario recarga la página (F5)
+   * - Usuario navega a otra pestaña y vuelve
    */
   useEffect(() => {
     const loadUser = () => {
       try {
+        // Intentar obtener datos del usuario desde localStorage
         const savedUser = localStorage.getItem("user")
+        
         if (savedUser) {
-          // Parsear y establecer los datos del usuario guardados
-          setUser(JSON.parse(savedUser))
+          // JSON.parse: Convertir string JSON de vuelta a objeto JavaScript
+          const userData = JSON.parse(savedUser)
+          
+          // Restaurar el estado del usuario en el contexto
+          setUser(userData)
+          
+          // En este punto el usuario está "automáticamente logueado"
         }
+        // Si no hay datos guardados, el usuario permanece como null (no logueado)
+        
       } catch (error) {
+        // Error de parsing: datos corruptos en localStorage
         console.error("Error al cargar usuario:", error)
-        // Si hay error al parsear, limpiar el localStorage
+        
+        // Limpiar datos corruptos para evitar problemas futuros
         localStorage.removeItem("user")
+        
+        // Asegurar que user sea null si hay error
+        setUser(null)
+        
       } finally {
-        // Siempre terminar el estado de carga
+        // SIEMPRE ejecutar esto, haya error o no
+        // Terminar el estado de carga inicial
         setLoading(false)
       }
     }
 
+    // Ejecutar la función de carga
     loadUser()
-  }, [])
+    
+  }, []) // Array vacío: solo se ejecuta al montar el componente
 
   /**
-   * FUNCIÓN DE INICIO DE SESIÓN
-   * Autentica al usuario con email y contraseña.
+   * FUNCIÓN DE INICIO DE SESIÓN - AUTENTICACIÓN
    * 
-   * @param {string} email - Email del usuario
-   * @param {string} password - Contraseña del usuario
+   * Proceso completo de autenticación del usuario:
+   * 1. Envía credenciales al servidor
+   * 2. Recibe y valida respuesta
+   * 3. Guarda datos en estado y localStorage
+   * 4. Actualiza estado de autenticación
+   * 
+   * @param {string} email - Email/username del usuario
+   * @param {string} password - Contraseña en texto plano (se encripta en el servidor)
    * @returns {Object} Datos del usuario autenticado
-   * @throws {Error} Error de autenticación
+   * @throws {Error} Error de autenticación (credenciales inválidas, servidor, etc.)
    */
   const login = async (email, password) => {
     try {
-      // Activar estado de carga durante la autenticación
+      // Activar indicador de carga para UI (spinner, botón disabled, etc.)
       setLoading(true)
       
-      // Llamar a la API de autenticación
+      // LLAMADA A LA API: Enviar credenciales al backend
+      // authAPI.login hace POST a /auth/login con email y password
       const userData = await authAPI.login(email, password)
 
-      // Guardar datos del usuario en el estado y localStorage
+      // ÉXITO: El servidor respondió con datos válidos del usuario
+      
+      // 1. Actualizar estado global del contexto
       setUser(userData)
+      
+      // 2. Persistir datos en localStorage para mantener sesión
+      // JSON.stringify: Convertir objeto a string para almacenamiento
       localStorage.setItem("user", JSON.stringify(userData))
 
+      // 3. Retornar datos para que el componente pueda usarlos
       return userData
+      
     } catch (error) {
-      // Propagar el error para que lo maneje el componente que llama
+      // ERROR: Credenciales inválidas, servidor caído, red, etc.
+      
+      // No manejar el error aquí, dejarlo para el componente
+      // Esto permite mostrar mensajes específicos en la UI
       throw error
+      
     } finally {
-      // Siempre desactivar el estado de carga
+      // SIEMPRE ejecutar: haya éxito o error
+      // Desactivar indicador de carga
       setLoading(false)
     }
   }

@@ -1,7 +1,7 @@
 //useState para crear y manejar estado local de un componente
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 //podernavegar entre pestañas
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 //contexto de usuario, es en donde se maneja la autenticación y los datos del usuario es como el puente entre el srv y la bdd (simulada)
 import { useUser } from '../context/UserContext'
 
@@ -12,8 +12,37 @@ export default function LoginPage() {
   })
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
-  const { login } = useUser()//proviene del userContext, es donde obtenemos la funcion de login
+  const { login, isAuthenticated } = useUser()//proviene del userContext, es donde obtenemos la funcion de login
   const navigate = useNavigate()
+  const location = useLocation()
+
+  // Obtener la URL de retorno y mensaje si existe
+  const from = location.state?.from || '/home'
+  const message = location.state?.message
+
+  /**
+   * REDIRECCIÓN AUTOMÁTICA
+   * Si el usuario ya está logueado, redirigir a la página de origen
+   */
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true })
+    }
+  }, [isAuthenticated, navigate, from])
+
+  /**
+   * MOSTRAR MENSAJE DE REDIRECCIÓN
+   * Si llegó aquí por una ruta protegida, mostrar mensaje informativo
+   */
+  useEffect(() => {
+    if (message) {
+      // Mostrar mensaje temporal (puedes reemplazar con un toast/notification)
+      const timer = setTimeout(() => {
+        setErrors(prev => ({ ...prev, general: message }))
+      }, 100)
+      return () => clearTimeout(timer)
+    }
+  }, [message])
 
   const validateForm = () => {
     //aca almacenamos los errores que pueden surgir
@@ -44,9 +73,13 @@ export default function LoginPage() {
     
     try {
       setLoading(true)
+      setErrors({}) // Limpiar errores previos
+      
       //llamamos a la funcion login del Usercontext, que es en donde validamos la existencia del usuario
       await login(formData.email, formData.password)
-      navigate('/home')
+      
+      // Redirigir a la página de origen o a home
+      navigate(from, { replace: true })
     } catch (error) {
       setErrors({ general: error.message })
     } finally {
