@@ -45,32 +45,61 @@ export function ProductProvider({ children }) {
   const [error, setError] = useState(null)         // Estado de error
 
   /**
-   * EFECTO DE INICIALIZACIÓN
+   * EFECTO DE INICIALIZACIÓN - CARGA AUTOMÁTICA DE PRODUCTOS
    * 
-   * Carga los productos automáticamente cuando se monta el componente.
-   * Esto asegura que los datos estén disponibles desde el inicio.
+   * Este useEffect se ejecuta UNA SOLA VEZ cuando el ProductProvider se monta.
+   * Es crucial para tener los productos disponibles desde el inicio de la app.
+   * 
+   * ¿Por qué es importante?
+   * - Los productos se cargan automáticamente al abrir la aplicación
+   * - Evita que las páginas muestren "sin productos" inicialmente
+   * - Centraliza la carga inicial en un solo lugar
+   * - Garantiza que el estado esté listo para todos los componentes
    */
   useEffect(() => {
-    loadProducts()
-  }, [])
+    loadProducts()  // Ejecutar carga inicial de productos
+  }, [])            // Array vacío: solo ejecutar al montar
 
   /**
-   * CARGAR PRODUCTOS DESDE LA API
+   * CARGAR PRODUCTOS DESDE LA API - FUNCIÓN CENTRALIZADA
    * 
-   * Función interna que obtiene todos los productos de la API
-   * y actualiza el estado del contexto. Maneja loading y errores.
+   * Función que maneja todo el flujo de carga de productos:
+   * 1. Activa estado de carga (UI muestra spinner)
+   * 2. Limpia errores previos
+   * 3. Llama a la API
+   * 4. Actualiza estado con productos recibidos
+   * 5. Maneja errores si fallan las llamadas
+   * 6. Siempre desactiva estado de carga
+   * 
+   * Patrón async/await con try/catch/finally para manejo robusto
    */
   const loadProducts = async () => {
     try {
-      setLoading(true)           // Activar estado de carga
-      setError(null)             // Limpiar errores previos
-      const data = await productsAPI.getAll()  // Obtener productos
-      setProducts(data)          // Actualizar estado
+      // PASO 1: Activar indicador de carga para UI
+      setLoading(true)
+      
+      // PASO 2: Limpiar errores de intentos anteriores
+      setError(null)
+      
+      // PASO 3: LLAMADA A LA API - Obtener todos los productos
+      // productsAPI.getAll() hace GET request a /products
+      const data = await productsAPI.getAll()
+      
+      // PASO 4: ÉXITO - Actualizar estado con productos recibidos
+      setProducts(data)  // Esto triggerea re-render en componentes que usan productos
+      
     } catch (err) {
+      // PASO 5: ERROR - Manejar fallas de red, servidor, etc.
       console.error('Error al cargar productos:', err)
+      
+      // Establecer mensaje de error para mostrar en UI
       setError('Error al cargar productos')
+      
+      // Nota: products se mantiene con valor anterior (o vacío si es primera carga)
+      
     } finally {
-      setLoading(false)          // Desactivar estado de carga
+      // PASO 6: SIEMPRE ejecutar - Desactivar indicador de carga
+      setLoading(false)  // UI deja de mostrar spinner
     }
   }
 

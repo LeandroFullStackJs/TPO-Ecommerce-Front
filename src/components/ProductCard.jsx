@@ -159,7 +159,7 @@ export default function ProductCard({ product }) {
           disabled={!canAdd}
           className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'} btn-full`}
         >
-          {hasStock ? ' Adquirir Obra' : 'No disponible'}
+          {hasStock ? 'Adquirir Obra' : 'No disponible'}
         </button>
       </div>
     </Link>
