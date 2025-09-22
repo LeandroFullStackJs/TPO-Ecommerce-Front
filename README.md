@@ -5,48 +5,87 @@ ArtGallery es una aplicación web de e-commerce especializada en la venta de obr
 
 ## ✨ **Funcionalidades Implementadas**
 
-### 🔐 **Sistema de Autenticación**
-- **Login/Registro**: Formularios con validaciones completas
-- **Gestión de sesiones**: Persistencia en localStorage
-- **Roles de usuario**: Admin y usuario regular
-- **Protección de rutas**: Acceso condicional según autenticación
+### 🔐 **Sistema de Autenticación y Seguridad Avanzado**
+- **Login/Registro**: Formularios con validaciones completas y manejo de errores
+- **Gestión de sesiones**: Persistencia segura en localStorage con tokens
+- **Roles de usuario**: Sistema robusto Admin/Usuario con permisos diferenciados
+- **Rutas protegidas**: Componente `ProtectedRoute` con autenticación y autorización
+- **Redirección inteligente**: Preserva la URL de destino después del login
+- **Validación de permisos**: Control granular de acceso a funcionalidades
 
-### �️ **Catálogo de Arte**
-- **Galería completa**: Obras de arte organizadas por categorías
-- **Filtros avanzados**: Por estilo artístico y búsqueda
-- **Categorías artísticas**: Abstracto, Paisajes, Retratos, Naturaleza, Minimalista, Geométrico, Contemporáneo, Texturizado
-- **Detalle de obra**: Vista completa con información del artista, dimensiones, técnica y año
-- **Imágenes optimizadas**: Sistema de respaldo automático para garantizar carga correcta
+### 🛡️ **Sistema de Rutas Protegidas (NUEVO)**
+- **Componente ProtectedRoute**: Control de acceso centralizado
+- **Tipos de protección**: 
+  - Rutas públicas (catálogo, home)
+  - Rutas autenticadas (carrito, mi cuenta)
+  - Rutas de administrador (gestión de productos)
+- **Redirección automática**: Login con retorno a página original
+- **Estados de carga**: Feedback visual durante verificación de permisos
 
-### 🏛️ **Información Artística Detallada**
-- **Datos del artista**: Nombre y biografía
-- **Especificaciones técnicas**: Dimensiones, técnica utilizada, año de creación
-- **Categorización por estilos**: Sistema de clasificación artística
-- **Obras únicas**: Cada pieza es una obra original con stock limitado
+### 🛒 **Sistema de Carrito Optimizado**
+- **Acceso público mejorado**: Usuarios no registrados pueden ver el carrito
+- **Checkout protegido**: Solo usuarios autenticados pueden finalizar compra
+- **Navegación mejorada**: Links clickeables desde carrito a detalle de producto
+- **Gestión de estado híbrida**: Context API + localStorage para persistencia
+- **Validación inteligente**: Control automático de stock y disponibilidad
 
-### 🛒 **Sistema de Compras Especializado**
-- **Carrito elegante**: Interfaz diseñada para obras de arte
-- **Validación de disponibilidad**: Control de obras únicas
-- **Cálculo de precios**: Manejo de montos altos típicos del mercado artístico
-- **Checkout completo**: Proceso optimizado para compras de arte
+### ❤️ **Sistema de Wishlist (NUEVO)**
+- **Lista de deseos personalizada**: Guardado por usuario en localStorage
+- **Gestión completa**: Agregar/quitar productos con feedback visual
+- **Persistencia por usuario**: Cada usuario mantiene su propia wishlist
+- **Integración con autenticación**: Requiere login para funcionar
+- **Context API dedicado**: WishlistContext para gestión de estado
 
-### 🎯 **Gestión de Obras (Para Artistas)**
-- **Publicar obras**: Formulario especializado para artistas
-- **Gestión de portfolio**: Control de obras propias
-- **Información artística**: Campos específicos para técnica, dimensiones, año
-- **Control de disponibilidad**: Manejo de obras vendidas o en exhibición
+### 🏛️ **Catálogo de Arte Mejorado**
+- **Galería completa**: Obras de arte organizadas por categorías artísticas
+- **Filtros avanzados**: Por estilo artístico, búsqueda y disponibilidad
+- **Categorías especializadas**: 8 estilos artísticos profesionales
+- **Detalle de obra mejorado**: Vista completa con descripción enriquecida
+- **Sistema de imágenes robusto**: Fallback automático y manejo de errores
+- **Información artística completa**: Datos del artista, técnica, dimensiones
+
+### 🎯 **Gestión de Obras para Artistas Mejorada**
+- **Panel de artista**: Interface dedicada para gestión de portfolio
+- **Publicación de obras**: Formulario especializado con todos los campos artísticos
+- **Control de disponibilidad**: Gestión de stock y visibilidad
+- **Edición completa**: Actualización de información y precios
+- **Validaciones artísticas**: Campos específicos para metadatos de arte
+
+### 🎨 **Experiencia de Usuario Optimizada (NUEVO)**
+- **Navegación fluida**: Transiciones suaves y feedback visual
+- **Descripción enriquecida**: Sección de descripción mejorada con fallback
+- **Breadcrumbs**: Navegación contextual en páginas de detalle
+- **Estados de carga**: Indicadores visuales durante operaciones
+- **Mensajes informativos**: Feedback claro para todas las acciones
+
+### 🔧 **Arquitectura de Estado Avanzada (NUEVO)**
+- **useReducer implementado**: Gestión compleja de estado del carrito
+- **useMemo optimizations**: Rendimiento mejorado en filtros y cálculos
+- **Context API estructurado**: Separación clara de responsabilidades
+- **localStorage híbrido**: Persistencia inteligente de datos
+- **Manejo de errores robusto**: Captura y recuperación de errores
 
 ## 🛠️ **Tecnologías Utilizadas**
 
-### **Frontend**
-- **React 18** con hooks modernos
-- **React Router DOM** para navegación
-- **Context API** para estado global
-- **Axios** para llamadas HTTP
+### **Frontend Avanzado**
+- **React 18** con hooks modernos (useState, useEffect, useMemo, useReducer)
+- **React Router DOM v6** para navegación SPA y rutas protegidas
+- **Context API estructurado** para estado global (4 contextos especializados)
+- **Axios** con interceptores para llamadas HTTP
+- **Gestión de estado híbrida**: Context + localStorage para persistencia
+
+### **Gestión de Estado Moderna (ACTUALIZADO)**
+- **UserContext**: Autenticación y gestión de usuarios
+- **ProductContext**: Catálogo de obras y filtros
+- **CartContext**: Carrito con useReducer y localStorage
+- **WishlistContext**: Lista de deseos por usuario
+- **useReducer**: Gestión compleja de estado del carrito
+- **useMemo**: Optimización de rendimiento en filtros
 
 ### **Backend (Fake API)**
-- **JSON-Server** para simular API REST
+- **JSON-Server** para simular API REST completa
 - **Persistencia de datos** en archivo db.json
+- **Endpoints especializados** para galería de arte
 ### 🌐 **API Completa con JSON-Server**
 - **Endpoints REST**: CRUD completo para obras, usuarios y categorías
 - **Persistencia real**: Base de datos JSON que persiste entre reinicios
@@ -84,21 +123,53 @@ ArtGallery es una aplicación web de e-commerce especializada en la venta de obr
 - 🎭 **Contemporáneo** - Expresión moderna y dinámica
 - 🔲 **Texturizado** - Relieves y texturas que invitan al tacto
 
-## 📁 **Estructura del Proyecto**
+## 📁 **Estructura del Proyecto Actualizada**
 
 ```
 src/
-├── api/                    # Servicios de API
-│   ├── index.js           # Configuración de axios
-│   ├── auth.js            # Servicios de autenticación
+├── api/                    # Servicios de API especializados
+│   ├── index.js           # Configuración de axios con interceptores
+│   ├── auth.js            # Servicios de autenticación y autorización
 │   ├── products.js        # Servicios de obras de arte
-│   └── categories.js      # Servicios de categorías artísticas
-├── components/             # Componentes reutilizables
-│   ├── Navbar.jsx         # Navegación principal
+│   ├── categories.js      # Servicios de categorías artísticas
+│   ├── artists.js         # Servicios de gestión de artistas
+│   └── orders.js          # Servicios de órdenes y checkout
+├── components/             # Componentes reutilizables mejorados
+│   ├── Navbar.jsx         # Navegación principal con autenticación
 │   ├── Footer.jsx         # Pie de página
-│   ├── ProductCard.jsx    # Tarjeta de obra de arte
-│   ├── Layout.jsx         # Layout principal
+│   ├── ProductCard.jsx    # Tarjeta de obra de arte optimizada
+│   ├── Layout.jsx         # Layout principal con notificaciones
+│   ├── ProtectedRoute.jsx # Componente de rutas protegidas (NUEVO)
+│   ├── Modal.jsx          # Modal reutilizable (NUEVO)
+│   ├── ArtistCard.jsx     # Tarjeta de perfil de artista
 │   └── StockIndicator.jsx # Indicador de disponibilidad
+├── context/               # Contextos de React especializados
+│   ├── UserContext.jsx    # Gestión de usuarios y autenticación
+│   ├── ProductContext.jsx # Gestión de obras de arte y filtros
+│   ├── CartContext.jsx    # Gestión híbrida del carrito (MEJORADO)
+│   ├── WishlistContext.jsx # Gestión de lista de deseos (NUEVO)
+│   └── OrderContext.jsx   # Gestión de órdenes de compra
+├── pages/                 # Páginas de la aplicación
+│   ├── LoginPage.jsx      # Página de acceso con redirección
+│   ├── RegisterPage.jsx   # Registro de usuarios/artistas
+│   ├── HomePage.jsx       # Página principal con filtros optimizados
+│   ├── CatalogPage.jsx    # Catálogo completo de obras
+│   ├── ProductPage.jsx    # Detalle de obra mejorado (ACTUALIZADO)
+│   ├── CartPage.jsx       # Carrito con navegación clickeable (MEJORADO)
+│   ├── MyAccountPage.jsx  # Panel de usuario
+│   ├── MyProductsPage.jsx # Panel del artista
+│   ├── ArtistPage.jsx     # Página de perfil de artista
+│   ├── CategoriesPage.jsx # Página de categorías con filtros
+│   └── ForgotPasswordPage.jsx # Recuperación de contraseña
+├── styles/                # Estilos especializados
+│   ├── artist.css         # Estilos para perfiles de artista
+│   ├── pages.css          # Estilos generales de páginas
+│   └── tappan-theme.css   # Tema de galería profesional
+├── data/                  # Datos estáticos y configuraciones
+├── App.jsx                # Componente principal con rutas protegidas
+├── main.jsx               # Punto de entrada
+└── styles.css             # Estilos CSS principales optimizados
+```
 ├── context/               # Contextos de React
 │   ├── UserContext.jsx    # Gestión de usuarios y artistas
 │   ├── ProductContext.jsx # Gestión de obras de arte
@@ -169,11 +240,50 @@ npm run dev
 - `GET /categories` - Listar estilos artísticos
 - `GET /categories/:id` - Obtener categoría específica
 
-### **Carrito**
+### **Carrito y Wishlist**
 - `GET /cart` - Estado actual del carrito
 - `POST /cart` - Agregar obra al carrito
 - `PUT /cart` - Actualizar carrito
 - `DELETE /cart` - Vaciar carrito
+- **Wishlist**: Gestión local por usuario con Context API
+
+## 🚀 **Mejoras Técnicas Implementadas en Esta Sesión**
+
+### **🔒 Sistema de Rutas Protegidas**
+- **Componente ProtectedRoute**: Centraliza la lógica de autenticación y autorización
+- **Tres niveles de protección**: Público, autenticado, y administrador
+- **Redirección inteligente**: Preserva la URL de destino después del login
+- **Estados de carga**: Feedback visual durante verificación de permisos
+
+### **🛒 Optimización del Carrito**
+- **Acceso público**: Usuarios no registrados pueden ver el carrito sin registrarse
+- **Checkout protegido**: Solo usuarios autenticados pueden finalizar compras
+- **Navegación mejorada**: Links clickeables desde items del carrito al detalle del producto
+- **useReducer**: Implementación robusta para gestión de estado complejo
+
+### **❤️ Sistema de Wishlist Completo**
+- **WishlistContext nuevo**: Context API dedicado para lista de deseos
+- **Persistencia por usuario**: Cada usuario tiene su propia wishlist en localStorage
+- **Integración con autenticación**: Funciona solo para usuarios logueados
+- **Feedback visual**: Botones de corazón con estados activo/inactivo
+
+### **🎨 Mejoras de UX en ProductPage**
+- **Descripción enriquecida**: Sección mejorada con estilos y fallback text
+- **Estructura HTML robusta**: Contenedores con altura mínima y flexbox
+- **Breadcrumbs**: Navegación contextual mejorada
+- **Estilos consistentes**: Sin dependencia de variables CSS no definidas
+
+### **⚡ Optimizaciones de Rendimiento**
+- **useMemo implementado**: En HomePage, CategoriesPage y filtros
+- **Context API estructurado**: Separación clara de responsabilidades
+- **localStorage híbrido**: Persistencia inteligente de carrito y wishlist
+- **Gestión de errores**: Manejo robusto de errores de API y estado
+
+### **🏗️ Arquitectura de Estado Avanzada**
+- **useReducer en CartContext**: Gestión compleja con acciones ADD_ITEM, REMOVE_ITEM, SET_QTY
+- **Múltiples Contexts**: UserContext, ProductContext, CartContext, WishlistContext
+- **Persistencia inteligente**: Sincronización automática con localStorage
+- **Estado derivado**: Cálculos optimizados con useMemo para totales y filtros
 
 ## 🎨 **Características del Diseño**
 
@@ -246,28 +356,50 @@ npm run dev
 4. **Registrarse** - Crear cuenta para comprar
 
 ### **Para Coleccionistas (Usuarios Registrados)**
-5. **Agregar al carrito** - Seleccionar obras de interés
-6. **Gestionar carrito** - Modificar selección y cantidades
-7. **Proceso de compra** - Checkout completo
-8. **Historial** - Ver compras realizadas
+5. **Agregar al carrito** - Seleccionar obras de interés desde cualquier página
+6. **Gestionar carrito** - Modificar selección, cantidades y navegar a detalles
+7. **Lista de deseos** - Guardar obras favoritas con sistema de wishlist
+8. **Proceso de compra** - Checkout completo y seguro
+9. **Navegación fluida** - Acceso directo desde carrito a detalle de productos
 
 ### **Para Artistas (Usuarios Admin)**
-9. **Publicar obras** - Agregar nuevas piezas al catálogo
-10. **Gestionar portfolio** - Editar información de obras propias
-11. **Control de ventas** - Monitorear disponibilidad y ventas
+10. **Publicar obras** - Agregar nuevas piezas al catálogo con metadatos completos
+11. **Gestionar portfolio** - Editar información de obras propias con validaciones
+12. **Control de ventas** - Monitorear disponibilidad y ventas en tiempo real
+13. **Rutas protegidas** - Acceso exclusivo a funciones administrativas
 
-## 🌟 **Características Especiales**
+## 🌟 **Características Especiales Mejoradas**
 
-### **Optimizaciones de Imagen**
-- **Sistema de respaldo**: Imágenes de fallback automático
+### **Sistema de Rutas Inteligente (NUEVO)**
+- **Acceso público optimizado**: Carrito visible sin registro para mejor conversión
+- **Protección granular**: Diferentes niveles según funcionalidad
+- **Redirección contextual**: Retorno automático a página original después del login
+- **Estados de carga**: Feedback visual durante verificación de permisos
+
+### **Gestión de Estado Avanzada (NUEVO)**
+- **useReducer en Carrito**: Gestión robusta con acciones tipadas
+- **Context API estructurado**: 4 contextos especializados
+- **Persistencia híbrida**: localStorage + Context para mejor UX
+- **useMemo optimizado**: Filtros y cálculos optimizados para rendimiento
+
+### **Sistema de Wishlist Completo (NUEVO)**
+- **Persistencia por usuario**: Cada usuario mantiene su lista personal
+- **Integración con UI**: Botones de corazón con feedback visual
+- **Gestión completa**: Agregar/quitar con confirmaciones
+- **Sincronización automática**: Estado persistente entre sesiones
+
+### **Optimizaciones de Imagen y UX**
+- **Sistema de respaldo mejorado**: Fallback automático con estilos consistentes
 - **Carga optimizada**: URLs optimizadas para mejor rendimiento
-- **Placeholders visuales**: Patrones mientras cargan las imágenes
-- **Responsive**: Adaptación automática a diferentes pantallas
+- **Descripción enriquecida**: Secciones mejoradas con texto de fallback
+- **Navegación clickeable**: Links directos desde carrito a productos
+- **Responsive avanzado**: Adaptación automática a diferentes pantallas
 
-### **Experiencia de Usuario Premium**
-- **Navegación fluida**: Transiciones suaves entre páginas
-- **Información rica**: Metadatos completos de cada obra
-- **Diseño elegante**: Estética de galería profesional
+### **Experiencia de Usuario Premium Actualizada**
+- **Navegación fluida**: Transiciones suaves entre páginas con estados de carga
+- **Información rica**: Metadatos completos de cada obra con presentación mejorada
+- **Diseño elegante**: Estética de galería profesional con mejores contrastes
+- **Breadcrumbs contextuales**: Navegación intuitiva en páginas de detalle
 - **Accesibilidad**: Diseño inclusivo y usable
 
 ## 🚀 **Deployment y Producción**
@@ -308,25 +440,53 @@ Para consultas técnicas o colaboraciones, contactar al equipo de desarrollo.
 
 ---
 
-## 🎯 **Estado del Proyecto: ✅ COMPLETO Y FUNCIONAL**
+## 🎯 **Estado del Proyecto: ✅ COMPLETO Y FUNCIONAL - VERSIÓN MEJORADA**
 
-✅ **Sistema de autenticación completo**  
-✅ **Catálogo de arte funcional**  
-✅ **Carrito de compras operativo**  
-✅ **Gestión de obras para artistas**  
-✅ **Diseño responsive y elegante**  
-✅ **API completa con JSON-Server**  
-✅ **Sistema de imágenes optimizado**  
-✅ **Experiencia de usuario premium**
+### **✅ Funcionalidades Core Implementadas**
+✅ **Sistema de autenticación completo con rutas protegidas**  
+✅ **Catálogo de arte funcional con filtros optimizados**  
+✅ **Carrito de compras híbrido (Context + localStorage)**  
+✅ **Sistema de wishlist completo por usuario**  
+✅ **Gestión de obras para artistas con validaciones**  
+✅ **Diseño responsive y elegante de galería profesional**  
 
-✅ **Todas las fases implementadas**  
-✅ **Sistema de stock funcional**  
-✅ **API completa con JSON-Server**  
-✅ **Autenticación y autorización**  
-✅ **CRUD completo de productos**  
-✅ **Carrito de compras funcional**  
-✅ **Diseño responsive y moderno**  
-✅ **Validaciones y manejo de errores**  
+### **✅ Mejoras Técnicas de Esta Sesión**
+✅ **ProtectedRoute: Sistema de rutas protegidas con 3 niveles**  
+✅ **Carrito público: Acceso optimizado para mejor conversión**  
+✅ **Navegación clickeable: Links desde carrito a productos**  
+✅ **WishlistContext: Sistema completo de lista de deseos**  
+✅ **useReducer: Gestión robusta de estado del carrito**  
+✅ **useMemo: Optimizaciones de rendimiento en filtros**  
+✅ **ProductPage mejorada: Descripción enriquecida con fallback**  
 
-**El proyecto está listo para presentación y uso en producción (con backend real).**
+### **✅ Arquitectura de Estado Avanzada**
+✅ **4 Contextos especializados: User, Product, Cart, Wishlist**  
+✅ **Persistencia híbrida: Context API + localStorage**  
+✅ **Gestión de errores robusta en todas las operaciones**  
+✅ **Estados de carga y feedback visual en toda la app**  
+✅ **Redirección inteligente con preservación de URL**  
+
+### **✅ Experiencia de Usuario Premium**
+✅ **Navegación fluida con breadcrumbs contextuales**  
+✅ **Sistema de imágenes con fallback automático mejorado**  
+✅ **Feedback visual completo en todas las acciones**  
+✅ **Diseño consistente sin dependencias de variables CSS**  
+✅ **Accesibilidad mejorada y estilos robustos**  
+
+### **✅ Todas las Fases Completadas y Mejoradas**
+✅ **API completa con JSON-Server y endpoints especializados**  
+✅ **Sistema de stock funcional con validaciones inteligentes**  
+✅ **Autenticación y autorización con roles granulares**  
+✅ **CRUD completo de productos con metadatos artísticos**  
+✅ **Carrito de compras con useReducer y persistencia**  
+✅ **Validaciones y manejo de errores en todas las capas**  
+
+**🚀 El proyecto está listo para presentación y uso en producción con todas las mejoras implementadas.**
+
+### **🎨 Valor Agregado de las Mejoras**
+- **Mejor conversión**: Carrito público aumenta probabilidad de compra
+- **UX premium**: Navegación fluida y feedback visual completo  
+- **Arquitectura escalable**: Contextos especializados y estado robusto
+- **Código mantenible**: useReducer, useMemo y separación de responsabilidades
+- **Experiencia profesional**: Diseño de galería con funcionalidades avanzadas
 
