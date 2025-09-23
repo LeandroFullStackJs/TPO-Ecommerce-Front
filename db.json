@@ -59,6 +59,7 @@
     {
       "name": "Sueño de Paisaje",
       "artist": "Carlos Mendoza",
+      "artistId": 2,
       "category": "landscape",
       "price": 40000,
       "stock": 0,
@@ -90,6 +91,7 @@
     {
       "name": "Explosión Floral",
       "artist": "Isabella Torres",
+      "artistId": 5,
       "category": "nature",
       "price": 35000,
       "stock": 1,
@@ -104,6 +106,7 @@
     {
       "name": "Esencia Minimalista",
       "artist": "Diego Vargas",
+      "artistId": 6,
       "category": "minimalist",
       "price": 48000,
       "stock": 5,
@@ -150,7 +153,7 @@
       "userId": 1
     },
     {
-      "name": "HOlaa",
+      "name": "Holaa",
       "artist": "Lea",
       "artistId": 9,
       "category": "portrait",
@@ -167,7 +170,7 @@
       "id": "1757452130661"
     },
     {
-      "name": "test",
+      "name": "Test",
       "artist": "lea",
       "artistId": 9,
       "category": "abstract",
@@ -185,7 +188,8 @@
     },
     {
       "name": "Abstracto",
-      "artist": "María Gonalez",
+      "artist": "María González",
+      "artistId": 1,
       "category": "abstract",
       "price": 50000,
       "stock": 4,
@@ -198,8 +202,9 @@
       "id": "1758598713210"
     },
     {
-      "name": "asd",
-      "artist": "asd",
+      "name": "Paisaje Sereno",
+      "artist": "María González",
+      "artistId": 9,
       "category": "landscape",
       "price": 5000,
       "stock": 3,
@@ -213,7 +218,8 @@
     },
     {
       "name": "qwe",
-      "artist": "qwe",
+      "artist": "Carlos Mendoza",
+      "artistId": 2,
       "category": "minimalist",
       "price": 15000,
       "stock": 1,
@@ -227,7 +233,8 @@
     },
     {
       "name": "Nueva obra",
-      "artist": "María Gonzalez",
+      "artist": "María González",
+      "artistId": 1,
       "category": "minimalist",
       "price": 12000,
       "stock": 2,
