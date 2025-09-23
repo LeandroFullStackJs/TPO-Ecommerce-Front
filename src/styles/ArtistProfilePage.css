@@ -1,0 +1,79 @@
+/* Estilos para la página de perfil del artista */
+
+/* Contenedor principal */
+.artist-profile {
+  background-color: #fff;
+}
+
+/* Cabecera del perfil */
+.artist-profile-header {
+  background-color: var(--light-gray, #f8f9fa);
+  padding: 4rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border-color, #dee2e6);
+}
+
+.artist-info {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.artist-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+  border: 5px solid white;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.artist-name {
+  font-size: 2.8rem;
+  color: var(--dark-blue, #1c3d5a);
+  margin: 0 0 0.5rem 0;
+}
+
+.artist-category {
+  color: var(--text-light, #6c757d);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+.social-links a {
+  margin: 0 0.75rem;
+  color: var(--primary-color, #007bff);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.social-links a:hover {
+  text-decoration: underline;
+}
+
+/* Contenido principal (Biografía, Statement, Obras) */
+.artist-content {
+  max-width: 900px; /* Limita el ancho para mejorar la legibilidad */
+  margin: 0 auto;   /* Centra el bloque de contenido */
+  padding: 4rem 1rem;
+}
+
+.artist-section {
+  margin-bottom: 3.5rem;
+}
+
+.artist-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title-small {
+  font-size: 1.8rem;
+  color: var(--dark-blue, #1c3d5a);
+  margin-bottom: 1.5rem;
+}
+
+.artist-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--text-color, #343a40);
+}

@@ -38,20 +38,24 @@ export default function HomePage() {
   // Estados del contexto de productos
   const { products, loading } = useProducts()
   
-  // Estados locales para categorías y búsqueda
-  const [artists, setArtists] = useState([])
-  const [artistsLoading, setArtistsLoading] = useState(true)
-  const [categories, setCategories] = useState([])
-  const [categoriesLoading, setCategoriesLoading] = useState(true)
-  const [heroImages, setHeroImages] = useState([])
-  const [heroImagesLoading, setHeroImagesLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
+  // Estados locales para gestión de datos de la página
+  const [artists, setArtists] = useState([])                    // Lista de artistas destacados
+  const [artistsLoading, setArtistsLoading] = useState(true)    // Estado de carga de artistas
+  const [categories, setCategories] = useState([])             // Lista de categorías de arte
+  const [categoriesLoading, setCategoriesLoading] = useState(true) // Estado de carga de categorías
+  const [heroImages, setHeroImages] = useState([])             // Imágenes para el carrusel hero
+  const [heroImagesLoading, setHeroImagesLoading] = useState(true) // Estado de carga del hero
+  const [searchQuery, setSearchQuery] = useState('')           // Término de búsqueda del usuario
   const navigate = useNavigate()
 
   /**
    * EFECTO DE CARGA DE CATEGORÍAS
+   * 
    * Carga las categorías disponibles desde la API al montar el componente.
-   * Las categorías se usan para mostrar opciones de navegación rápida.
+   * Las categorías se usan para mostrar opciones de navegación rápida
+   * en la sección de exploración por tipos de arte.
+   * 
+   * Se ejecuta una sola vez al montar el componente.
    */
   useEffect(() => {
     const loadCategories = async () => {
@@ -60,6 +64,7 @@ export default function HomePage() {
         setCategories(data)
       } catch (error) {
         console.error('Error al cargar categorías:', error)
+        // En caso de error, mantenemos array vacío para evitar crashes
       } finally {
         setCategoriesLoading(false)
       }
@@ -67,7 +72,15 @@ export default function HomePage() {
     loadCategories()
   }, [])
 
-  // Cargar artistas desde la API
+  /**
+   * EFECTO DE CARGA DE ARTISTAS
+   * 
+   * Obtiene la lista de artistas destacados desde la API.
+   * Estos artistas se muestran en la sección de "Artistas Destacados"
+   * para dar visibilidad a los creadores de las obras.
+   * 
+   * Se ejecuta una sola vez al montar el componente.
+   */
   useEffect(() => {
     const loadArtists = async () => {
       try {
@@ -75,7 +88,7 @@ export default function HomePage() {
         setArtists(data)
       } catch (error) {
         console.error('Error al cargar artistas:', error)
-        setArtists([]) // Set empty array on error for better UX
+        setArtists([]) // Array vacío en caso de error para mejor UX
       } finally {
         setArtistsLoading(false)
       }
@@ -84,6 +97,15 @@ export default function HomePage() {
   }, [])
 
   // Cargar imágenes del hero desde la API
+  /**
+   * EFECTO DE CARGA DE IMÁGENES HERO
+   * 
+   * Carga las imágenes para el carrusel principal (hero section).
+   * Estas imágenes se rotan automáticamente para mostrar contenido
+   * visual atractivo en la parte superior de la página.
+   * 
+   * Se ejecuta una sola vez al montar el componente.
+   */
   useEffect(() => {
     const loadHeroImages = async () => {
       try {
@@ -91,7 +113,7 @@ export default function HomePage() {
         setHeroImages(data)
       } catch (error) {
         console.error('Error al cargar imágenes del hero:', error)
-        setHeroImages([]) // Set empty array on error for better UX
+        setHeroImages([]) // Array vacío en caso de error para mejor UX
       } finally {
         setHeroImagesLoading(false)
       }
@@ -99,31 +121,61 @@ export default function HomePage() {
     loadHeroImages()
   }, [])
 
-  // Combinar artistas con sus obras para obtener los destacados
+  /**
+   * ARTISTAS DESTACADOS CON SUS OBRAS
+   * 
+   * Calcula los artistas destacados combinando datos de artistas con sus obras.
+   * 
+   * Lógica de procesamiento:
+   * 1. Mapea cada artista y encuentra sus obras en el catálogo
+   * 2. Asigna categoría principal basada en la primera obra
+   * 3. Ordena por cantidad de obras (más productivos primero)
+   * 4. Limita a los 6 artistas más destacados
+   * 
+   * Usa useMemo para optimizar el cálculo y evitar recálculos
+   * innecesarios cuando no cambian las dependencias.
+   */
   const featuredArtists = useMemo(() => {
+    // Si aún está cargando, retorna array vacío
     if (artistsLoading || loading) return []
 
-    // Mapear artistas y añadir sus obras
+    // Mapear artistas y añadir información de sus obras
     const artistsWithWorks = artists.map(artist => {
       const works = products.filter(p => p.artistId === artist.id)
       const primaryCategory = works.length > 0 ? works[0].category : 'unknown'
       return {
         ...artist,
-        works,
-        category: primaryCategory
+        works,                    // Array de obras del artista
+        category: primaryCategory  // Categoría principal del artista
       }
     })
 
     // Ordenar por cantidad de obras y tomar los 6 primeros
-    return artistsWithWorks.sort((a, b) => b.works.length - a.works.length).slice(0, 6)
+    return artistsWithWorks
+      .sort((a, b) => b.works.length - a.works.length)  // Más obras primero
+      .slice(0, 6)                                       // Máximo 6 artistas
   }, [artists, products, artistsLoading, loading])
 
-  // Función para obtener el nombre de la categoría
+  /**
+   * OBTENER NOMBRE DE CATEGORÍA
+   * 
+   * Función helper para obtener el nombre legible de una categoría
+   * basado en su ID. Útil para mostrar etiquetas amigables al usuario.
+   * 
+   * @param {string} categoryId - ID de la categoría
+   * @returns {string} Nombre de la categoría o texto por defecto
+   */
   const getCategoryName = categoryId => {
     const category = categories.find(c => c.id === categoryId)
     return category ? category.name : 'Sin categoría'
   }
 
+  /**
+   * MANEJAR BÚSQUEDA
+   * 
+   * Procesa el envío del formulario de búsqueda y navega
+   * a la página de resultados con el término ingresado.
+   */
   const handleSearch = (e) => {
     e.preventDefault()
     if (searchQuery.trim()) {

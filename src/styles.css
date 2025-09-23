@@ -666,9 +666,16 @@ body::before {
 }
 
 /* Paginación personalizada */
+.swiper-pagination {
+  position: relative;
+  text-align: center;
+  padding-top: 30px;
+  margin: auto 0px;
+}
 .swiper-pagination-bullet {
   width: 12px;
   height: 12px;
+  
   background: rgb(139, 118, 80);
   border-radius: 50%;
   transition: all 0.3s ease;
@@ -678,6 +685,10 @@ body::before {
   background: var(--gradient-primary);
   transform: scale(1.3);
   box-shadow: 0 4px 15px rgba(184, 155, 106, 0.4);
+  position: relative;
+  text-align: center;
+
+  margin: auto 0px;
 }
 
 /* Carrusel de artistas específico */

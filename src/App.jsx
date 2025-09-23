@@ -21,6 +21,7 @@ import { WishlistProvider } from './context/WishlistContext'
 
 // Importación del layout principal y páginas
 import Layout from './components/Layout'
+import ProtectedRoute from './components/ProtectedRoute'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 // import CatalogPage from './pages/CatalogPage'  // Eliminado
@@ -46,21 +47,35 @@ export default function App() {
             <CartProvider>
               <Layout>
                 <Routes>
+                  {/* RUTAS PÚBLICAS - Accesibles para todos */}
                   <Route path="/" element={<Navigate to="/home" replace />} />
+                  <Route path="/home" element={<HomePage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                  <Route path="/artistas" element={<ArtistPage />} />
-                  <Route path="/artists/:artistId" element={<ArtistProfilePage />} />
-                  <Route path="/home" element={<HomePage />} />
-                  {/* Eliminada ruta /catalogo */}
                   <Route path="/categorias" element={<CategoriesPage />} />
                   <Route path="/producto/:id" element={<ProductPage />} />
-                  <Route path="/carrito" element={<CartPage />} />
-                  <Route path="/my-products" element={<MyProductsPage />} />
-                  <Route path="/mi-cuenta" element={<MyAccountPage />} />
+                  <Route path="/artistas" element={<ArtistPage />} />
+                  <Route path="/artists/:artistId" element={<ArtistProfilePage />} />
                   <Route path="/faqs" element={<FaqsPage />} />
                   <Route path="/about" element={<AboutPage />} />
+                  <Route path="/carrito" element={<CartPage />} />
+                  
+                  {/* RUTAS PROTEGIDAS - Solo usuarios autenticados */}
+                  <Route path="/mi-cuenta" element={
+                    <ProtectedRoute requireAuth={true}>
+                      <MyAccountPage />
+                    </ProtectedRoute>
+                  } />
+                  
+                  {/* RUTAS DE ADMINISTRADOR - Solo usuarios admin */}
+                  <Route path="/my-products" element={
+                    <ProtectedRoute requireAuth={true} requireAdmin={true}>
+                      <MyProductsPage />
+                    </ProtectedRoute>
+                  } />
+                  
+                  {/* RUTA 404 - Redirección por defecto */}
                   <Route path="*" element={<Navigate to="/home" replace />} />
                 </Routes>
               </Layout>

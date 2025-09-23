@@ -163,18 +163,37 @@ export default function CartPage() {
             {/* Se itera sobre cada item en el array 'items' del carrito para renderizar su información. */}
             {items.map(item => (
               <div key={item.id} className="cart-item">
-                <img src={item.image} alt={item.name} className="cart-item-image" />
-                <div className="cart-item-info">
-                  <h4>{item.name}</h4>
-                  <p className="brand">{item.artist}</p>
-                  <p className="price">
-                    <span style={{ fontSize: '0.8em', marginRight: '0.25rem' }}>$</span>
-                    {item.price.toLocaleString('es-AR')}
-                  </p>
-                  <small style={{ color: 'var(--text-light)' }}>
-                    {item.dimensions} • {item.technique}
-                  </small>
-                </div>
+                {/* Enlace clickeable a la página del producto */}
+                <Link 
+                  to={`/producto/${item.id}`} 
+                  className="cart-item-link"
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    flex: 1
+                  }}
+                >
+                  <img src={item.image} alt={item.name} className="cart-item-image" />
+                  <div className="cart-item-info">
+                    <h4 style={{ 
+                      color: 'var(--primary-color)', 
+                      margin: '0 0 0.5rem 0',
+                      cursor: 'pointer'
+                    }}>
+                      {item.name}
+                    </h4>
+                    <p className="brand">{item.artist}</p>
+                    <p className="price">
+                      <span style={{ fontSize: '0.8em', marginRight: '0.25rem' }}>$</span>
+                      {item.price.toLocaleString('es-AR')}
+                    </p>
+                    <small style={{ color: 'var(--text-light)' }}>
+                      {item.dimensions} • {item.technique}
+                    </small>
+                  </div>
+                </Link>
                 <div className="cart-item-quantity">
                   <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Cantidad:</label>
                   {/* Funcionamiento: Input de cantidad controlada */}
