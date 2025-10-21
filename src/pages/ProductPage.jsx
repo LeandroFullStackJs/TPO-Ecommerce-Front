@@ -1,3 +1,24 @@
+/**
+ * PÁGINA DE DETALLE DE PRODUCTO - VISTA INDIVIDUAL DE OBRA DE ARTE
+ * 
+ * Esta página muestra información completa de una obra de arte específica,
+ * permitiendo al usuario ver todos los detalles, agregar al carrito y gestionar wishlist.
+ * 
+ * Funcionalidades principales:
+ * - Visualización detallada de la obra (imagen, información, precio)
+ * - Selector de cantidad y validación de stock
+ * - Integración con carrito de compras
+ * - Gestión de wishlist (agregar/quitar favoritos)
+ * - Navegación a perfil del artista
+ * - Manejo de errores de carga y estados de loading
+ * 
+ * Dependencias:
+ * - ProductContext: Para obtener datos del producto
+ * - CartContext: Para agregar productos al carrito
+ * - UserContext: Para validar autenticación
+ * - WishlistContext: Para gestionar productos favoritos
+ */
+
 import { useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
@@ -8,18 +29,38 @@ import Modal from '../components/Modal'
 import { useWishlist } from '../context/WishlistContext'
 
 export default function ProductPage() {
+  // Obtener ID del producto desde la URL
   const { id } = useParams()
+  
+  // Hooks de contextos para acceder a datos y funcionalidades
   const { products, loading } = useProducts()
   const { addToCart, canAddToCart } = useCart()
   const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist()
-  const product = useMemo(() => products.find(p => p.id === id), [id, products])
-  const [qty, setQty] = useState(1)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
-  const [imageError, setImageError] = useState(false)
-  const { user, isAuthenticated } = useUser() // Añadido isAuthenticated
+  const { user, isAuthenticated } = useUser()
   const navigate = useNavigate()
-  const [showLoginModal, setShowLoginModal] = useState(false) 
+
+  /**
+   * MEMOIZACIÓN DEL PRODUCTO ACTUAL
+   * 
+   * Usa useMemo para evitar recálculos innecesarios del producto actual.
+   * Solo recalcula cuando cambia el ID de la URL o el array de productos,
+   * optimizando el rendimiento al evitar búsquedas repetitivas.
+   */
+  const product = useMemo(() => products.find(p => p.id === id), [id, products])
+  
+  // Estados para manejo de cantidad y feedback visual
+  const [qty, setQty] = useState(1)                    // Cantidad a agregar al carrito
+  const [error, setError] = useState('')               // Mensajes de error para el usuario
+  const [success, setSuccess] = useState('')           // Mensajes de éxito para el usuario
+  const [imageError, setImageError] = useState(false)  // Control de errores de carga de imagen
+  const [showLoginModal, setShowLoginModal] = useState(false) // Control del modal de login
+  
+  /**
+   * MANEJAR ERROR DE CARGA DE IMAGEN
+   * 
+   * Se ejecuta cuando la imagen principal del producto falla al cargar.
+   * Activa el estado de error para mostrar la imagen de respaldo.
+   */
   const handleImageError = () => {
     setImageError(true)
   }
@@ -55,26 +96,52 @@ export default function ProductPage() {
     )
   }
 
-  const hasStock = product.stock > 0
-  const canAdd = hasStock && canAddToCart(product, qty)
-  const inWishlist = isInWishlist(product.id) // Verificar si el producto está en la wishlist
+  // Variables derivadas para lógica de stock y validaciones
+  const hasStock = product.stock > 0                           // ¿Hay stock disponible?
+  const canAdd = hasStock && canAddToCart(product, qty)        // ¿Se puede agregar la cantidad seleccionada?
+  const inWishlist = isInWishlist(product.id)                  // ¿Está en la lista de deseos?
 
+  /**
+   * MANEJAR AGREGAR AL CARRITO
+   * 
+   * Intenta agregar el producto al carrito con la cantidad seleccionada.
+   * Maneja estados de success/error para mostrar feedback visual al usuario.
+   * 
+   * Flujo:
+   * 1. Limpia mensajes anteriores
+   * 2. Llama a addToCart del CartContext
+   * 3. Si es exitoso, muestra mensaje de confirmación
+   * 4. Si falla (ej: sin stock), muestra error específico
+   * 5. Auto-limpia mensajes después de unos segundos
+   */
   const handleAddToCart = () => {
-    // Eliminada la validación de usuario aquí para permitir añadir al carrito sin login.
     try {
       setError('')
       setSuccess('')
       addToCart(product, qty)
       setSuccess(`¡${qty} unidad(es) agregada(s) al carrito!`)
+      // Auto-limpiar mensaje de éxito después de 3 segundos
       setTimeout(() => setSuccess(''), 3000)
     } catch (error) {
       setError(error.message)
+      // Auto-limpiar mensaje de error después de 5 segundos
       setTimeout(() => setError(''), 5000)
     }
   }
 
+  /**
+   * MANEJAR AGREGAR/QUITAR DE WISHLIST
+   * 
+   * Gestiona la adición o eliminación del producto en la wishlist.
+   * Requiere autenticación del usuario para funcionar.
+   * 
+   * Flujo:
+   * 1. Verifica si el usuario está autenticado
+   * 2. Si no, muestra modal de login
+   * 3. Si está autenticado, agrega o quita de wishlist según estado actual
+   */
   const handleAddToWhishlist = () => {
-    if (!isAuthenticated) { // Usar isAuthenticated
+    if (!isAuthenticated) {
       setShowLoginModal(true)
       return
     }
@@ -133,9 +200,9 @@ export default function ProductPage() {
   return (
     <div className="section">
       {/* Breadcrumb */}
-      <div style={{ marginBottom: '2rem', fontSize: '0.9rem', color: 'var(--text-light)' }}>
+      <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-light)' }}>
         <Link to="/" style={{ color: 'var(--text-light)' }}>Inicio</Link> / 
-        <Link to="/catalogo" style={{ color: 'var(--text-light)', margin: '0 0.5rem' }}>Galería</Link> / 
+        <Link to="/categorias" style={{ color: 'var(--text-light)', margin: '0 0.5rem' }}>Galería</Link> / 
         <span style={{ color: 'var(--text-color)' }}>{product.name}</span>
       </div>
 
@@ -147,11 +214,13 @@ export default function ProductPage() {
             className="product-detail-image"
             onError={handleImageError}
           />
+          <Link to="/categorias" className="btn btn-outline" style={{ marginTop: '1.5rem', width: '100%' }}>
+            ← Seguir explorando
+          </Link>
         </div>
         
         <div className="product-detail-info">
-          
-          
+                    
           <h1 style={{ 
             fontSize: '2.5rem', 
             fontWeight: '700', 
@@ -174,23 +243,48 @@ export default function ProductPage() {
             Categoría: {product.category}
           </p>
 
-          <div className="price" style={{ 
-            fontSize: '2.5rem', 
-            marginBottom: '1.5rem'
-          }}>
-            <span style={{ fontSize: '0.7em', marginRight: '0.25rem' }}></span>
-            {"$ " + product.price.toLocaleString('es-AR')}
-          </div>
-
           <div className="stock">
             <span className={`stock-dot ${getStockStatus()}`}></span>
             {getStockText()}
           </div>
           
-          <p className="description">
-            {product.description}
-          </p>
-
+          <div className="product-description" style={{
+            marginBottom: '2rem',
+            padding: '1.5rem',
+            backgroundColor: '#f8f6f1',
+            borderRadius: '8px',
+            border: '1px solid #e0e0e0',
+            minHeight: '120px',
+            display: 'flex',
+            flexDirection: 'column'
+          }}>
+            <h3 style={{ 
+              fontSize: '1.2rem', 
+              fontWeight: '600', 
+              marginBottom: '1rem',
+              color: '#333',
+              borderBottom: '2px solid #007bff',
+              paddingBottom: '0.5rem'
+            }}>
+               Descripción de la obra
+            </h3>
+            <div style={{
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center'
+            }}>
+              <p style={{
+                fontSize: '1rem',
+                lineHeight: '1.6',
+                color: '#555',
+                margin: 0,
+                fontStyle: product.description ? 'normal' : 'italic',
+                opacity: product.description ? 1 : 0.8
+              }}>
+                {product.description || 'Esta obra única refleja la visión artística contemporánea con técnicas tradicionales y un enfoque moderno que captura la esencia del arte actual.'}
+              </p>
+            </div>
+          </div>
 
           <div style={{ 
             marginBottom: '2rem',
@@ -240,10 +334,21 @@ export default function ProductPage() {
             </div>
           )}
 
+          <div className="price" style={{ 
+            fontSize: '2.5rem', 
+            marginBottom: '1.5rem',
+          }}>
+            <span style={{ fontSize: '0.3em', marginRight: '0.25rem'}}></span>
+            {"$ " + product.price.toLocaleString('es-AR')}
+          </div>
+
           <div className="buy-section" style={{
             padding: '2rem',
             background: 'var(--light-gray)',
-            borderRadius: 'var(--border-radius)'
+            borderRadius: 'var(--border-radius)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem'
           }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               <label style={{ fontSize: '0.9rem', fontWeight: '500' }}>Cantidad:</label>
@@ -253,7 +358,7 @@ export default function ProductPage() {
                 max={product.stock} 
                 value={qty} 
                 onChange={e => handleQuantityChange(Number(e.target.value))}
-                disabled={!hasStock}
+                disabled={!hasStock} // Deshabilitar si no hay stock 
                 style={{
                   width: '80px',
                   padding: '0.75rem',
@@ -268,31 +373,29 @@ export default function ProductPage() {
             <button 
               onClick={handleAddToCart}
               disabled={!canAdd}
-              className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'} btn-lg`}
-              style={{ flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
+              className={`btn ${canAdd ? 'btn-primary' : 'btn-secondary'}`}
+              style={{ flexGrow: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
             >
               {hasStock ? 'Añadir al Carrito' : 'No disponible'}
             </button>
 
             <button
               onClick={inWishlist ? handleRemoveFromWishlist : handleAddToWhishlist}
-              className={`btn ${!inWishlist ? 'btn-primary' : 'btn-secondary'} btn-lg`}
-              style={{flex: 1, textTransform: 'uppercase', letterSpacing: '0.15em'}}
+              className={`wishlist-icon-btn ${inWishlist ? 'active' : ''}`}
+              aria-label={inWishlist ? 'Quitar de la wishlist' : 'Agregar a la wishlist'}
             >
-              {inWishlist ? 'Quitar de la Wishlist' : 'Agregar a Wishlist'}
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+              </svg>
             </button> 
           </div> 
         </div>
 
         <div style={{ 
-            display: 'flex', 
-            gap: '1rem',
             borderTop: '1px solid var(--border-color)',
-            paddingTop: '2rem'
+            paddingTop: '2rem',
+            gridColumn: '1 / -1' // Asegura que ocupe todo el ancho de la grilla
           }}>
-            <Link to="/catalogo" className="btn btn-outline">
-              ← Seguir explorando
-            </Link>
             <Modal isOpen={showLoginModal} onClose={closeModal} onLogin={goToLogin} />
         </div>
       </div>

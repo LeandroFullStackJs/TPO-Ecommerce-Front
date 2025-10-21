@@ -57,49 +57,19 @@
   ],
   "products": [
     {
-      "id": "abstract-colors-01",
-      "name": "Colores Abstractos",
-      "artist": "María González",
-      "artistId": 1,
-      "category": "abstract",
-      "price": 45000,
-      "stock": 1,
-      "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop&crop=center",
-      "description": "Obra abstracta vibrante que juega con la interacción de colores primarios y formas geométricas. Técnica mixta sobre lienzo.",
-      "dimensions": "60x80 cm",
-      "technique": "Técnica mixta sobre lienzo",
-      "year": 2024,
-      "userId": 1
-    },
-    {
-      "id": "landscape-dream-02",
       "name": "Sueño de Paisaje",
       "artist": "Carlos Mendoza",
       "artistId": 2,
       "category": "landscape",
-      "price": 38000,
+      "price": 40000,
       "stock": 0,
       "image": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop&crop=center",
       "description": "Paisaje onírico que captura la esencia de la naturaleza en un momento de tranquilidad absoluta. Pintura al óleo.",
       "dimensions": "70x50 cm",
-      "technique": "Óleo sobre lienzo",
+      "technique": "Óleo",
       "year": 2023,
-      "userId": 1
-    },
-    {
-      "id": "urban-portrait-03",
-      "name": "Retrato Urbano",
-      "artist": "Ana Silvestre",
-      "artistId": 3,
-      "category": "portrait",
-      "price": 52000,
-      "stock": 1,
-      "image": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=800&h=600&fit=crop&crop=center",
-      "description": "Retrato contemporáneo que refleja la vida urbana moderna. Expresividad única con técnicas de acuarela.",
-      "dimensions": "50x70 cm",
-      "technique": "Acuarela sobre papel",
-      "year": 2024,
-      "userId": 1
+      "userId": 1,
+      "id": "landscape-dream-02"
     },
     {
       "id": "geometric-symphony-04",
@@ -112,39 +82,41 @@
       "image": "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop&crop=center",
       "description": "Composición geométrica que explora la armonía entre líneas, ángulos y espacios negativos.",
       "dimensions": "80x80 cm",
-      "technique": "Acrílico sobre lienzo",
+      "technique": "Acrílico",
+      "style": "Moderno",
+      "pallette": "Monocromático",
       "year": 2024,
       "userId": 1
     },
     {
-      "id": "floral-explosion-05",
       "name": "Explosión Floral",
       "artist": "Isabella Torres",
       "artistId": 5,
       "category": "nature",
       "price": 35000,
-      "stock": 0,
+      "stock": 1,
       "image": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=600&fit=crop&crop=center",
       "description": "Interpretación moderna de la naturaleza con colores intensos y formas orgánicas fluidas.",
       "dimensions": "60x90 cm",
       "technique": "Técnica mixta",
       "year": 2023,
-      "userId": 1
+      "userId": 1,
+      "id": "floral-explosion-05"
     },
     {
-      "id": "minimalist-essence-06",
       "name": "Esencia Minimalista",
       "artist": "Diego Vargas",
       "artistId": 6,
       "category": "minimalist",
       "price": 48000,
-      "stock": 1,
+      "stock": 5,
       "image": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800&h=600&fit=crop&crop=center",
       "description": "Obra minimalista que encuentra la belleza en la simplicidad y el espacio negativo.",
       "dimensions": "100x70 cm",
-      "technique": "Óleo sobre lienzo",
+      "technique": "Óleo",
       "year": 2024,
-      "userId": 1
+      "userId": 1,
+      "id": "minimalist-essence-06"
     },
     {
       "id": "contemporary-motion-07",
@@ -157,7 +129,9 @@
       "image": "https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&h=600&fit=crop&crop=center",
       "description": "Expresión del movimiento y la energía contemporránea a través de pinceladas dinámicas.",
       "dimensions": "75x60 cm",
-      "technique": "Acrílico sobre lienzo",
+      "technique": "Acrílico",
+      "style": "Contemporáneo",
+      "pallette": "Colorido",
       "year": 2024,
       "userId": 1
     },
@@ -173,11 +147,13 @@
       "description": "Exploración de texturas y relieves que invitan al espectador a una experiencia táctil visual.",
       "dimensions": "65x85 cm",
       "technique": "Técnica mixta con texturas",
+      "style": "Moderno",
+      "pallette": "Fríos",
       "year": 2023,
       "userId": 1
     },
     {
-      "name": "HOlaa",
+      "name": "Holaa",
       "artist": "Lea",
       "artistId": 9,
       "category": "portrait",
@@ -186,25 +162,89 @@
       "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
       "description": "arte para uade",
       "dimensions": "60x60",
-      "technique": "pincel",
+      "technique": "Pincel",
+      "style": "Abstracto",
+      "pallette": "Fríos",
       "year": "2025",
       "userId": 3,
       "id": "1757452130661"
     },
     {
-      "name": "test",
+      "name": "Test",
       "artist": "lea",
       "artistId": 9,
       "category": "abstract",
       "price": 6000,
-      "stock": 2,
+      "stock": 1,
       "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
       "description": "testeo de arte",
       "dimensions": "60x60",
-      "technique": "oleo",
+      "pallette": "Pasteles",
+      "technique": "Óleo",
+      "style": "Abstracto",
       "year": "2020",
       "userId": 3,
       "id": "1757452964344"
+    },
+    {
+      "name": "Abstracto",
+      "artist": "María González",
+      "artistId": 1,
+      "category": "abstract",
+      "price": 50000,
+      "stock": 4,
+      "image": "https://images.unsplash.com/photo-1539900492308-6bcbb7b54a19?q=80&w=1142&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Una descripción",
+      "dimensions": "60x80",
+      "technique": "Oleo",
+      "year": "2018",
+      "userId": 1,
+      "id": "1758598713210"
+    },
+    {
+      "name": "Paisaje Sereno",
+      "artist": "María González",
+      "artistId": 9,
+      "category": "landscape",
+      "price": 5000,
+      "stock": 3,
+      "image": "https://images.unsplash.com/photo-1757167301106-7c3bedf90ecd?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "descrip",
+      "dimensions": "60x80",
+      "technique": "Oleo",
+      "year": "2017",
+      "userId": 1,
+      "id": "1758599326776"
+    },
+    {
+      "name": "qwe",
+      "artist": "Carlos Mendoza",
+      "artistId": 2,
+      "category": "minimalist",
+      "price": 15000,
+      "stock": 1,
+      "image": "https://images.unsplash.com/photo-1731435265797-136ba0b95cda?q=80&w=876&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Una descripción",
+      "dimensions": "50x20",
+      "technique": "oleo",
+      "year": "2019",
+      "userId": 1,
+      "id": "1758600345682"
+    },
+    {
+      "name": "Nueva obra",
+      "artist": "María González",
+      "artistId": 1,
+      "category": "minimalist",
+      "price": 12000,
+      "stock": 2,
+      "image": "https://plus.unsplash.com/premium_photo-1698001750831-dc8331d76fd8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "description": "Descripcion completa del producto",
+      "dimensions": "50x20",
+      "technique": "Oleo",
+      "year": "2019",
+      "userId": 1,
+      "id": "1758600921667"
     }
   ],
   "artists": [
@@ -212,7 +252,7 @@
       "id": 1,
       "name": "María González",
       "biography": "Artista contemporánea con una trayectoria destacada en el mundo del arte abstracto. Su obra explora la interacción del color y la forma.",
-      "profileImage": "https://images.unsplash.com/photo-1571115764595-644a1f56a55c?w=160&h=160&fit=crop&crop=faces"
+      "profileImage": "https://plus.unsplash.com/premium_photo-1682965455094-a913339699bd?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
     },
     {
       "id": 2,
@@ -299,12 +339,28 @@
   ],
   "cart": [],
   "heroImages": [
-    { "id": 1, "src": "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Taller de un artista con un cuadro en un caballete." },
-    { "id": 2, "src": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Interior de una galería de arte con cuadros de flores." },
-    { "id": 3, "src": "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Exhibición de arte moderno con luces de neón." },
-    { "id": 4, "src": "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1920&h=1080&auto=format&fit=crop", "alt": "Taller de un artista con un cuadro en un caballete." }
+    {
+      "id": 1,
+      "src": "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1920&h=1080&auto=format&fit=crop",
+      "alt": "Taller de un artista con un cuadro en un caballete."
+    },
+    {
+      "id": 2,
+      "src": "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?q=80&w=1920&h=1080&auto=format&fit=crop",
+      "alt": "Interior de una galería de arte con cuadros de flores."
+    },
+    {
+      "id": 3,
+      "src": "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?q=80&w=1920&h=1080&auto=format&fit=crop",
+      "alt": "Exhibición de arte moderno con luces de neón."
+    },
+    {
+      "id": 4,
+      "src": "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1920&h=1080&auto=format&fit=crop",
+      "alt": "Taller de un artista con un cuadro en un caballete."
+    }
   ],
-    "orders": [
+  "orders": [
     {
       "userId": 3,
       "date": "2025-09-10T00:15:34.961Z",
@@ -324,6 +380,137 @@
       "total": 45980,
       "status": "completed",
       "id": 1
+    },
+    {
+      "userId": 3,
+      "date": "2025-09-23T03:00:21.955Z",
+      "items": [
+        {
+          "productId": "1757452964344",
+          "name": "test",
+          "price": 6000,
+          "quantity": 1,
+          "image": "https://cdn.culturagenial.com/es/imagenes/arte-abstracto-og.jpg?class=ogImageWide",
+          "artist": "lea",
+          "dimensions": "60x60",
+          "year": "2020",
+          "technique": "Óleo"
+        }
+      ],
+      "total": 7260,
+      "status": "completed",
+      "id": 2
+    },
+    {
+      "userId": 3,
+      "date": "2025-09-23T03:26:09.648Z",
+      "items": [
+        {
+          "productId": "minimalist-essence-06",
+          "name": "Esencia Minimalista",
+          "price": 48000,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800&h=600&fit=crop&crop=center",
+          "artist": "Diego Vargas",
+          "dimensions": "100x70 cm",
+          "year": 2024,
+          "technique": "Óleo"
+        }
+      ],
+      "total": 58080,
+      "status": "completed",
+      "id": 3
+    },
+    {
+      "userId": 3,
+      "date": "2025-09-23T03:36:54.345Z",
+      "items": [
+        {
+          "productId": "floral-explosion-05",
+          "name": "Explosión Floral",
+          "price": 35000,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=600&fit=crop&crop=center",
+          "artist": "Isabella Torres",
+          "dimensions": "60x90 cm",
+          "year": 2023,
+          "technique": "Técnica mixta"
+        },
+        {
+          "productId": "minimalist-essence-06",
+          "name": "Esencia Minimalista",
+          "price": 48000,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800&h=600&fit=crop&crop=center",
+          "artist": "Diego Vargas",
+          "dimensions": "100x70 cm",
+          "year": 2024,
+          "technique": "Óleo"
+        }
+      ],
+      "total": 100430,
+      "status": "completed",
+      "id": 4
+    },
+    {
+      "userId": 3,
+      "date": "2025-09-23T03:47:15.552Z",
+      "items": [
+        {
+          "productId": "floral-explosion-05",
+          "name": "Explosión Floral",
+          "price": 35000,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=600&fit=crop&crop=center",
+          "artist": "Isabella Torres",
+          "dimensions": "60x90 cm",
+          "year": 2023,
+          "technique": "Técnica mixta"
+        }
+      ],
+      "total": 42350,
+      "status": "completed",
+      "id": 5
+    },
+    {
+      "userId": 3,
+      "date": "2025-09-23T04:03:49.368Z",
+      "items": [
+        {
+          "productId": "floral-explosion-05",
+          "name": "Explosión Floral",
+          "price": 35000,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=600&fit=crop&crop=center",
+          "artist": "Isabella Torres",
+          "dimensions": "60x90 cm",
+          "year": 2023,
+          "technique": "Técnica mixta"
+        }
+      ],
+      "total": 42350,
+      "status": "completed",
+      "id": 6
+    },
+    {
+      "userId": 3,
+      "date": "2025-09-23T04:13:49.310Z",
+      "items": [
+        {
+          "productId": "floral-explosion-05",
+          "name": "Explosión Floral",
+          "price": 35000,
+          "quantity": 1,
+          "image": "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=600&fit=crop&crop=center",
+          "artist": "Isabella Torres",
+          "dimensions": "60x90 cm",
+          "year": 2023,
+          "technique": "Técnica mixta"
+        }
+      ],
+      "total": 42350,
+      "status": "completed",
+      "id": 7
     }
   ]
 }

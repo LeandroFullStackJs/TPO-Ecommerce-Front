@@ -31,36 +31,42 @@ import { useCart } from '../context/CartContext'
  */
 export default function Navbar() {
   // Obtener datos del usuario y funciones de autenticación
-  const { user, isAuthenticated, logout } = useUser()
+  const { user, isAuthenticated, logout } = useUser();
   
   // Obtener totales del carrito para mostrar contador
   const { totals } = useCart()
   
+  
   // Hook para navegación programática
   const navigate = useNavigate()
   
-  // Estado para controlar el menú móvil
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  // Estado para controlar el menú de usuario
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
+  // Estados para controlar visibilidad de menús desplegables
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)  // Menú hamburguesa móvil
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)      // Menú desplegable de usuario
 
   /**
    * MANEJAR CIERRE DE SESIÓN
    * 
    * Ejecuta el logout del usuario y lo redirige a la página de login.
    * Limpia toda la información de sesión y estado de la aplicación.
+   * 
+   * Flujo:
+   * 1. Ejecuta logout del UserContext (limpia localStorage, etc.)
+   * 2. Cierra todos los menús abiertos
+   * 3. Redirige al usuario a la página de login
    */
   const handleLogout = () => {
-    logout()               // Ejecutar logout del UserContext
-    setIsUserMenuOpen(false) // Cerrar menú de usuario
-    navigate('/login')     // Redirigir al login
-    setIsMobileMenuOpen(false) // Cerrar menú móvil
+    logout()                       // Ejecutar logout del UserContext
+    setIsUserMenuOpen(false)       // Cerrar menú de usuario
+    setIsMobileMenuOpen(false)     // Cerrar menú móvil
+    navigate('/login')             // Redirigir al login
   }
 
   /**
    * TOGGLE MENÚ MÓVIL
    * 
-   * Alterna la visibilidad del menú en dispositivos móviles
+   * Alterna la visibilidad del menú hamburguesa en dispositivos móviles.
+   * Permite a los usuarios acceder a la navegación en pantallas pequeñas.
    */
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen)
@@ -69,11 +75,15 @@ export default function Navbar() {
   /**
    * CERRAR MENÚ MÓVIL
    * 
-   * Cierra el menú móvil al hacer clic en un enlace
+   * Cierra el menú móvil cuando el usuario hace clic en un enlace.
+   * Mejora la UX al evitar que el menú quede abierto después de navegar.
    */
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false)
   }
+
+  // Verificar si el usuario actual tiene permisos de administrador
+  const isAdmin = user?.role === "admin";
 
   return (
     <nav className="navbar">
@@ -124,9 +134,11 @@ export default function Navbar() {
                 <Link to="/mi-cuenta" className="navbar-link" onClick={closeMobileMenu}>
                   Mi Cuenta
                 </Link>
-                <Link to="/my-products" className="navbar-link" onClick={closeMobileMenu}>
-                  Mis Obras
-                </Link>
+                {isAdmin && (
+                  <Link to="/my-products" className="navbar-link" onClick={closeMobileMenu}>
+                    Mis Obras
+                  </Link>
+                )}
                 <button onClick={handleLogout} className="btn btn-outline btn-sm">
                   Cerrar sesión
                 </button>
@@ -167,7 +179,9 @@ export default function Navbar() {
                 {isUserMenuOpen && (
                   <div className="user-dropdown-menu">
                     <Link to="/mi-cuenta" onClick={() => setIsUserMenuOpen(false)}>Mi Cuenta</Link>
-                    <Link to="/my-products" onClick={() => setIsUserMenuOpen(false)}>Mis Obras</Link>
+                    {isAdmin && (
+                      <Link to="/my-products" onClick={() => setIsUserMenuOpen(false)}>Mis Obras</Link>
+                    )}
                     <div className="dropdown-divider"></div>
                     <button onClick={handleLogout}>Cerrar sesión</button>
                   </div>
