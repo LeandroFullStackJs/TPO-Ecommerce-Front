@@ -45,8 +45,13 @@ export default function ProductPage() {
    * Usa useMemo para evitar recálculos innecesarios del producto actual.
    * Solo recalcula cuando cambia el ID de la URL o el array de productos,
    * optimizando el rendimiento al evitar búsquedas repetitivas.
+   * 
+   * Nota: Convertimos id a número para comparar correctamente con IDs del backend
    */
-  const product = useMemo(() => products.find(p => p.id === id), [id, products])
+  const product = useMemo(() => {
+    const productId = parseInt(id, 10) // Convertir string a número
+    return products.find(p => p.id === productId || p.id === id) // Buscar por ID numérico o string
+  }, [id, products])
   
   // Estados para manejo de cantidad y feedback visual
   const [qty, setQty] = useState(1)                    // Cantidad a agregar al carrito
@@ -96,10 +101,25 @@ export default function ProductPage() {
     )
   }
 
+  // Normalización defensiva del producto para compatibilidad backend/frontend
+  const normalizedProduct = {
+    id: product.id,
+    name: product.name || product.nombreObra || 'Obra Sin Título',
+    price: product.price || product.precio || 0,
+    stock: product.stock || 0,
+    image: product.image || product.imagen || '',
+    description: product.description || product.descripcion || '',
+    artist: product.artist || product.artista || 'Artista Desconocido',
+    technique: product.technique || product.tecnica || '',
+    dimensions: product.dimensions || product.dimensiones || '',
+    year: product.year || product.anio || '',
+    style: product.style || product.estilo || ''
+  }
+
   // Variables derivadas para lógica de stock y validaciones
-  const hasStock = product.stock > 0                           // ¿Hay stock disponible?
-  const canAdd = hasStock && canAddToCart(product, qty)        // ¿Se puede agregar la cantidad seleccionada?
-  const inWishlist = isInWishlist(product.id)                  // ¿Está en la lista de deseos?
+  const hasStock = normalizedProduct.stock > 0                           // ¿Hay stock disponible?
+  const canAdd = hasStock && canAddToCart(normalizedProduct, qty)        // ¿Se puede agregar la cantidad seleccionada?
+  const inWishlist = isInWishlist(normalizedProduct.id)                  // ¿Está en la lista de deseos?
 
   /**
    * MANEJAR AGREGAR AL CARRITO
@@ -118,7 +138,7 @@ export default function ProductPage() {
     try {
       setError('')
       setSuccess('')
-      addToCart(product, qty)
+      addToCart(normalizedProduct, qty)
       setSuccess(`¡${qty} unidad(es) agregada(s) al carrito!`)
       // Auto-limpiar mensaje de éxito después de 3 segundos
       setTimeout(() => setSuccess(''), 3000)
@@ -148,7 +168,7 @@ export default function ProductPage() {
     try {
       setError('')
       setSuccess('')
-      addToWishlist(product)
+      addToWishlist(normalizedProduct)
       setSuccess(`¡Obra agregada a wishlist!`)
       setTimeout(() => setSuccess(''), 3000)
     } catch (error) {
@@ -161,7 +181,7 @@ export default function ProductPage() {
   try {
     setError('');
     setSuccess('');
-    removeFromWishlist(product.id);
+    removeFromWishlist(normalizedProduct.id);
     setSuccess('¡Obra eliminada de la wishlist!');
     setTimeout(() => setSuccess(''), 3000);
   } catch (error) {
@@ -173,7 +193,7 @@ export default function ProductPage() {
   const handleQuantityChange = (newQty) => {
     setError('')
     setSuccess('')
-    if (newQty > 0 && newQty <= product.stock) {
+    if (newQty > 0 && newQty <= normalizedProduct.stock) {
       setQty(newQty)
     }
   }
@@ -185,16 +205,16 @@ export default function ProductPage() {
   }
 
   const getStockStatus = () => {
-    if (product.stock === 0) return 'out'
-    if (product.stock < 5) return 'low'
+    if (normalizedProduct.stock === 0) return 'out'
+    if (normalizedProduct.stock < 5) return 'low'
     return 'good'
   }
 
   const getStockText = () => {
-    if (product.stock === 0) return 'Sin stock'
-    if (product.stock === 1) return 'Última unidad'
-    if (product.stock < 5) return `Últimas ${product.stock} unidades`
-    return `${product.stock} disponibles`
+    if (normalizedProduct.stock === 0) return 'Sin stock'
+    if (normalizedProduct.stock === 1) return 'Última unidad'
+    if (normalizedProduct.stock < 5) return `Últimas ${normalizedProduct.stock} unidades`
+    return `${normalizedProduct.stock} disponibles`
   }
 
   return (
@@ -203,14 +223,14 @@ export default function ProductPage() {
       <div style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-light)' }}>
         <Link to="/" style={{ color: 'var(--text-light)' }}>Inicio</Link> / 
         <Link to="/categorias" style={{ color: 'var(--text-light)', margin: '0 0.5rem' }}>Galería</Link> / 
-        <span style={{ color: 'var(--text-color)' }}>{product.name}</span>
+        <span style={{ color: 'var(--text-color)' }}>{normalizedProduct.name}</span>
       </div>
 
       <div className="product-detail">
         <div className="product-detail-image-container">
           <img 
-            src={imageError ? fallbackImage : product.image} 
-            alt={"product.name"} 
+            src={imageError ? fallbackImage : normalizedProduct.image} 
+            alt={normalizedProduct.name} 
             className="product-detail-image"
             onError={handleImageError}
           />
@@ -228,11 +248,11 @@ export default function ProductPage() {
             marginBottom: '1rem',
             color: 'var(--text-color)'
           }}>
-            {product.name}
+            {normalizedProduct.name}
           </h1>
           
-          <Link to={`/artists/${product.artistId}`} className="brand">
-            {"by " + product.artist}
+          <Link to={`/artists/${normalizedProduct.artistId || product.artistaId}`} className="brand">
+            {"by " + normalizedProduct.artist}
           </Link>
           
           <p className="category" style={{ 
@@ -240,7 +260,7 @@ export default function ProductPage() {
             color: 'var(--text-light)',
             marginBottom: '1rem'
           }}>
-            Categoría: {product.category}
+            Categoría: {normalizedProduct.category || product.categorias?.[0] || 'Sin categoría'}
           </p>
 
           <div className="stock">
@@ -278,10 +298,10 @@ export default function ProductPage() {
                 lineHeight: '1.6',
                 color: '#555',
                 margin: 0,
-                fontStyle: product.description ? 'normal' : 'italic',
-                opacity: product.description ? 1 : 0.8
+                fontStyle: normalizedProduct.description ? 'normal' : 'italic',
+                opacity: normalizedProduct.description ? 1 : 0.8
               }}>
-                {product.description || 'Esta obra única refleja la visión artística contemporánea con técnicas tradicionales y un enfoque moderno que captura la esencia del arte actual.'}
+                {normalizedProduct.description || 'Esta obra única refleja la visión artística contemporánea con técnicas tradicionales y un enfoque moderno que captura la esencia del arte actual.'}
               </p>
             </div>
           </div>
@@ -339,7 +359,7 @@ export default function ProductPage() {
             marginBottom: '1.5rem',
           }}>
             <span style={{ fontSize: '0.3em', marginRight: '0.25rem'}}></span>
-            {"$ " + product.price.toLocaleString('es-AR')}
+            {"$ " + normalizedProduct.price.toLocaleString('es-AR')}
           </div>
 
           <div className="buy-section" style={{
@@ -355,7 +375,7 @@ export default function ProductPage() {
               <input 
                 type="number" 
                 min="1" 
-                max={product.stock} 
+                max={normalizedProduct.stock} 
                 value={qty} 
                 onChange={e => handleQuantityChange(Number(e.target.value))}
                 disabled={!hasStock} // Deshabilitar si no hay stock 

@@ -7,8 +7,7 @@
  * - Actualización de datos de usuario
  * - Cambio de contraseñas
  * 
- * Utiliza json-server como backend simulado para desarrollo.
- * En producción, estas operaciones serían manejadas por un backend real
+ * Utiliza Spring Boot backend para manejo real de autenticación
  * con validaciones de seguridad, encriptación de contraseñas y JWT tokens.
  * 
  * Patrón de diseño: API Object con métodos específicos para cada operación
@@ -31,117 +30,136 @@ export const authAPI = {
   /**
    * INICIO DE SESIÓN
    * 
-   * Autentica a un usuario verificando email y contraseña contra la base de datos.
-   * En un entorno de producción, esto incluiría hashing de contraseñas y JWT tokens.
+   * Autentica a un usuario verificando email y contraseña contra el backend.
+   * El backend devuelve un JWT token que se almacena para futuras peticiones.
    * 
    * @param {string} email - Email del usuario
    * @param {string} password - Contraseña del usuario
-   * @returns {Promise<Object>} Usuario sin contraseña
+   * @returns {Promise<Object>} Usuario autenticado con token
    * @throws {Error} Si las credenciales son inválidas
    */
   login: async (email, password) => {
-    // Obtener todos los usuarios (en producción sería un endpoint específico)
-    const response = await api.get('/users')
-    
-    // Buscar usuario que coincida con email y contraseña
-    const user = response.data.find(u => u.email === email && u.password === password)
-    
-    if (!user) {
-      throw new Error('Credenciales inválidas')
+    try {
+      const response = await api.post('/auth/login', { email, password })
+      
+      // Si el backend devuelve un token, lo almacenamos
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token)
+        // Configurar el header de autorización para futuras peticiones
+        api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+      }
+      
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Credenciales inválidas')
     }
-
-    // Remover contraseña por seguridad antes de devolver el usuario
-    const { password: _, ...userWithoutPassword } = user
-    return userWithoutPassword
   },
 
   /**
-   * REGISTRO DE NUEVO USUARIO
+   * REGISTRAR NUEVO USUARIO
    * 
-   * Crea una nueva cuenta de usuario verificando que el email no esté en uso.
-   * Asigna un ID único y rol por defecto.
+   * Crea una nueva cuenta de usuario en el backend de Spring Boot.
+   * El backend se encarga de validar email único y encriptar contraseña.
    * 
    * @param {Object} userData - Datos del nuevo usuario
    * @param {string} userData.email - Email único del usuario
    * @param {string} userData.password - Contraseña del usuario
-   * @param {string} userData.name - Nombre del usuario
-   * @returns {Promise<Object>} Usuario creado sin contraseña
-   * @throws {Error} Si el email ya está registrado
+   * @param {string} userData.nombre - Nombre del usuario
+   * @param {string} userData.apellido - Apellido del usuario (obligatorio)
+   * @param {string} userData.username - Nombre de usuario único
+   * @returns {Promise<Object>} Usuario creado
+   * @throws {Error} Si el email ya está registrado o hay errores de validación
    */
   register: async (userData) => {
-    // Verificar si el email ya está en uso
-    const existingUsers = await api.get('/users')
-    const emailExists = existingUsers.data.some(u => u.email === userData.email)
-    
-    if (emailExists) {
-      throw new Error('El email ya está registrado')
+    try {
+      const response = await api.post('/auth/register', userData)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al registrar usuario')
     }
+  },
 
-    // Crear nuevo usuario con datos adicionales
-    const newUser = {
-      ...userData,
-      id: Date.now(), // ID único basado en timestamp
-      role: 'user'    // Rol por defecto
+  /**
+   * CERRAR SESIÓN
+   * 
+   * Limpia el token almacenado y la configuración de autorización.
+   */
+  logout: () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    delete api.defaults.headers.common['Authorization']
+  },
+
+  /**
+   * OBTENER USUARIO ACTUAL
+   * 
+   * Recupera los datos del usuario actualmente autenticado.
+   * 
+   * @returns {Promise<Object>} Usuario actual
+   */
+  getCurrentUser: async () => {
+    try {
+      const response = await api.get('/usuarios/me')
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener usuario')
     }
-
-    // Guardar en la base de datos
-    const response = await api.post('/users', newUser)
-    
-    // Devolver usuario sin contraseña por seguridad
-    const { password: _, ...userWithoutPassword } = response.data
-    return userWithoutPassword
   },
 
   /**
    * OBTENER USUARIO POR ID
    * 
    * Recupera los datos de un usuario específico por su ID.
-   * Útil para obtener información actualizada del perfil.
    * 
    * @param {number} id - ID único del usuario
-   * @returns {Promise<Object>} Usuario sin contraseña
+   * @returns {Promise<Object>} Usuario
    */
   getUserById: async (id) => {
-    const response = await api.get(`/users/${id}`)
-    const { password: _, ...userWithoutPassword } = response.data
-    return userWithoutPassword
+    try {
+      const response = await api.get(`/usuarios/${id}`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener usuario')
+    }
   },
 
   /**
    * ACTUALIZAR DATOS DE USUARIO
    * 
-   * Actualiza la información del perfil de usuario (nombre, email, etc.)
-   * excepto la contraseña que tiene su propio método.
+   * Actualiza la información del perfil de usuario.
    * 
    * @param {number} id - ID del usuario a actualizar
    * @param {Object} userData - Nuevos datos del usuario
-   * @returns {Promise<Object>} Usuario actualizado sin contraseña
+   * @returns {Promise<Object>} Usuario actualizado
    */
   updateUser: async (id, userData) => {
-    const response = await api.put(`/users/${id}`, userData)
-    const { password: _, ...userWithoutPassword } = response.data
-    return userWithoutPassword
+    try {
+      const response = await api.put(`/usuarios/${id}`, userData)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al actualizar usuario')
+    }
   },
 
   /**
    * CAMBIAR CONTRASEÑA
    * 
-   * Actualiza la contraseña de un usuario. En producción incluiría
-   * verificación de la contraseña actual y hashing de la nueva.
+   * Actualiza la contraseña de un usuario.
    * 
    * @param {number} id - ID del usuario
-   * @param {string} currentPassword - Contraseña actual (para verificación)
+   * @param {string} currentPassword - Contraseña actual
    * @param {string} newPassword - Nueva contraseña
-   * @returns {Promise<Object>} Usuario actualizado sin contraseña
-   * 
-   * @note En producción, el backend debe verificar currentPassword
-   *       y encriptar newPassword antes de guardarlo
+   * @returns {Promise<Object>} Respuesta del servidor
    */
   changePassword: async (id, currentPassword, newPassword) => {
-    // NOTA: En producción, se debe verificar currentPassword
-    // y hacer hash de newPassword antes de guardarlo
-    const response = await api.patch(`/users/${id}`, { password: newPassword })
-    const { password: _, ...userWithoutPassword } = response.data
-    return userWithoutPassword
+    try {
+      const response = await api.patch(`/usuarios/${id}/password`, { 
+        currentPassword, 
+        newPassword 
+      })
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al cambiar contraseña')
+    }
   }
 }

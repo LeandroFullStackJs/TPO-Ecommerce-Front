@@ -8,7 +8,7 @@
  * - Gestionar stock e inventario
  * - Eliminar productos
  * 
- * Utiliza json-server como backend simulado para desarrollo.
+ * Utiliza Spring Boot backend para gestión real de productos.
  * Cada producto representa una obra de arte con propiedades específicas
  * como técnica, dimensiones, año de creación, etc.
  * 
@@ -34,8 +34,12 @@ export const productsAPI = {
    * @returns {Promise<Array>} Array de todos los productos
    */
   getAll: async () => {
-    const response = await api.get('/products')
-    return response.data
+    try {
+      const response = await api.get('/productos')
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener productos')
+    }
   },
 
   /**
@@ -48,8 +52,12 @@ export const productsAPI = {
    * @returns {Promise<Object>} Datos completos del producto
    */
   getById: async (id) => {
-    const response = await api.get(`/products/${id}`)
-    return response.data
+    try {
+      const response = await api.get(`/productos/${id}`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener producto')
+    }
   },
 
   /**
@@ -59,21 +67,15 @@ export const productsAPI = {
    * Utilizado por artistas para publicar nuevas obras.
    * 
    * @param {Object} productData - Datos del nuevo producto
-   * @param {string} productData.name - Nombre de la obra
-   * @param {string} productData.artist - Nombre del artista
-   * @param {string} productData.category - Categoría artística
-   * @param {number} productData.price - Precio de venta
-   * @param {number} productData.stock - Cantidad disponible
-   * @param {string} productData.image - URL de la imagen
-   * @param {string} productData.description - Descripción detallada
-   * @param {string} productData.dimensions - Dimensiones de la obra
-   * @param {string} productData.technique - Técnica utilizada
-   * @param {number} productData.year - Año de creación
    * @returns {Promise<Object>} Producto creado con ID asignado
    */
   create: async (productData) => {
-    const response = await api.post('/products', productData)
-    return response.data
+    try {
+      const response = await api.post('/productos', productData)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al crear producto')
+    }
   },
 
   /**
@@ -87,8 +89,12 @@ export const productsAPI = {
    * @returns {Promise<Object>} Producto actualizado
    */
   update: async (id, productData) => {
-    const response = await api.put(`/products/${id}`, productData)
-    return response.data
+    try {
+      const response = await api.put(`/productos/${id}`, productData)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al actualizar producto')
+    }
   },
 
   /**
@@ -103,8 +109,12 @@ export const productsAPI = {
    * @returns {Promise<Object>} Producto con stock actualizado
    */
   updateStock: async (id, newStock) => {
-    const response = await api.patch(`/products/${id}`, { stock: newStock })
-    return response.data
+    try {
+      const response = await api.patch(`/productos/${id}`, { stock: newStock })
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al actualizar stock')
+    }
   },
 
   /**
@@ -119,14 +129,18 @@ export const productsAPI = {
    * @returns {Promise<Object>} Producto con stock actualizado
    */
   decrementStock: async (id, quantity) => {
-    // Obtener stock actual del producto
-    const product = await productsAPI.getById(id)
-    
-    // Calcular nuevo stock evitando valores negativos
-    const newStock = Math.max(0, product.stock - quantity)
-    
-    // Actualizar stock en la base de datos
-    return productsAPI.updateStock(id, newStock)
+    try {
+      // Obtener stock actual del producto
+      const product = await productsAPI.getById(id)
+      
+      // Calcular nuevo stock evitando valores negativos
+      const newStock = Math.max(0, product.stock - quantity)
+      
+      // Actualizar stock en la base de datos
+      return await productsAPI.updateStock(id, newStock)
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al decrementar stock')
+    }
   },
 
   /**
@@ -138,23 +152,31 @@ export const productsAPI = {
    * @param {number} id - ID del producto a eliminar
    * @returns {Promise<Object>} Confirmación de eliminación
    */
-  delete: async (id) => {
-    const response = await api.delete(`/products/${id}`)
-    return response.data
+  deleteProduct: async (id) => {
+    try {
+      const response = await api.delete(`/productos/${id}`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al eliminar producto')
+    }
   },
 
   /**
    * OBTENER PRODUCTOS POR CATEGORÍA
    * 
-   * Filtra productos por categoría artística (pintura, escultura, etc.).
+   * Filtra productos por categoría artística.
    * Utilizado en páginas de categorías específicas.
    * 
-   * @param {string} category - Nombre de la categoría
+   * @param {string} categoryId - ID de la categoría
    * @returns {Promise<Array>} Productos de la categoría especificada
    */
-  getByCategory: async (category) => {
-    const response = await api.get(`/products?category=${category}`)
-    return response.data
+  getByCategory: async (categoryId) => {
+    try {
+      const response = await api.get(`/productos/categoria/${categoryId}`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener productos por categoría')
+    }
   },
 
   /**
@@ -163,11 +185,32 @@ export const productsAPI = {
    * Recupera todas las obras de un artista específico.
    * Utilizado en perfiles de artista y gestión personal de obras.
    * 
-   * @param {number} userId - ID del usuario/artista
+   * @param {number} artistId - ID del artista
    * @returns {Promise<Array>} Productos del artista especificado
    */
-  getByUser: async (userId) => {
-    const response = await api.get(`/products?userId=${userId}`)
-    return response.data
+  getByArtist: async (artistId) => {
+    try {
+      const response = await api.get(`/productos/artista/${artistId}`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener productos por artista')
+    }
+  },
+
+  /**
+   * BUSCAR PRODUCTOS
+   * 
+   * Realiza búsqueda de productos por texto.
+   * 
+   * @param {string} query - Término de búsqueda
+   * @returns {Promise<Array>} Productos que coinciden con la búsqueda
+   */
+  search: async (query) => {
+    try {
+      const response = await api.get(`/productos/buscar?q=${encodeURIComponent(query)}`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al buscar productos')
+    }
   }
 }

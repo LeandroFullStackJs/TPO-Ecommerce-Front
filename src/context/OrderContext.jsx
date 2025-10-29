@@ -58,17 +58,27 @@ export function OrderProvider({ children }) {
      * de autenticación y manejo de errores.
      */
     const loadUserOrders = async () => {
-      if (isAuthenticated && user?.id) {
+      // Verificar que el usuario esté autenticado y tenga un token válido
+      const token = localStorage.getItem('token')
+      if (isAuthenticated && user?.id && token) {
         try {
           setLoadingOrders(true)                    // Activar estado de carga
           setErrorOrders(null)                      // Limpiar errores previos
           
           // Obtener órdenes del usuario desde la API
           const data = await ordersAPI.getOrdersByUser(user.id)
-          setOrders(data)                          // Actualizar estado con órdenes
+          setOrders(Array.isArray(data) ? data : []) // Validar que data sea un array
         } catch (err) {
           console.error('Error al cargar órdenes:', err)
-          setErrorOrders('Error al cargar el historial de compras.')
+          
+          // Manejo específico según el tipo de error
+          if (err.message?.includes('403') || err.response?.status === 403) {
+            setErrorOrders('No tienes permisos para ver el historial de compras.')
+          } else if (err.message?.includes('401') || err.response?.status === 401) {
+            setErrorOrders('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.')
+          } else {
+            setErrorOrders('Error al cargar el historial de compras.')
+          }
         } finally {
           setLoadingOrders(false)                  // Desactivar estado de carga
         }

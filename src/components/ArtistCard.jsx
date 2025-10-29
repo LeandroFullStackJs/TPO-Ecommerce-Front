@@ -2,28 +2,37 @@ import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 export default function ArtistCard({ artist, getCategoryName }) {
+  // Normalización defensiva del artista
+  const normalizedArtist = {
+    id: artist?.id || 'unknown',
+    name: artist?.name || artist?.nombre || 'Artista Sin Nombre',
+    category: artist?.category || artist?.categoria || 'Sin Categoría',
+    profileImage: artist?.profileImage || artist?.imagenPerfil,
+    works: Array.isArray(artist?.works) ? artist.works : []
+  }
+
   // Usamos un avatar genérico como fallback si no hay imagen de perfil.
-  const profileImage = artist.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(artist.name)}&size=160&background=f8f9fa&color=2c3e50`
+  const profileImage = normalizedArtist.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(normalizedArtist.name)}&size=160&background=f8f9fa&color=2c3e50`
 
   return (
     <div className="artist-card">
       <div className="artist-card-header">
         <img
           src={profileImage}
-          alt={artist.name}
+          alt={normalizedArtist.name}
           className="artist-card-avatar"
         />
       </div>
       <div className="artist-card-body">
-        <h3 className="artist-name">{artist.name}</h3>
-        <p className="artist-category">{getCategoryName(artist.category)}</p>
+        <h3 className="artist-name">{normalizedArtist.name}</h3>
+        <p className="artist-category">{getCategoryName(normalizedArtist.category)}</p>
 
         <div className="artist-card-stats">
-          {artist.works.length} obra{artist.works.length !== 1 ? 's' : ''} en la galería
+          {normalizedArtist.works.length} obra{normalizedArtist.works.length !== 1 ? 's' : ''} en la galería
         </div>
 
         <div className="artist-card-actions">
-          <Link to={`/artists/${artist.id}`} className="btn btn-outline btn-sm">
+          <Link to={`/artists/${normalizedArtist.id}`} className="btn btn-outline btn-sm">
             Ver Perfil Completo 
           </Link>
         </div>
@@ -34,15 +43,24 @@ export default function ArtistCard({ artist, getCategoryName }) {
 
 ArtistCard.propTypes = {
   artist: PropTypes.shape({
-    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    name: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    name: PropTypes.string,
+    nombre: PropTypes.string, // Alternativa española
+    category: PropTypes.string,
+    categoria: PropTypes.string, // Alternativa española
     profileImage: PropTypes.string,
-    works: PropTypes.arrayOf(
-      PropTypes.shape({
-        id: PropTypes.string,
-      })
-    ).isRequired,
-  }).isRequired,
+    imagenPerfil: PropTypes.string, // Alternativa española
+    works: PropTypes.array,
+  }),
   getCategoryName: PropTypes.func.isRequired,
+}
+
+// Props por defecto
+ArtistCard.defaultProps = {
+  artist: {
+    id: 'unknown',
+    name: 'Artista Sin Nombre',
+    category: 'Sin Categoría', 
+    works: []
+  }
 }

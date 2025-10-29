@@ -25,7 +25,7 @@ import axios from 'axios'
  * Incluye URL del servidor, timeout y headers por defecto.
  */
 const api = axios.create({
-  baseURL: 'http://localhost:5000',        // URL del backend en desarrollo
+  baseURL: 'http://localhost:8080/api',    // URL del backend Spring Boot
   timeout: 10000,                          // Timeout de 10 segundos
   headers: {
     'Content-Type': 'application/json'     // Content-Type por defecto
@@ -33,10 +33,30 @@ const api = axios.create({
 })
 
 /**
+ * INTERCEPTOR DE PETICIONES
+ * 
+ * Añade automáticamente el token de autenticación a todas las peticiones
+ * si está disponible en localStorage.
+ */
+api.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
+
+/**
  * INTERCEPTOR DE RESPUESTAS
  * 
  * Maneja automáticamente los errores comunes de la API:
  * - Errores de autenticación (401)
+ * - Errores de autorización (403)
  * - Errores de red y timeout
  * - Logging centralizado de errores
  */
@@ -49,13 +69,27 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Limpiar datos de usuario y redirigir al login
       localStorage.removeItem('user')
+      localStorage.removeItem('token')
+      delete api.defaults.headers.common['Authorization']
       window.location.href = '/login'
+    }
+    
+    // Manejo específico de error de autorización
+    if (error.response?.status === 403) {
+      console.warn('Acceso denegado (403):', error.config?.url)
+      // No redirigir automáticamente para 403, dejar que el componente maneje
     }
     
     // Propagar el error para manejo específico en componentes
     return Promise.reject(error) // Necesario para que los componentes puedan capturar errores con try/catch
   }
 )
+
+// Configurar token al inicializar si existe en localStorage
+const token = localStorage.getItem('token')
+if (token) {
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}
 
 // Exportar la instancia configurada para uso en toda la aplicación
 export default api // Exportación por defecto de la instancia configurada de axios

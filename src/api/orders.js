@@ -13,9 +13,8 @@
  * - Estado de la orden
  * - Fecha de compra
  * 
- * Utiliza json-server como backend simulado para desarrollo.
- * En producción, esto incluiría integración con sistemas de pago,
- * gestión de inventario y servicios de envío.
+ * Utiliza Spring Boot backend para gestión real de órdenes.
+ * Incluye integración con sistemas de pago, gestión de inventario y servicios de envío.
  * 
  * Patrón de diseño: API Object con métodos específicos para órdenes
  * Beneficios: Separación clara del flujo de compra y fácil extensión
@@ -27,9 +26,8 @@ import api from './index'
  * OBJETO API DE ÓRDENES
  * 
  * Contiene métodos para gestionar órdenes de compra.
- * Actualmente incluye operaciones básicas que pueden
- * extenderse con funcionalidades adicionales como:
- * - Actualización de estado de órdenes
+ * Incluye operaciones completas para:
+ * - Creación y actualización de órdenes
  * - Cancelación de órdenes
  * - Tracking de envío
  */
@@ -48,46 +46,65 @@ export const ordersAPI = {
    * @returns {Promise<Array>} Array de órdenes del usuario ordenadas por fecha
    * @example
    * const userOrders = await ordersAPI.getOrdersByUser(123)
-   * // Retorna: [{ id: 1, userId: 123, products: [...], total: 150, date: "2024-01-15" }, ...]
    */
   getOrdersByUser: async (userId) => {
-    const response = await api.get(`/orders?userId=${userId}`)
-    return response.data
+    try {
+      const response = await api.get(`/pedidos/usuario/${userId}`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener órdenes del usuario')
+    }
   },
-
   /**
    * CREAR NUEVA ORDEN
    * 
    * Registra una nueva orden de compra en el sistema.
    * Se ejecuta cuando un usuario completa el proceso de checkout.
    * 
-   * Incluye toda la información necesaria para procesar la compra:
-   * - Productos y cantidades
-   * - Información de envío
-   * - Método de pago
-   * - Totales calculados
-   * 
    * @param {Object} orderData - Datos completos de la orden
-   * @param {number} orderData.userId - ID del usuario que compra
-   * @param {Array} orderData.products - Lista de productos con cantidades
-   * @param {number} orderData.total - Total de la compra
-   * @param {string} orderData.status - Estado inicial de la orden
-   * @param {Object} orderData.shippingInfo - Información de envío
-   * @param {string} orderData.paymentMethod - Método de pago utilizado
    * @returns {Promise<Object>} Orden creada con ID asignado y estado inicial
-   * 
-   * @example
-   * const newOrder = await ordersAPI.createOrder({
-   *   userId: 123,
-   *   products: [{ id: 1, quantity: 2, price: 50 }],
-   *   total: 100,
-   *   status: 'pending',
-   *   shippingInfo: { address: '...', city: '...' },
-   *   paymentMethod: 'credit_card'
-   * })
    */
   createOrder: async (orderData) => {
-    const response = await api.post('/orders', orderData)
-    return response.data
+    try {
+      const response = await api.post('/pedidos', orderData)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al crear orden')
+    }
+  },
+
+  /**
+   * OBTENER ORDEN POR ID
+   * 
+   * Recupera los detalles completos de una orden específica.
+   * 
+   * @param {number} orderId - ID de la orden
+   * @returns {Promise<Object>} Detalles completos de la orden
+   */
+  getOrderById: async (orderId) => {
+    try {
+      const response = await api.get(`/pedidos/${orderId}`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener orden')
+    }
+  },
+
+  /**
+   * ACTUALIZAR ESTADO DE ORDEN
+   * 
+   * Actualiza el estado de una orden existente.
+   * 
+   * @param {number} orderId - ID de la orden
+   * @param {string} newStatus - Nuevo estado de la orden
+   * @returns {Promise<Object>} Orden actualizada
+   */
+  updateOrderStatus: async (orderId, newStatus) => {
+    try {
+      const response = await api.patch(`/pedidos/${orderId}/estado`, { estado: newStatus })
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al actualizar estado de orden')
+    }
   }
 }

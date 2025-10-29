@@ -12,9 +12,7 @@
  * - Arte Digital
  * - Etc.
  * 
- * Utiliza json-server como backend simulado para desarrollo.
- * En producción, esto sería manejado por un CMS o base de datos
- * con capacidades de gestión de taxonomías.
+ * Utiliza Spring Boot backend para gestión real de categorías.
  * 
  * Patrón de diseño: API Object simple para operaciones de lectura
  * Beneficios: Interfaz limpia y extensible para futuras funcionalidades
@@ -46,8 +44,12 @@ export const categoriesAPI = {
    * // Retorna: [{ id: 1, name: "Pintura", slug: "pintura" }, ...]
    */
   getAll: async () => {
-    const response = await api.get('/categories')
-    return response.data
+    try {
+      const response = await api.get('/categorias')
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener categorías')
+    }
   },
 
   /**
@@ -66,7 +68,11 @@ export const categoriesAPI = {
    * // Retorna: { id: 1, name: "Pintura", description: "...", slug: "pintura" }
    */
   getById: async (id) => {
-    const response = await api.get(`/categories/${id}`)
-    return response.data
+    try {
+      const response = await api.get(`/categorias/${id}`)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener categoría')
+    }
   }
 }

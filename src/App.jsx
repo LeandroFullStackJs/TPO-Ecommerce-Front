@@ -21,6 +21,7 @@ import { WishlistProvider } from './context/WishlistContext'
 
 // Importación del layout principal y páginas
 import Layout from './components/Layout'
+import ErrorBoundary from './components/ErrorBoundary'
 import ProtectedRoute from './components/ProtectedRoute'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
@@ -40,12 +41,13 @@ import './styles.css'
 
 export default function App() {
   return (
-    <UserProvider>
-      <OrderProvider>
-        <ProductProvider>
-          <WishlistProvider>
-            <CartProvider>
-              <Layout>
+    <ErrorBoundary>
+      <UserProvider>
+        <OrderProvider>
+          <ProductProvider>
+            <WishlistProvider>
+              <CartProvider>
+                <Layout>
                 <Routes>
                   {/* RUTAS PÚBLICAS - Accesibles para todos */}
                   <Route path="/" element={<Navigate to="/home" replace />} />
@@ -84,5 +86,6 @@ export default function App() {
         </ProductProvider>
       </OrderProvider>
     </UserProvider>
+    </ErrorBoundary>
   )
 }

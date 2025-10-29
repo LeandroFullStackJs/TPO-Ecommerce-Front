@@ -113,7 +113,33 @@ export default function HomePage() {
         setHeroImages(data)
       } catch (error) {
         console.error('Error al cargar imágenes del hero:', error)
-        setHeroImages([]) // Array vacío en caso de error para mejor UX
+        
+        // Imágenes de fallback cuando el backend no está disponible
+        const fallbackImages = [
+          {
+            id: 'fallback-1',
+            imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&h=600&fit=crop',
+            title: 'Galería de Arte Tappan',
+            description: 'Descubre obras únicas de artistas emergentes',
+            alt: 'Galería de arte moderna'
+          },
+          {
+            id: 'fallback-2', 
+            imageUrl: 'https://images.unsplash.com/photo-1594736797933-d0d3647ef1ba?w=1200&h=600&fit=crop',
+            title: 'Arte Contemporáneo',
+            description: 'Explora nuestra colección de arte contemporáneo',
+            alt: 'Arte contemporáneo'
+          },
+          {
+            id: 'fallback-3',
+            imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1200&h=600&fit=crop', 
+            title: 'Artistas Emergentes',
+            description: 'Apoya a nuevos talentos en el mundo del arte',
+            alt: 'Estudio de artista'
+          }
+        ]
+        
+        setHeroImages(fallbackImages) // Usar imágenes de fallback en lugar de array vacío
       } finally {
         setHeroImagesLoading(false)
       }
@@ -205,13 +231,13 @@ export default function HomePage() {
           className="hero-swiper"
           spaceBetween={0}
           slidesPerView={1}
-          loop={true}
-          autoplay={{
+          loop={heroImages.length > 1} // Solo loop si hay más de 1 imagen
+          autoplay={heroImages.length > 1 ? {
             delay: 4000,
             disableOnInteraction: false
-          }}
+          } : false} // Solo autoplay si hay más de 1 imagen
           pagination={{ clickable: true }}
-          navigation={true}
+          navigation={heroImages.length > 1} // Solo navegación si hay más de 1 imagen
         >
           <div className="hero-content">
             <h1>ArtGallery</h1>
@@ -250,8 +276,8 @@ export default function HomePage() {
           modules={[Navigation, Pagination]}
           spaceBetween={30}
           slidesPerView={3}
-          navigation
-          loop={true}
+          navigation={featuredProducts.length > 3} // Solo navegación si hay más productos que slidesPerView
+          loop={featuredProducts.length > 3} // Solo loop si hay más productos que slidesPerView
           pagination={{ clickable: true }}
           breakpoints={{
             320: { 

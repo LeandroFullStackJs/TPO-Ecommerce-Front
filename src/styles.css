@@ -3213,3 +3213,54 @@ h2:not(.product-form h2) {
 .featured .stock {
   font-size: 10px; /* Reducido de 11px */
 }
+
+/* Error Boundary Styles */
+.error-boundary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 2rem;
+  background-color: var(--light-gray);
+}
+
+.error-boundary-content {
+  text-align: center;
+  max-width: 500px;
+  padding: 2rem;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.error-boundary-content h2 {
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.error-boundary-content p {
+  color: var(--text-light);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.error-boundary-content details {
+  text-align: left;
+  background: var(--light-gray);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+}
+
+.error-boundary-content summary {
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.error-boundary-content pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text-color);
+}

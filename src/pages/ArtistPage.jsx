@@ -17,7 +17,8 @@ export default function ArtistPage() {
     const loadArtists = async () => {
       try {
         const data = await artistsAPI.getAll()
-        setArtists(data)
+        // Validar que data sea un array
+        setArtists(Array.isArray(data) ? data : [])
       } catch (error) {
         console.error('Error al cargar artistas:', error)
         setArtists([]) // Set empty array on error for better UX
@@ -33,7 +34,8 @@ export default function ArtistPage() {
     const loadCategories = async () => {
       try {
         const data = await categoriesAPI.getAll()
-        setCategories(data)
+        // Validar que data sea un array
+        setCategories(Array.isArray(data) ? data : [])
       } catch (error) {
         console.error('Error al cargar categorías:', error)
         setCategories([]) // Set empty array on error for better UX
@@ -47,10 +49,22 @@ export default function ArtistPage() {
     if (artistsLoading || productsLoading) return []
 
     return artists.map(artist => {
+      // Normalizar datos del artista para manejar diferentes estructuras del backend
+      const normalizedArtist = {
+        ...artist,
+        // Asegurar que siempre tengamos un nombre válido
+        name: artist.name || artist.nombre || artist.fullName || 'Artista sin nombre',
+        // Asegurar que tengamos una imagen por defecto
+        image: artist.image || artist.foto || artist.avatar || '/default-artist.jpg',
+        // Normalizar descripción/biografía
+        bio: artist.bio || artist.biografia || artist.description || '',
+      }
+
       const works = products.filter(p => p.artistId === artist.id)
       const primaryCategory = works.length > 0 ? works[0].category : 'unknown'
+      
       return {
-        ...artist,
+        ...normalizedArtist,
         works,
         category: primaryCategory
       }
@@ -65,6 +79,7 @@ export default function ArtistPage() {
   // Filtrar artistas según búsqueda y categoría
   const filteredArtists = useMemo(() => {
     return allArtistsWithWorks.filter(artist => {
+      // Usar el nombre normalizado que ya está garantizado que existe
       const matchesSearch = artist.name.toLowerCase().includes(filter.toLowerCase())
       const matchesCategory = !selectedCategory || artist.category === selectedCategory
       return matchesSearch && matchesCategory

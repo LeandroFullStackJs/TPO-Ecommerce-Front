@@ -6,8 +6,7 @@
  * - Gestionar banners promocionales
  * - Contenido destacado de la página principal
  * 
- * Utiliza la instancia configurada de axios para mantener consistencia
- * con el resto de la aplicación y aprovechar los interceptors.
+ * Utiliza Spring Boot backend para gestión de contenido multimedia.
  */
 
 import api from './index'
@@ -29,8 +28,12 @@ export const heroAPI = {
    * @throws {Error} Si falla la petición al servidor
    */
   getHeroImages: async () => {
-    const response = await api.get('/heroImages')
-    return response.data
+    try {
+      const response = await api.get('/hero-images')
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener imágenes hero')
+    }
   },
 
   /**
@@ -43,8 +46,12 @@ export const heroAPI = {
    * @throws {Error} Si falla la petición al servidor
    */
   getPromotionalBanners: async () => {
-    const response = await api.get('/promotionalBanners')
-    return response.data
+    try {
+      const response = await api.get('/banners-promocionales')
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener banners promocionales')
+    }
   },
 
   /**
@@ -57,8 +64,12 @@ export const heroAPI = {
    * @throws {Error} Si falla la petición al servidor
    */
   getFeaturedContent: async () => {
-    const response = await api.get('/featuredContent')
-    return response.data
+    try {
+      const response = await api.get('/contenido-destacado')
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al obtener contenido destacado')
+    }
   },
 
   /**
@@ -69,10 +80,13 @@ export const heroAPI = {
    * @param {number} id - ID de la imagen hero
    * @param {Object} imageData - Nuevos datos de la imagen
    * @returns {Promise<Object>} Imagen hero actualizada
-   * @throws {Error} Si no tiene permisos o falla la actualización
    */
   updateHeroImage: async (id, imageData) => {
-    const response = await api.put(`/heroImages/${id}`, imageData)
-    return response.data
+    try {
+      const response = await api.put(`/hero-images/${id}`, imageData)
+      return response.data
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Error al actualizar imagen hero')
+    }
   }
 }

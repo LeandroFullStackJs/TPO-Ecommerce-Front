@@ -174,7 +174,7 @@ export default function CategoriesPage() {
       .filter(p => {
         // PASO 1: BÚSQUEDA DE TEXTO MULTICANAL
         // Busca en nombre, artista y descripción del producto
-        const searchableText = (p.name + ' ' + (p.artist || '') + ' ' + (p.description || ''))
+        const searchableText = ((p.name || p.nombre || '') + ' ' + (p.artist || '') + ' ' + (p.description || ''))
           .toLowerCase()
         const matchText = searchableText.includes(q.toLowerCase())
 
@@ -199,7 +199,12 @@ export default function CategoriesPage() {
           matchPrice
         )
       })
-      .sort((a, b) => a.name.localeCompare(b.name)) // Ordenar alfabéticamente por nombre
+      .sort((a, b) => {
+        // Manejo defensivo para nombres undefined
+        const nameA = a.name || a.nombre || 'Sin nombre'
+        const nameB = b.name || b.nombre || 'Sin nombre'
+        return nameA.localeCompare(nameB)
+      }) // Ordenar alfabéticamente por nombre
   }, [q, cat, filters, products]) // Dependencias para recálculo automático
 
   /**

@@ -47,6 +47,27 @@ export default function ProductCard({ product }) {
   // Estado para manejar errores de carga de imagen
   const [imageError, setImageError] = useState(false)
   
+  // Función helper para formatear precio de manera segura
+  const formatPrice = (price) => {
+    if (price === null || price === undefined || isNaN(price)) {
+      return 'Consultar precio'
+    }
+    return Number(price).toLocaleString('es-AR')
+  }
+  
+  // Normalizar datos del producto para manejar diferentes estructuras del backend
+  const normalizedProduct = {
+    ...product,
+    name: product.name || product.nombre || product.title || 'Producto sin nombre',
+    price: product.price || product.precio || 0,
+    image: product.image || product.imagen || product.foto || '/default-product.jpg',
+    artist: product.artist || product.artista || product.creator || 'Artista desconocido',
+    stock: product.stock || product.cantidad || 0,
+    dimensions: product.dimensions || product.dimensiones || 'Sin especificar',
+    year: product.year || product.año || product.yearCreated || 'Sin fecha',
+    description: product.description || product.descripcion || product.desc || ''
+  }
+
   /**
    * MANEJAR AGREGAR AL CARRITO
    * 
@@ -55,7 +76,7 @@ export default function ProductCard({ product }) {
    */
   const handleAddToCart = () => {
     try {
-      addToCart(product, 1)  // Agregar 1 unidad al carrito
+      addToCart(normalizedProduct, 1)  // Agregar 1 unidad al carrito
     } catch (error) {
       alert(error.message)   // Mostrar mensaje de error al usuario
     }
@@ -72,8 +93,8 @@ export default function ProductCard({ product }) {
   }
 
   // Variables derivadas para lógica de stock
-  const hasStock = product.stock > 0                      // ¿Hay stock disponible?
-  const canAdd = hasStock && canAddToCart(product, 1)     // ¿Se puede agregar al carrito?
+  const hasStock = normalizedProduct.stock > 0                      // ¿Hay stock disponible?
+  const canAdd = hasStock && canAddToCart(normalizedProduct, 1)     // ¿Se puede agregar al carrito?
 
   /**
    * OBTENER ESTADO DEL STOCK
@@ -96,21 +117,21 @@ export default function ProductCard({ product }) {
    * @returns {string} Texto descriptivo del stock
    */
   const getStockText = () => {
-    if (product.stock === 0) return 'Sin stock'
-    if (product.stock === 1) return 'Última unidad'
-    if (product.stock < 5) return `Últimas ${product.stock} unidades`
-    return `${product.stock} disponibles`
+    if (normalizedProduct.stock === 0) return 'Sin stock'
+    if (normalizedProduct.stock === 1) return 'Última unidad'
+    if (normalizedProduct.stock < 5) return `Últimas ${normalizedProduct.stock} unidades`
+    return `${normalizedProduct.stock} disponibles`
   }
 
   // Imagen de respaldo artística para casos de error
   const fallbackImage = 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&crop=center'
 
   return (
-    <Link to={`/producto/${product.id}`} className="product-card">
+    <Link to={`/producto/${normalizedProduct.id}`} className="product-card">
       {/* IMAGEN DE LA OBRA CON MANEJO DE ERRORES */}
       <img 
-        src={imageError ? fallbackImage : product.image} 
-        alt={product.name} 
+        src={imageError ? fallbackImage : normalizedProduct.image} 
+        alt={normalizedProduct.name} 
         className="product-image"
         onError={handleImageError}
       />
@@ -118,22 +139,22 @@ export default function ProductCard({ product }) {
       {/* INFORMACIÓN PRINCIPAL DEL PRODUCTO */}
       <div className="product-info">
         {/* Artista (equivalente a "marca" en productos tradicionales) */}
-        <p className="brand">{product.artist}</p>
+        <p className="brand">{normalizedProduct.artist}</p>
         
         {/* Nombre de la obra */}
-        <h3>{product.name}</h3>
+        <h3>{normalizedProduct.name}</h3>
         
         {/* Precio formateado para Argentina */}
         <div className="price">
           <span className="price-currency">$</span>
-          {product.price.toLocaleString('es-AR')}
+          {formatPrice(normalizedProduct.price)}
         </div>
         
         {/* Información específica de obras de arte */}
         <div className="artwork-info">
-          <span>{product.dimensions}</span>
+          <span>{normalizedProduct.dimensions}</span>
           <span> • </span>
-          <span>{product.year}</span>
+          <span>{normalizedProduct.year}</span>
         </div>
         
         {/* Indicador visual de stock */}
@@ -144,9 +165,9 @@ export default function ProductCard({ product }) {
         
         {/* Descripción truncada */}
         <p className="description">
-          {product.description?.length > 100 
-            ? product.description.substring(0, 100) + '...' 
-            : product.description
+          {normalizedProduct.description?.length > 100 
+            ? normalizedProduct.description.substring(0, 100) + '...' 
+            : normalizedProduct.description
           }
         </p>
       </div>

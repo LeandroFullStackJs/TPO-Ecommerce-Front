@@ -139,8 +139,17 @@ export function UserProvider({ children }) {
     try {
       setLoading(true)
       
+      // Mapear datos del frontend al formato esperado por el backend Spring Boot
+      const backendUserData = {
+        email: userData.email,
+        password: userData.password,
+        nombre: userData.firstName || userData.username || 'Usuario',
+        apellido: userData.lastName || userData.username || 'Apellido', // El backend requiere apellido obligatorio
+        username: userData.username || userData.email?.split('@')[0] || 'user'
+      }
+      
       // Llamar a la API de registro
-      const newUser = await authAPI.register(userData)
+      const newUser = await authAPI.register(backendUserData)
 
       // Guardar datos del nuevo usuario en el estado y localStorage
       setUser(newUser)
