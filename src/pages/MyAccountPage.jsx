@@ -4,6 +4,34 @@ import { useOrders } from "../context/OrderContext";
 import { useWishlist } from "../context/WishlistContext";
 import {Link} from 'react-router-dom'
 
+// Función auxiliar para formatear números de forma segura
+const formatCurrency = (value) => {
+  if (value === null || value === undefined || isNaN(value)) {
+    return 'N/A'
+  }
+  const numValue = parseFloat(value)
+  if (isNaN(numValue)) {
+    return 'N/A'
+  }
+  return numValue.toLocaleString('es-AR')
+}
+
+// Función auxiliar para formatear fechas de forma segura
+const formatDate = (dateValue) => {
+  if (!dateValue) {
+    return 'Fecha no disponible'
+  }
+  try {
+    const date = new Date(dateValue)
+    if (isNaN(date.getTime())) {
+      return 'Fecha inválida'
+    }
+    return date.toLocaleDateString('es-AR')
+  } catch (error) {
+    return 'Fecha inválida'
+  }
+}
+
 // Componente Perfil: muestra datos del usuario y permite editar nombre y email
 function Perfil({ user }) {
   // Teoría: Acceso a función para actualizar usuario desde contexto
@@ -186,15 +214,15 @@ function MisCompras() {
             }}
           >
             <h3 style={{ marginBottom: "0.5rem", color: "var(--primary-color)" }}>
-              Orden #{order.id} - {new Date(order.date).toLocaleDateString()}
+              Orden #{order.id} - {formatDate(order.date)}
             </h3>
             <p style={{ marginBottom: "1rem", color: "var(--text-light)" }}>
-              Total: ${order.total.toLocaleString('es-AR')} - Estado: {order.status}
+              Total: ${formatCurrency(order.total)} - Estado: {order.status || order.estado || 'PENDIENTE'}
             </p>
             <ul style={{ listStyle: "none", padding: 0 }}>
-              {order.items.map((item) => (
+              {(order.items || []).map((item, index) => (
                 <li
-                  key={item.productId}
+                  key={item.productId || `item-${index}`}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -204,15 +232,18 @@ function MisCompras() {
                   }}
                 >
                   <img
-                    src={item.image}
-                    alt={item.name}
+                    src={item.image || '/placeholder-image.png'}
+                    alt={item.name || 'Producto'}
                     style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "4px", marginRight: "1rem" }}
+                    onError={(e) => {
+                      e.target.src = '/placeholder-image.png'
+                    }}
                   />
                   <span>
-                    {item.name} ({item.quantity} unid.)
+                    {item.name || 'Producto sin nombre'} ({item.quantity || 1} unid.)
                   </span>
                   <span style={{ marginLeft: "auto", fontWeight: "600" }}>
-                    ${(item.price * item.quantity).toLocaleString('es-AR')}
+                    ${formatCurrency((item.price || 0) * (item.quantity || 1))}
                   </span>
                 </li>
               ))}

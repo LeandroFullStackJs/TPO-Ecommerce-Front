@@ -55,17 +55,30 @@ export default function ProductCard({ product }) {
     return Number(price).toLocaleString('es-AR')
   }
   
-  // Normalizar datos del producto para manejar diferentes estructuras del backend
+  // El backend ya devuelve campos en inglés y español. Priorizar inglés con fallback a español
   const normalizedProduct = {
     ...product,
-    name: product.name || product.nombre || product.title || 'Producto sin nombre',
+    name: product.name || product.nombreObra || 'Producto sin nombre',
     price: product.price || product.precio || 0,
-    image: product.image || product.imagen || product.foto || '/default-product.jpg',
-    artist: product.artist || product.artista || product.creator || 'Artista desconocido',
-    stock: product.stock || product.cantidad || 0,
+    image: getImageUrl(product.image || product.imagen),
+    artist: product.artist || product.artista || 'Artista desconocido',
+    stock: product.stock || 0,
     dimensions: product.dimensions || product.dimensiones || 'Sin especificar',
-    year: product.year || product.año || product.yearCreated || 'Sin fecha',
-    description: product.description || product.descripcion || product.desc || ''
+    year: product.year || product.anio || 'Sin fecha',
+    description: product.description || product.descripcion || ''
+  }
+
+  // Función helper para manejar URLs de imagen del backend
+  function getImageUrl(imageUrl) {
+    if (!imageUrl) return '/default-product.jpg'
+    
+    // Si la URL es relativa (viene del proxy del backend), añadir base URL
+    if (imageUrl.startsWith('/api/')) {
+      return `http://localhost:8080${imageUrl}`
+    }
+    
+    // Si es URL absoluta, usarla directamente
+    return imageUrl
   }
 
   /**

@@ -1,13 +1,26 @@
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-export default function ArtistCard({ artist, getCategoryName }) {
+export default function ArtistCard({ artist = {}, getCategoryName }) {
+  // Función helper para manejar URLs de imagen del backend
+  function getImageUrl(imageUrl) {
+    if (!imageUrl) return null
+    
+    // Si la URL es relativa (viene del proxy del backend), añadir base URL
+    if (imageUrl.startsWith('/api/')) {
+      return `http://localhost:8080${imageUrl}`
+    }
+    
+    // Si es URL absoluta, usarla directamente
+    return imageUrl
+  }
+
   // Normalización defensiva del artista
   const normalizedArtist = {
     id: artist?.id || 'unknown',
     name: artist?.name || artist?.nombre || 'Artista Sin Nombre',
     category: artist?.category || artist?.categoria || 'Sin Categoría',
-    profileImage: artist?.profileImage || artist?.imagenPerfil,
+    profileImage: getImageUrl(artist?.profileImage || artist?.imagenPerfil || artist?.image),
     works: Array.isArray(artist?.works) ? artist.works : []
   }
 
@@ -46,21 +59,12 @@ ArtistCard.propTypes = {
     id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     name: PropTypes.string,
     nombre: PropTypes.string, // Alternativa española
-    category: PropTypes.string,
-    categoria: PropTypes.string, // Alternativa española
+    category: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Aceptar ambos tipos
+    categoria: PropTypes.oneOfType([PropTypes.string, PropTypes.number]), // Alternativa española
     profileImage: PropTypes.string,
     imagenPerfil: PropTypes.string, // Alternativa española
+    image: PropTypes.string, // Campo adicional
     works: PropTypes.array,
   }),
   getCategoryName: PropTypes.func.isRequired,
-}
-
-// Props por defecto
-ArtistCard.defaultProps = {
-  artist: {
-    id: 'unknown',
-    name: 'Artista Sin Nombre',
-    category: 'Sin Categoría', 
-    works: []
-  }
 }

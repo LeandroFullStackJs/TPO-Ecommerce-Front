@@ -21,7 +21,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useProducts } from '../context/ProductContext'
 import { categoriesAPI } from '../api/categories'
 import { artistsAPI } from '../api/artists'
-import { heroAPI } from '../api/hero'
 import ProductCard from '../components/ProductCard'
 import ArtistCard from '../components/ArtistCard' // Importar ArtistCard
 import { useState, useEffect, useMemo } from 'react'
@@ -100,50 +99,40 @@ export default function HomePage() {
   /**
    * EFECTO DE CARGA DE IMÁGENES HERO
    * 
-   * Carga las imágenes para el carrusel principal (hero section).
-   * Estas imágenes se rotan automáticamente para mostrar contenido
-   * visual atractivo en la parte superior de la página.
-   * 
-   * Se ejecuta una sola vez al montar el componente.
+   * Usa imágenes de fallback directamente ya que el endpoint del backend
+   * no está disponible. Estas imágenes se muestran en el carrusel principal.
    */
   useEffect(() => {
-    const loadHeroImages = async () => {
-      try {
-        const data = await heroAPI.getHeroImages()
-        setHeroImages(data)
-      } catch (error) {
-        console.error('Error al cargar imágenes del hero:', error)
-        
-        // Imágenes de fallback cuando el backend no está disponible
-        const fallbackImages = [
-          {
-            id: 'fallback-1',
-            imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&h=600&fit=crop',
-            title: 'Galería de Arte Tappan',
-            description: 'Descubre obras únicas de artistas emergentes',
-            alt: 'Galería de arte moderna'
-          },
-          {
-            id: 'fallback-2', 
-            imageUrl: 'https://images.unsplash.com/photo-1594736797933-d0d3647ef1ba?w=1200&h=600&fit=crop',
-            title: 'Arte Contemporáneo',
-            description: 'Explora nuestra colección de arte contemporáneo',
-            alt: 'Arte contemporáneo'
-          },
-          {
-            id: 'fallback-3',
-            imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1200&h=600&fit=crop', 
-            title: 'Artistas Emergentes',
-            description: 'Apoya a nuevos talentos en el mundo del arte',
-            alt: 'Estudio de artista'
-          }
-        ]
-        
-        setHeroImages(fallbackImages) // Usar imágenes de fallback en lugar de array vacío
-      } finally {
-        setHeroImagesLoading(false)
-      }
+    const loadHeroImages = () => {
+      // Imágenes de fallback predefinidas
+      const fallbackImages = [
+        {
+          id: 'fallback-1',
+          imageUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&h=600&fit=crop',
+          title: 'Galería de Arte Tappan',
+          description: 'Descubre obras únicas de artistas emergentes',
+          alt: 'Galería de arte moderna'
+        },
+        {
+          id: 'fallback-2', 
+          imageUrl: 'https://images.unsplash.com/photo-1594736797933-d0d3647ef1ba?w=1200&h=600&fit=crop',
+          title: 'Arte Contemporáneo',
+          description: 'Explora nuestra colección de arte contemporáneo',
+          alt: 'Arte contemporáneo'
+        },
+        {
+          id: 'fallback-3',
+          imageUrl: 'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1200&h=600&fit=crop', 
+          title: 'Artistas Emergentes',
+          description: 'Apoya a nuevos talentos en el mundo del arte',
+          alt: 'Estudio de artista'
+        }
+      ]
+      
+      setHeroImages(fallbackImages)
+      setHeroImagesLoading(false)
     }
+    
     loadHeroImages()
   }, [])
 
@@ -167,12 +156,29 @@ export default function HomePage() {
 
     // Mapear artistas y añadir información de sus obras
     const artistsWithWorks = artists.map(artist => {
-      const works = products.filter(p => p.artistId === artist.id)
-      const primaryCategory = works.length > 0 ? works[0].category : 'unknown'
-      return {
+      // Normalizar datos del artista
+      const normalizedArtist = {
         ...artist,
+        name: artist.name || artist.nombre || 'Artista Sin Nombre',
+        image: artist.image || artist.imagenPerfil || artist.profileImage,
+      }
+
+      // Buscar obras usando múltiples campos de identificación
+      const works = products.filter(p => 
+        p.artistId === artist.id || 
+        p.artistaId === artist.id || 
+        (p.artista || p.artist) === (artist.nombre || artist.name)
+      )
+      
+      // Obtener categoría principal de la primera obra
+      const primaryCategory = works.length > 0 && works[0].categoriaIds && works[0].categoriaIds.length > 0 
+        ? works[0].categoriaIds[0] 
+        : 8 // Default: Arte Contemporáneo
+        
+      return {
+        ...normalizedArtist,
         works,                    // Array de obras del artista
-        category: primaryCategory  // Categoría principal del artista
+        category: primaryCategory  // ID de categoría principal del artista
       }
     })
 
@@ -193,7 +199,7 @@ export default function HomePage() {
    */
   const getCategoryName = categoryId => {
     const category = categories.find(c => c.id === categoryId)
-    return category ? category.name : 'Sin categoría'
+    return category ? (category.name || category.nombre) : 'Sin categoría'
   }
 
   /**
@@ -257,7 +263,7 @@ export default function HomePage() {
           </div>
           {heroImages.map((image) => (
             <SwiperSlide key={image.id}>
-              <div className="hero-slide-image" style={{ backgroundImage: `url(${image.src})` }} aria-label={image.alt} />
+              <div className="hero-slide-image" style={{ backgroundImage: `url(${image.src || image.imageUrl || image.imagen})` }} aria-label={image.alt || image.description} />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -372,21 +378,25 @@ export default function HomePage() {
         </div>
         <div className="categories-grid">
           {categories.slice(0, 8).map(category => {
+            // Mapeo de iconos por nombre de categoría del backend
             const icons = {
-              abstract: '🎨',
-              landscape: '🌄',
-              portrait: '👤',
-              geometric: '📐',
-              nature: '🌿',
-              minimalist: '⚪',
-              contemporary: '🖼️',
-              textured: '🎭'
+              'Pintura': '🎨',
+              'Escultura': '🗿',
+              'Fotografía': '📷',
+              'Arte Digital': '�',
+              'Arte Abstracto': '🌀',
+              'Realismo': '🖼️',
+              'Impresionismo': '🌸',
+              'Arte Contemporáneo': '🎭'
             }
 
+            const categoryName = category.name || category.nombre || 'Sin Categoría'
+            const categoryIcon = icons[categoryName] || '🎨'
+
             return (
-              <Link key={category.id} to={`/categorias?cat=${category.id}`} className="category-card"> {/* Cambiado a /categorias */}
-                <div className="category-icon">{icons[category.id] || '🎨'}</div>
-                <h3>{category.name}</h3>
+              <Link key={category.id} to={`/categorias?cat=${category.id}`} className="category-card">
+                <div className="category-icon">{categoryIcon}</div>
+                <h3>{categoryName}</h3>
                 <p>Explorar obras</p>
               </Link>
             )

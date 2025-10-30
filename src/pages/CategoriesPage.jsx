@@ -179,13 +179,18 @@ export default function CategoriesPage() {
         const matchText = searchableText.includes(q.toLowerCase())
 
         // PASO 2: VALIDACIONES DE FILTROS INDIVIDUALES
-        const matchCat = !cat || p.category === cat
-        const matchTechnique = filters.technique.length === 0 || filters.technique.includes(p.technique)
-        const matchStyle = filters.style.length === 0 || filters.style.includes(p.style)
-        const matchArtist = filters.artist.length === 0 || filters.artist.includes(p.artist)
-        const matchSize = filters.dimensions.length === 0 || filters.dimensions.includes(p.dimensions)
-        const matchPallette = filters.pallette.length === 0 || filters.pallette.includes(p.pallette)
-        const matchPrice = filters.price.length === 0 || checkPriceMatch(p.price, filters.price)
+        // Filtro por categoría: cat es un ID, pero categorias es un array de nombres
+        // categoriaIds es el array de IDs correspondiente
+        const matchCat = !cat || 
+          (p.categoriaIds && p.categoriaIds.includes(parseInt(cat))) ||
+          (p.categorias && p.categorias.includes(cat)) ||
+          p.category === cat
+        const matchTechnique = filters.technique.length === 0 || filters.technique.includes(p.tecnica || p.technique)
+        const matchStyle = filters.style.length === 0 || filters.style.includes(p.estilo || p.style)
+        const matchArtist = filters.artist.length === 0 || filters.artist.includes(p.artista || p.artist)
+        const matchSize = filters.dimensions.length === 0 || filters.dimensions.includes(p.dimensiones || p.dimensions)
+        const matchPallette = filters.pallette.length === 0 || filters.pallette.includes(p.paleta || p.pallette)
+        const matchPrice = filters.price.length === 0 || checkPriceMatch(p.precio || p.price, filters.price)
 
         // PASO 3: COMBINACIÓN LÓGICA (AND) DE TODOS LOS FILTROS
         return (
@@ -242,20 +247,32 @@ export default function CategoriesPage() {
   }
 
   /**
-   * OPCIONES DE FILTROS PREDEFINIDAS
+   * OPCIONES DE FILTROS DINÁMICAS
    * 
-   * Define las opciones disponibles para cada tipo de filtro.
-   * Estas opciones se generan basándose en el análisis del catálogo
-   * de productos y patrones comunes de búsqueda.
+   * Extrae automáticamente las opciones de filtros desde los productos del backend.
+   * Se actualiza cuando los productos cambian.
    */
-  const filterOptions = {
-    technique: ['Óleo', 'Tempera', 'Grafito', 'Acrílico', 'Acuarela', 'Carboncillo'],
-    style: ['Abstracto', 'Realista', 'Impresionista', 'Moderno', 'Clásico', 'Contemporáneo'],
-    artist: ['Inés', 'Javier', 'Gabriel', 'Luis', 'Van Gogh', 'Picasso'],
-    dimensions: ['60x80 cm', '70x50 cm', '50x70 cm', '80x80 cm', '60x90 cm', '100x70 cm', '75x60 cm', '65x85 cm', '60x60'],
-    pallette: ['Monocromático', 'Colorido', 'Pasteles', 'Neutros', 'Cálidos', 'Fríos'],
-    price: ['$0 - $50.000', '$50.000 - $100.000', '$100.000 - $200.000', '$200.000+']
-  }
+  const filterOptions = useMemo(() => {
+    if (!products || products.length === 0) return {}
+    
+    const extractUniqueValues = (field, isArray = false) => {
+      const values = products.flatMap(product => {
+        const value = product[field] || product[field.replace('e', 'a')] // técnica/tecnica, etc.
+        if (!value) return []
+        return isArray ? (Array.isArray(value) ? value : [value]) : [value]
+      }).filter(Boolean)
+      return [...new Set(values)].sort()
+    }
+    
+    return {
+      technique: extractUniqueValues('tecnica'),
+      style: extractUniqueValues('estilo'), 
+      artist: extractUniqueValues('artista'),
+      dimensions: extractUniqueValues('dimensiones'),
+      pallette: extractUniqueValues('paleta'),
+      price: ['$0 - $50.000', '$50.000 - $100.000', '$100.000 - $200.000', '$200.000+']
+    }
+  }, [products])
 
   // ESTADO DE CARGA: Mostrar indicador mientras se obtienen los datos
   if (loading) {
@@ -316,11 +333,11 @@ export default function CategoriesPage() {
                     <input
                       type="radio"
                       name="category"
-                      value={category.id}
-                      checked={cat === category.id}
+                      value={category.id.toString()}
+                      checked={cat === category.id.toString()}
                       onChange={(e) => setCat(e.target.value)}
                     />
-                    <span className="filter-option-text">{category.name}</span>
+                    <span className="filter-option-text">{category.name || category.nombre}</span>
                   </label>
                 ))}
               </div>

@@ -55,13 +55,23 @@ export default function ArtistPage() {
         // Asegurar que siempre tengamos un nombre válido
         name: artist.name || artist.nombre || artist.fullName || 'Artista sin nombre',
         // Asegurar que tengamos una imagen por defecto
-        image: artist.image || artist.foto || artist.avatar || '/default-artist.jpg',
+        image: artist.image || artist.imagenPerfil || artist.foto || artist.avatar || '/default-artist.jpg',
         // Normalizar descripción/biografía
         bio: artist.bio || artist.biografia || artist.description || '',
       }
 
-      const works = products.filter(p => p.artistId === artist.id)
-      const primaryCategory = works.length > 0 ? works[0].category : 'unknown'
+      // Buscar obras del artista usando diferentes campos de identificación
+      const works = products.filter(p => 
+        p.artistId === artist.id || 
+        p.artistaId === artist.id || 
+        (p.artista || p.artist) === (artist.nombre || artist.name)
+      )
+      
+      // Si hay obras, usar la primera categoría de la primera obra como categoría principal
+      // Si no hay obras, usar una categoría por defecto
+      const primaryCategory = works.length > 0 && works[0].categoriaIds && works[0].categoriaIds.length > 0 
+        ? works[0].categoriaIds[0] 
+        : 8 // Arte Contemporáneo como default
       
       return {
         ...normalizedArtist,
@@ -73,7 +83,7 @@ export default function ArtistPage() {
 
   const getCategoryName = (categoryId) => {
     const category = categories.find((c) => c.id === categoryId);
-    return category ? category.name : 'Categoría desconocida';
+    return category ? (category.name || category.nombre) : 'Categoría desconocida';
   };
 
   // Filtrar artistas según búsqueda y categoría
@@ -81,7 +91,7 @@ export default function ArtistPage() {
     return allArtistsWithWorks.filter(artist => {
       // Usar el nombre normalizado que ya está garantizado que existe
       const matchesSearch = artist.name.toLowerCase().includes(filter.toLowerCase())
-      const matchesCategory = !selectedCategory || artist.category === selectedCategory
+      const matchesCategory = !selectedCategory || artist.category === parseInt(selectedCategory)
       return matchesSearch && matchesCategory
     })
   }, [allArtistsWithWorks, filter, selectedCategory])
@@ -130,7 +140,7 @@ export default function ArtistPage() {
         >
           <option value="">Todos los estilos</option>
           {categories.map(c => (
-            <option key={c.id} value={c.id}>{c.name}</option>
+            <option key={c.id} value={c.id}>{c.name || c.nombre}</option>
           ))}
         </select>
 
@@ -167,7 +177,7 @@ export default function ArtistPage() {
           }}>
             Mostrando {filteredArtists.length} artista{filteredArtists.length !== 1 ? 's' : ''}
             {filter && ` para "${filter}"`}
-            {selectedCategory && ` en ${categories.find(c => c.id === selectedCategory)?.name}`}
+            {selectedCategory && ` en ${categories.find(c => c.id === parseInt(selectedCategory))?.nombre || categories.find(c => c.id === parseInt(selectedCategory))?.name}`}
           </div>
           
           <div className="artists-grid">

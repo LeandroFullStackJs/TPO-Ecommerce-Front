@@ -97,11 +97,58 @@ export function UserProvider({ children }) {
       // Activar indicador de carga para UI (spinner, botón disabled, etc.)
       setLoading(true)
       
+      console.log('🔑 Intentando login con:', { email, password: '***' })
+      
       // LLAMADA A LA API: Enviar credenciales al backend
       // authAPI.login hace POST a /auth/login con email y password
-      const userData = await authAPI.login(email, password)
+      const response = await authAPI.login(email, password)
+
+      console.log('✅ Respuesta del login:', response)
 
       // ÉXITO: El servidor respondió con datos válidos del usuario
+      
+      // El backend puede devolver la estructura de diferentes formas
+      // Normalizamos la respuesta para asegurar compatibilidad
+      const userData = response.user || response.data || response
+      
+      // Normalizar campos de nombre del backend (español) al frontend (inglés)
+      if (userData) {
+        if (userData.nombre && !userData.firstName) {
+          userData.firstName = userData.nombre
+        }
+        if (userData.apellido && !userData.lastName) {
+          userData.lastName = userData.apellido
+        }
+      }
+      
+      // Normalizar el rol para compatibilidad con diferentes formatos del backend
+      if (userData) {
+        // Si el rol viene como 'rol' (español), copiarlo a 'role' (inglés)
+        if (userData.rol && !userData.role) {
+          userData.role = userData.rol
+        }
+        
+        // Normalizar valores de rol a minúsculas
+        if (userData.role && typeof userData.role === 'string') {
+          userData.role = userData.role.toLowerCase()
+        }
+        
+        // Si el rol viene en authorities array (Spring Security)
+        if (userData.authorities && Array.isArray(userData.authorities)) {
+          const adminAuthority = userData.authorities.find(auth => 
+            auth.authority?.toLowerCase().includes('admin') ||
+            auth.role?.toLowerCase().includes('admin')
+          )
+          if (adminAuthority) {
+            userData.role = 'admin'
+          }
+        }
+      }
+      
+      // Verificar que tenemos datos válidos del usuario
+      if (!userData || !userData.email) {
+        throw new Error('Respuesta inválida del servidor')
+      }
       
       // 1. Actualizar estado global del contexto
       setUser(userData)
@@ -110,11 +157,20 @@ export function UserProvider({ children }) {
       // JSON.stringify: Convertir objeto a string para almacenamiento
       localStorage.setItem("user", JSON.stringify(userData))
 
-      // 3. Retornar datos para que el componente pueda usarlos
+      // 3. Si hay token, también almacenarlo separadamente
+      if (response.token) {
+        localStorage.setItem("token", response.token)
+        console.log('🔐 Token almacenado correctamente')
+      }
+
+      console.log('✅ Login exitoso, usuario:', userData.email)
+
+      // 4. Retornar datos para que el componente pueda usarlos
       return userData
       
     } catch (error) {
       // ERROR: Credenciales inválidas, servidor caído, red, etc.
+      console.error('❌ Error en login:', error.message)
       
       // No manejar el error aquí, dejarlo para el componente
       // Esto permite mostrar mensajes específicos en la UI
@@ -139,6 +195,8 @@ export function UserProvider({ children }) {
     try {
       setLoading(true)
       
+      console.log('📝 Iniciando registro con datos:', userData)
+      
       // Mapear datos del frontend al formato esperado por el backend Spring Boot
       const backendUserData = {
         email: userData.email,
@@ -148,15 +206,29 @@ export function UserProvider({ children }) {
         username: userData.username || userData.email?.split('@')[0] || 'user'
       }
       
+      console.log('🔄 Datos mapeados para backend:', backendUserData)
+      
       // Llamar a la API de registro
-      const newUser = await authAPI.register(backendUserData)
+      const response = await authAPI.register(backendUserData)
+
+      console.log('✅ Usuario registrado exitosamente:', response)
+
+      // El backend puede devolver la estructura de diferentes formas
+      const newUser = response.user || response.data || response
 
       // Guardar datos del nuevo usuario en el estado y localStorage
       setUser(newUser)
       localStorage.setItem("user", JSON.stringify(newUser))
 
+      // Si viene con token, también guardarlo
+      if (response.token) {
+        localStorage.setItem("token", response.token)
+        console.log('🔐 Token de registro almacenado')
+      }
+
       return newUser
     } catch (error) {
+      console.error('❌ Error en registro:', error.message)
       // Propagar el error para manejo en el componente
       throw error
     } finally {
@@ -209,14 +281,30 @@ export function UserProvider({ children }) {
         throw new Error("Usuario no autenticado")
       }
       
+      // Mapear campos del frontend (inglés) al backend (español)
+      const backendUserData = {
+        nombre: userData.firstName || userData.nombre,
+        apellido: userData.lastName || userData.apellido,
+        email: userData.email
+      }
+      
+      console.log('📝 Actualizando usuario con datos:', backendUserData)
+      
       // Llamar a la API para actualizar los datos
-      const updatedUserData = await authAPI.updateUser(user.id, userData)
+      const updatedUserData = await authAPI.updateUser(user.id, backendUserData)
+      
+      // Normalizar la respuesta del backend para el frontend
+      const normalizedUserData = {
+        ...updatedUserData,
+        firstName: updatedUserData.nombre,
+        lastName: updatedUserData.apellido
+      }
       
       // Actualizar el estado local y persistente
-      setUser(updatedUserData)
-      localStorage.setItem("user", JSON.stringify(updatedUserData))
+      setUser(normalizedUserData)
+      localStorage.setItem("user", JSON.stringify(normalizedUserData))
       
-      return updatedUserData
+      return normalizedUserData
     } catch (error) {
       throw error
     } finally {

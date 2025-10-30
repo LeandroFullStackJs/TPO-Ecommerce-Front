@@ -53,14 +53,26 @@ export default function MyProductsPage() {
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
 
+  // Debug: Mostrar información del usuario en consola
+  useEffect(() => {
+    console.log('👤 Usuario actual en MyProductsPage:', user)
+    console.log('🔐 Es admin?:', user?.role === 'admin')
+    console.log('📦 Productos:', products)
+    console.log('📂 Categorías disponibles:', categories)
+  }, [user, products, categories])
+
   // Cargar categorías
   useEffect(() => {
     const loadCategories = async () => {
       try {
+        console.log('📂 Cargando categorías...')
         const data = await categoriesAPI.getAll()
+        console.log('📂 Categorías cargadas:', data)
         setCategories(data)
       } catch (error) {
-        console.error('Error al cargar categorías:', error)
+        console.error('❌ Error al cargar categorías:', error)
+        // Mostrar error al usuario
+        setErrors(prev => ({ ...prev, categories: 'Error al cargar categorías' }))
       }
     }
     loadCategories()
@@ -88,7 +100,9 @@ export default function MyProductsPage() {
   }, [user]) // Solo depende del usuario, no de refreshProducts
 
   // Obtener productos del usuario actual
-  const userProducts = user && products ? products.filter(p => p.userId === user.id) : []
+  const userProducts = user && products ? products.filter(p => 
+    p.usuarioId === user.id || p.userId === user.id
+  ) : []
 
   const validateForm = () => {
     const newErrors = {}
@@ -123,13 +137,31 @@ export default function MyProductsPage() {
     try {
       setLoading(true)
       
+      // Mapear datos del frontend al formato esperado por el backend Spring Boot
       const productData = {
-        ...formData,
-        price: Number(formData.price),
+        // Campos principales en español (requeridos por backend)
+        nombreObra: formData.name,
+        descripcion: formData.description,
+        precio: Number(formData.price),
         stock: Number(formData.stock),
-        userId: user.id,
-        id: editingProduct ? editingProduct.id : Date.now().toString()
+        imagen: formData.image,
+        artista: formData.artist,
+        tecnica: formData.technique,
+        dimensiones: formData.dimensions,
+        anio: Number(formData.year),
+        
+        // IDs requeridos
+        usuarioId: user.id,
+        artistaId: user.id, // Asumimos que el usuario es el artista
+        categoriaIds: [Number(formData.category)], // Array de IDs de categorías
+        
+        // Campos adicionales con valores por defecto
+        activo: true,
+        destacado: false,
+        estilo: "Contemporáneo" // Valor por defecto
       }
+      
+      console.log('📤 Enviando producto al backend:', productData)
       
       if (editingProduct) {
         await updateProduct(editingProduct.id, productData)
@@ -141,6 +173,7 @@ export default function MyProductsPage() {
       setShowForm(false)
       // No necesitamos refreshProducts aquí, el contexto se actualiza automáticamente
     } catch (error) {
+      console.error('❌ Error al crear/actualizar producto:', error)
       setErrors({ general: error.message })
     } finally {
       setLoading(false)
@@ -150,16 +183,16 @@ export default function MyProductsPage() {
   const handleEdit = (product) => {
     setEditingProduct(product)
     setFormData({
-      name: product.name,
-      artist: product.artist,
-      category: product.category,
-      price: product.price.toString(),
-      stock: product.stock.toString(),
-      image: product.image,
-      description: product.description,
-      dimensions: product.dimensions || '',
-      technique: product.technique || '',
-      year: product.year || ''
+      name: product.nombreObra || product.name,
+      artist: product.artista || product.artist,
+      category: product.categoriaIds?.[0]?.toString() || product.category || '',
+      price: (product.precio || product.price || 0).toString(),
+      stock: (product.stock || 0).toString(),
+      image: product.imagen || product.image || '',
+      description: product.descripcion || product.description || '',
+      dimensions: product.dimensiones || product.dimensions || '',
+      technique: product.tecnica || product.technique || '',
+      year: (product.anio || product.year || '').toString()
     })
     setShowForm(true)
   }
@@ -310,14 +343,22 @@ export default function MyProductsPage() {
                         onChange={(e) => setFormData({...formData, category: e.target.value})}
                         className={errors.category ? 'error' : ''}
                       >
-                        <option value="">Selecciona una categoría</option>
+                        <option value="">
+                          {categories.length === 0 ? 'Cargando categorías...' : 'Selecciona una categoría'}
+                        </option>
                         {categories.map(cat => (
                           <option key={cat.id} value={cat.id}>
-                            {cat.name}
+                            {cat.name || cat.nombre || `Categoría ${cat.id}`}
                           </option>
                         ))}
                       </select>
                       {errors.category && <span className="error-text">{errors.category}</span>}
+                      {errors.categories && <span className="error-text">{errors.categories}</span>}
+                      {categories.length === 0 && (
+                        <small className="help-text">
+                          Si no se cargan las categorías, verifica que el backend esté funcionando
+                        </small>
+                      )}
                     </div>
 
                     <div className="form-group">
@@ -406,20 +447,26 @@ export default function MyProductsPage() {
                 <div key={product.id} className="product-card">
                   <Link to={`/producto/${product.id}`} className="product-link">
                     <img 
-                      src={product.image} 
-                      alt={product.name} 
+                      src={product.imagen || product.image} 
+                      alt={product.nombreObra || product.name} 
                       className="product-image"
                       onError={(e) => {
                         e.target.src = 'https://via.placeholder.com/300x200?text=Imagen+no+disponible'
                       }}
                     />
                     <div className="product-info">
-                      <h3>{product.name}</h3>
-                      <p className="artist">by {product.artist}</p>
-                      <p className="category">Categoría: {product.category}</p>
-                      <p className="price">${product.price?.toLocaleString('es-AR')}</p>
+                      <h3>{product.nombreObra || product.name}</h3>
+                      <p className="artist">by {product.artista || product.artist}</p>
+                      <p className="category">
+                        Categoría: {
+                          Array.isArray(product.categorias) 
+                            ? product.categorias.join(', ')
+                            : product.category || 'Sin categoría'
+                        }
+                      </p>
+                      <p className="price">${(product.precio || product.price || 0).toLocaleString('es-AR')}</p>
                       <p className="stock">Stock: {product.stock} unidades</p>
-                      <p className="description">{product.description}</p>
+                      <p className="description">{product.descripcion || product.description}</p>
                     </div>
                   </Link>
                   <div className="product-actions">

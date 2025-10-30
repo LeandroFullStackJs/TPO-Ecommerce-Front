@@ -77,6 +77,13 @@ export default function ProtectedRoute({
    * Si la ruta requiere ser admin y el usuario no tiene permisos
    */
   if (requireAdmin && (!user || user.role !== 'admin')) {
+    console.log('🔒 Verificación de admin fallida:', {
+      user: user,
+      userRole: user?.role,
+      requireAdmin: requireAdmin,
+      condition: user?.role !== 'admin'
+    })
+    
     return (
       <Navigate 
         to="/home" 

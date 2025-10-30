@@ -45,10 +45,22 @@ export const categoriesAPI = {
    */
   getAll: async () => {
     try {
+      console.log('📡 Solicitando categorías al backend...')
       const response = await api.get('/categorias')
-      return response.data
+      console.log('📡 Respuesta de categorías:', response.data)
+      
+      // Normalizar campos del backend (español a inglés)
+      const normalizedCategories = response.data.map(cat => ({
+        ...cat,
+        name: cat.name || cat.nombre || cat.nombreCategoria || `Categoría ${cat.id}`,
+        slug: cat.slug || cat.nombreCategoria?.toLowerCase().replace(/\s+/g, '-')
+      }))
+      
+      console.log('📡 Categorías normalizadas:', normalizedCategories)
+      return normalizedCategories
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Error al obtener categorías')
+      console.error('❌ Error al obtener categorías:', error)
+      throw new Error(error.response?.data?.message || 'Error al cargar categorías')
     }
   },
 

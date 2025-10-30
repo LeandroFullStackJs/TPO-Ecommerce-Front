@@ -13,6 +13,19 @@ export default function ArtistProfilePage() {
   const [artistLoading, setArtistLoading] = useState(true)
 
   const [categories, setCategories] = useState([])
+
+  // Función helper para manejar URLs de imagen del backend
+  function getImageUrl(imageUrl) {
+    if (!imageUrl) return null
+    
+    // Si la URL es relativa (viene del proxy del backend), añadir base URL
+    if (imageUrl.startsWith('/api/')) {
+      return `http://localhost:8080${imageUrl}`
+    }
+    
+    // Si es URL absoluta, usarla directamente
+    return imageUrl
+  }
   
     useEffect(() => {
       const fetchCategories = async () => {
@@ -29,7 +42,7 @@ export default function ArtistProfilePage() {
   
     const getCategoryName = (categoryId) => {
       const category = categories.find((c) => c.id === categoryId)
-      return category ? category.name : categoryId
+      return category ? (category.name || category.nombre) : 'Sin Categoría'
     }
 
   useEffect(() => {
@@ -42,13 +55,23 @@ export default function ArtistProfilePage() {
 
         // 2. Filter products for this artist (once products are loaded)
         if (!productsLoading && products.length > 0) {
-          const artistWorks = products.filter(p => p.artistId == artistId) // Use == for type coercion
+          const artistWorks = products.filter(p => 
+            p.artistId == artistId || p.artistaId == artistId || 
+            (p.artista || p.artist) === artistData.nombre || 
+            (p.artista || p.artist) === artistData.name
+          ) // Support multiple field mappings
 
           // 3. Combine data and set state
           setArtist({
             ...artistData, // Use real data from API (name, bio, profileImage)
+            // Normalize artist name
+            name: artistData.name || artistData.nombre || 'Artista Sin Nombre',
+            // Normalize profile image
+            profileImage: getImageUrl(artistData.profileImage || artistData.imagenPerfil || artistData.imagen),
             works: artistWorks,
-            category: artistWorks.length > 0 ? artistWorks[0].category : 'unknown',
+            category: artistWorks.length > 0 && artistWorks[0].categoriaIds && artistWorks[0].categoriaIds.length > 0 
+              ? artistWorks[0].categoriaIds[0] 
+              : 8, // Default to "Arte Contemporáneo"
             coverImage: artistData.coverImage || "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200&h=400&fit=crop",
           })
         }
@@ -79,11 +102,11 @@ export default function ArtistProfilePage() {
       <section className="artist-profile-header">
         <div className="artist-info">
           <img 
-            src={artist.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(artist.name)}&size=200`} 
-            alt={artist.name}
+            src={getImageUrl(artist.profileImage || artist.imagenPerfil) || `https://ui-avatars.com/api/?name=${encodeURIComponent(artist.name || artist.nombre)}&size=200`} 
+            alt={artist.name || artist.nombre}
             className="artist-avatar"
           />
-          <h1 className="artist-name">{artist.name}</h1>
+          <h1 className="artist-name">{artist.name || artist.nombre}</h1>
           <p className="artist-category">{getCategoryName(artist.category)}</p>
           
           {artist.socialLinks && (

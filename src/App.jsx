@@ -37,6 +37,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import RegisterPage from './pages/RegisterPage'
 import FaqsPage from './pages/FaqsPage'
 import AboutPage from './pages/AboutPage'
+import DebugUserPage from './pages/DebugUserPage'
 import './styles.css'
 
 export default function App() {
@@ -62,6 +63,7 @@ export default function App() {
                   <Route path="/faqs" element={<FaqsPage />} />
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/carrito" element={<CartPage />} />
+                  <Route path="/debug-user" element={<DebugUserPage />} />
                   
                   {/* RUTAS PROTEGIDAS - Solo usuarios autenticados */}
                   <Route path="/mi-cuenta" element={

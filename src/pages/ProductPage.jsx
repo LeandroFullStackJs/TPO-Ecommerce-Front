@@ -101,19 +101,33 @@ export default function ProductPage() {
     )
   }
 
-  // Normalización defensiva del producto para compatibilidad backend/frontend
+  // El backend ya devuelve campos en inglés y español. Priorizar inglés con fallback a español
   const normalizedProduct = {
     id: product.id,
     name: product.name || product.nombreObra || 'Obra Sin Título',
     price: product.price || product.precio || 0,
     stock: product.stock || 0,
-    image: product.image || product.imagen || '',
+    image: getImageUrl(product.image || product.imagen),
     description: product.description || product.descripcion || '',
     artist: product.artist || product.artista || 'Artista Desconocido',
-    technique: product.technique || product.tecnica || '',
-    dimensions: product.dimensions || product.dimensiones || '',
-    year: product.year || product.anio || '',
-    style: product.style || product.estilo || ''
+    technique: product.technique || product.tecnica || 'No especificada',
+    dimensions: product.dimensions || product.dimensiones || 'No especificadas',
+    year: product.year || product.anio || 'No especificado',
+    style: product.style || product.estilo || 'No especificado',
+    artistId: product.artistId || product.artistaId
+  }
+
+  // Función helper para manejar URLs de imagen del backend
+  function getImageUrl(imageUrl) {
+    if (!imageUrl) return ''
+    
+    // Si la URL es relativa (viene del proxy del backend), añadir base URL
+    if (imageUrl.startsWith('/api/')) {
+      return `http://localhost:8080${imageUrl}`
+    }
+    
+    // Si es URL absoluta, usarla directamente
+    return imageUrl
   }
 
   // Variables derivadas para lógica de stock y validaciones
@@ -251,7 +265,7 @@ export default function ProductPage() {
             {normalizedProduct.name}
           </h1>
           
-          <Link to={`/artists/${normalizedProduct.artistId || product.artistaId}`} className="brand">
+          <Link to={`/artists/${normalizedProduct.artistId}`} className="brand">
             {"by " + normalizedProduct.artist}
           </Link>
           
@@ -312,19 +326,45 @@ export default function ProductPage() {
             background: 'var(--light-gray)',
             borderRadius: 'var(--border-radius)',
           }}>
-            <div style={{fontSize: '1rem'}}>
+            <h3 style={{ 
+              marginBottom: '1rem', 
+              color: 'var(--primary-color)',
+              fontSize: '1.2rem'
+            }}>
+              Características de la obra
+            </h3>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '1rem',
+              fontSize: '0.95rem'
+            }}>
               <div>
-                <strong>Dimensiones</strong> 
-                <p>{product.dimensions}</p>
+                <strong style={{ color: 'var(--dark-gray)' }}>Dimensiones:</strong> 
+                <p style={{ margin: '0.25rem 0 0 0', color: 'var(--text-color)' }}>
+                  {normalizedProduct.dimensions}
+                </p>
               </div>
               <div>
-                <strong>Año:</strong> 
-                <p>{product.year}</p>
+                <strong style={{ color: 'var(--dark-gray)' }}>Año:</strong> 
+                <p style={{ margin: '0.25rem 0 0 0', color: 'var(--text-color)' }}>
+                  {normalizedProduct.year}
+                </p>
               </div>
               <div>
-                <strong>Técnica</strong> 
-               <p>{product.technique}</p>
+                <strong style={{ color: 'var(--dark-gray)' }}>Técnica:</strong> 
+                <p style={{ margin: '0.25rem 0 0 0', color: 'var(--text-color)' }}>
+                  {normalizedProduct.technique}
+                </p>
               </div>
+              {normalizedProduct.style && normalizedProduct.style !== 'No especificado' && (
+                <div>
+                  <strong style={{ color: 'var(--dark-gray)' }}>Estilo:</strong> 
+                  <p style={{ margin: '0.25rem 0 0 0', color: 'var(--text-color)' }}>
+                    {normalizedProduct.style}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
           

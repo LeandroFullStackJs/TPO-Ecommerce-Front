@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Categorías</title>
+</head>
+<body>
+    <h1>Test de Categorías - Backend</h1>
+    
+    <div>
+        <button onclick="testCategories()">Probar Categorías</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080/api';
+
+        async function testCategories() {
+            try {
+                const response = await fetch(`${API_BASE}/categorias`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const result = await response.json();
+                document.getElementById('result').innerHTML = 
+                    `<strong>Status:</strong> ${response.status}<br>
+                     <strong>Categorías encontradas:</strong> ${result.length}<br>
+                     <strong>Response:</strong> <pre>${JSON.stringify(result, null, 2)}</pre>`;
+                
+                console.log('Categorías:', result);
+            } catch (error) {
+                document.getElementById('result').innerHTML = 
+                    `<strong>Error:</strong> ${error.message}`;
+                console.error('Error al cargar categorías:', error);
+            }
+        }
+    </script>
+</body>
+</html>

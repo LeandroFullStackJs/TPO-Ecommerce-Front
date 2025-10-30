@@ -40,17 +40,42 @@ export const authAPI = {
    */
   login: async (email, password) => {
     try {
+      console.log('📡 Enviando solicitud de login a:', '/auth/login')
+      
       const response = await api.post('/auth/login', { email, password })
       
+      console.log('📡 Respuesta recibida:', {
+        status: response.status,
+        data: response.data
+      })
+
       // Si el backend devuelve un token, lo almacenamos
       if (response.data.token) {
         localStorage.setItem('token', response.data.token)
         // Configurar el header de autorización para futuras peticiones
         api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+        console.log('🔐 Token configurado en headers')
       }
       
       return response.data
     } catch (error) {
+      console.error('❌ Error en authAPI.login:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      })
+      
+      // Proporcionar mensajes más específicos basados en el código de error
+      if (error.response?.status === 401) {
+        throw new Error('Email o contraseña incorrectos')
+      } else if (error.response?.status === 404) {
+        throw new Error('Usuario no encontrado')
+      } else if (error.response?.status === 500) {
+        throw new Error('Error interno del servidor')
+      } else if (!error.response) {
+        throw new Error('No se puede conectar con el servidor. Verifica que el backend esté ejecutándose.')
+      }
+      
       throw new Error(error.response?.data?.message || 'Credenciales inválidas')
     }
   },
@@ -72,9 +97,42 @@ export const authAPI = {
    */
   register: async (userData) => {
     try {
+      console.log('📡 Enviando solicitud de registro a:', '/auth/register')
+      console.log('📡 Datos enviados:', userData)
+      
       const response = await api.post('/auth/register', userData)
+      
+      console.log('📡 Respuesta de registro:', {
+        status: response.status,
+        data: response.data
+      })
+      
+      // Si el registro incluye un token automático, configurarlo
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token)
+        api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
+        console.log('🔐 Token configurado automáticamente tras registro')
+      }
+      
       return response.data
     } catch (error) {
+      console.error('❌ Error en authAPI.register:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      })
+      
+      // Mensajes específicos para registro
+      if (error.response?.status === 400) {
+        throw new Error(error.response?.data?.message || 'Datos de registro inválidos')
+      } else if (error.response?.status === 409) {
+        throw new Error('Este email ya está registrado')
+      } else if (error.response?.status === 500) {
+        throw new Error('Error interno del servidor')
+      } else if (!error.response) {
+        throw new Error('No se puede conectar con el servidor. Verifica que el backend esté ejecutándose.')
+      }
+      
       throw new Error(error.response?.data?.message || 'Error al registrar usuario')
     }
   },
@@ -153,12 +211,15 @@ export const authAPI = {
    */
   changePassword: async (id, currentPassword, newPassword) => {
     try {
-      const response = await api.patch(`/usuarios/${id}/password`, { 
+      // Para cambio de contraseña, usar un endpoint específico si existe
+      // Si no existe, usar PUT con los datos del usuario actualizados
+      const response = await api.put(`/usuarios/${id}/password`, { 
         currentPassword, 
         newPassword 
       })
       return response.data
     } catch (error) {
+      console.error('❌ Error al cambiar contraseña:', error)
       throw new Error(error.response?.data?.message || 'Error al cambiar contraseña')
     }
   }

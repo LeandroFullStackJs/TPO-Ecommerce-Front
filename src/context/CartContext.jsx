@@ -209,21 +209,20 @@ export function CartProvider({ children }) {
       // Espera a que todas las promesas de descuento de stock se resuelvan exitosamente.
       await Promise.all(promises)
       const orderData = {
-        userId: user.id,
-        date: new Date().toISOString(),
+        usuarioId: user.id,
+        fecha: new Date().toISOString(),
         items: state.items.map(item => ({
-          productId: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: item.quantity,
-          image: item.image,
-          artist: item.artist,
-          dimensions: item.dimensions,
-          year: item.year,
-          technique: item.technique
+          productoId: item.id,
+          cantidad: item.quantity,
+          precioUnitario: item.price,
+          subtotal: item.price * item.quantity,
+          // Datos adicionales para el frontend
+          nombreObra: item.name,
+          imagen: item.image,
+          artista: item.artist
         })),
         total: totals.total,
-          status: 'completed'
+        estado: 'PENDIENTE'
       }
       await addOrder(orderData)
       // Funcionamiento: Limpiar carrito después de un checkout exitoso.

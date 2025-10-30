@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Auth</title>
+</head>
+<body>
+    <h1>Test de Autenticación - Backend Debug</h1>
+    
+    <div>
+        <h2>Test de Registro</h2>
+        <button onclick="testRegister()">Probar Registro</button>
+        <div id="registerResult"></div>
+    </div>
+    
+    <div>
+        <h2>Test de Login</h2>
+        <button onclick="testLogin()">Probar Login</button>
+        <div id="loginResult"></div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8080/api';
+
+        async function testRegister() {
+            try {
+                const userData = {
+                    email: 'debug@test.com',
+                    password: '123456',
+                    nombre: 'Debug',
+                    apellido: 'User',
+                    username: 'debuguser'
+                };
+
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData)
+                });
+
+                const result = await response.json();
+                document.getElementById('registerResult').innerHTML = 
+                    `<strong>Status:</strong> ${response.status}<br>
+                     <strong>Response:</strong> <pre>${JSON.stringify(result, null, 2)}</pre>`;
+                
+                if (response.ok) {
+                    console.log('Usuario registrado:', result);
+                }
+            } catch (error) {
+                document.getElementById('registerResult').innerHTML = 
+                    `<strong>Error:</strong> ${error.message}`;
+                console.error('Error en registro:', error);
+            }
+        }
+
+        async function testLogin() {
+            try {
+                const loginData = {
+                    email: 'debug@test.com',
+                    password: '123456'
+                };
+
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(loginData)
+                });
+
+                const result = await response.json();
+                document.getElementById('loginResult').innerHTML = 
+                    `<strong>Status:</strong> ${response.status}<br>
+                     <strong>Response:</strong> <pre>${JSON.stringify(result, null, 2)}</pre>`;
+                
+                if (response.ok) {
+                    console.log('Login exitoso:', result);
+                } else {
+                    console.error('Error en login:', result);
+                }
+            } catch (error) {
+                document.getElementById('loginResult').innerHTML = 
+                    `<strong>Error:</strong> ${error.message}`;
+                console.error('Error en login:', error);
+            }
+        }
+    </script>
+</body>
+</html>

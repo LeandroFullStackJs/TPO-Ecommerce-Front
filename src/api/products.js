@@ -71,10 +71,18 @@ export const productsAPI = {
    */
   create: async (productData) => {
     try {
+      console.log('📡 Enviando producto al backend:', productData)
       const response = await api.post('/productos', productData)
+      console.log('✅ Producto creado exitosamente:', response.data)
       return response.data
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Error al crear producto')
+      console.error('❌ Error al crear producto:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        productData: productData
+      })
+      throw new Error(error.response?.data?.message || 'Los datos proporcionados no son válidos')
     }
   },
 
@@ -90,9 +98,17 @@ export const productsAPI = {
    */
   update: async (id, productData) => {
     try {
+      console.log('📡 Actualizando producto en backend:', productData)
       const response = await api.put(`/productos/${id}`, productData)
+      console.log('✅ Producto actualizado exitosamente:', response.data)
       return response.data
     } catch (error) {
+      console.error('❌ Error al actualizar producto:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        productData: productData
+      })
       throw new Error(error.response?.data?.message || 'Error al actualizar producto')
     }
   },
@@ -110,9 +126,20 @@ export const productsAPI = {
    */
   updateStock: async (id, newStock) => {
     try {
-      const response = await api.patch(`/productos/${id}`, { stock: newStock })
+      // Primero obtener el producto completo
+      const currentProduct = await productsAPI.getById(id)
+      
+      // Actualizar solo el stock manteniendo los demás campos
+      const updatedProduct = {
+        ...currentProduct,
+        stock: newStock
+      }
+      
+      // Usar PUT para actualizar el producto completo
+      const response = await api.put(`/productos/${id}`, updatedProduct)
       return response.data
     } catch (error) {
+      console.error('❌ Error al actualizar stock:', error)
       throw new Error(error.response?.data?.message || 'Error al actualizar stock')
     }
   },
@@ -121,7 +148,7 @@ export const productsAPI = {
    * DECREMENTAR STOCK (COMPRA)
    * 
    * Reduce el stock disponible cuando se realiza una compra.
-   * Incluye validación para evitar stock negativo.
+   * Utiliza el endpoint específico del backend para decrementar stock.
    * Utilizado durante el proceso de checkout.
    * 
    * @param {number} id - ID del producto
@@ -130,15 +157,31 @@ export const productsAPI = {
    */
   decrementStock: async (id, quantity) => {
     try {
-      // Obtener stock actual del producto
-      const product = await productsAPI.getById(id)
+      console.log(`📦 Decrementando stock del producto ${id} en ${quantity} unidades`)
       
-      // Calcular nuevo stock evitando valores negativos
-      const newStock = Math.max(0, product.stock - quantity)
+      // Usar el endpoint específico del backend para decrementar stock
+      const response = await api.put(`/productos/${id}/decrementar-stock?cantidad=${quantity}`)
       
-      // Actualizar stock en la base de datos
-      return await productsAPI.updateStock(id, newStock)
+      console.log('✅ Stock decrementado exitosamente:', response.data)
+      return response.data
     } catch (error) {
+      console.error('❌ Error al decrementar stock:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        productId: id,
+        quantity: quantity
+      })
+      
+      // Manejar diferentes tipos de errores
+      if (error.response?.status === 400) {
+        throw new Error(error.response?.data?.message || 'Stock insuficiente para realizar la compra')
+      } else if (error.response?.status === 404) {
+        throw new Error('Producto no encontrado')
+      } else if (error.response?.status === 401) {
+        throw new Error('Debes iniciar sesión para realizar la compra')
+      }
+      
       throw new Error(error.response?.data?.message || 'Error al decrementar stock')
     }
   },
