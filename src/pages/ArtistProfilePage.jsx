@@ -45,49 +45,53 @@ export default function ArtistProfilePage() {
       return category ? (category.name || category.nombre) : 'Sin Categoría'
     }
 
-  useEffect(() => {
-    const fetchArtistData = async () => {
-      if (!artistId) return
-      setArtistLoading(true)
-      try {
-        // 1. Fetch artist details from the API
-        const artistData = await artistsAPI.getById(artistId)
+    useEffect(() => {
+      const fetchArtistData = async () => {
+        if (!artistId) return;
+        setArtistLoading(true);
 
-        // 2. Filter products for this artist (once products are loaded)
-        if (!productsLoading && products.length > 0) {
-          const artistWorks = products.filter(p => 
-            p.artistId == artistId || p.artistaId == artistId || 
-            (p.artista || p.artist) === artistData.nombre || 
-            (p.artista || p.artist) === artistData.name
-          ) // Support multiple field mappings
+        try {
+          const artistData = await artistsAPI.getById(artistId);
 
-          // 3. Combine data and set state
+          // --- DEBUGGING ---
+          console.log("ID de artista de la URL:", artistId, typeof artistId);
+          if (products.length > 0) {
+            console.log("Primer producto en la lista:", products[0]);
+            console.log("ID de artista en el primer producto:", products[0].artistaId, typeof products[0].artistaId);
+          }
+          // --- FIN DEBUGGING ---
+
+          // Filtra usando una comparación más segura
+          const artistWorks = products.filter(
+            p => p.artistaId === parseInt(artistId, 10)
+          );
+          
+          console.log("Obras encontradas para este artista:", artistWorks);
+
           setArtist({
-            ...artistData, // Use real data from API (name, bio, profileImage)
-            // Normalize artist name
-            name: artistData.name || artistData.nombre || 'Artista Sin Nombre',
-            // Normalize profile image
-            profileImage: getImageUrl(artistData.profileImage || artistData.imagenPerfil || artistData.imagen),
-            works: artistWorks,
+            id: artistData.id,
+            nombre: artistData.nombre,
+            biografia: artistData.biografia,
+            imagenPerfil: getImageUrl(artistData.imagenPerfil),
+            works: artistWorks, // Asignar las obras filtradas
             category: artistWorks.length > 0 && artistWorks[0].categoriaIds && artistWorks[0].categoriaIds.length > 0 
               ? artistWorks[0].categoriaIds[0] 
-              : 8, // Default to "Arte Contemporáneo"
-            coverImage: artistData.coverImage || "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200&h=400&fit=crop",
-          })
-        }
-      } catch (error) {
-        console.error('Error al cargar el perfil del artista:', error)
-        setArtist(null) // Set to null on error
-      } finally {
-        setArtistLoading(false)
-      }
-    }
+              : 8,
+          });
 
-    // Run fetch only when products are not loading to ensure works are available
-    if (!productsLoading) {
-      fetchArtistData()
-    }
-  }, [artistId, products, productsLoading])
+        } catch (error) {
+          console.error('Error al cargar el perfil del artista:', error);
+          setArtist(null);
+        } finally {
+          setArtistLoading(false);
+        }
+      };
+
+      if (!productsLoading) {
+        fetchArtistData();
+      }
+    }, [artistId, productsLoading]);
+
 
   if (artistLoading || productsLoading) {
     return <div className="loading">Cargando perfil del artista...</div>
@@ -127,10 +131,10 @@ export default function ArtistProfilePage() {
       </section>
 
       <div className="artist-content">
-        {artist.biography && (
+        {artist.biografia && (
           <section className="artist-section">
             <h2 className="section-title-small">Biografía</h2>
-            <p className="artist-text">{artist.biography}</p>
+            <p className="artist-text">{artist.biografia}</p>
           </section>
         )}
 
