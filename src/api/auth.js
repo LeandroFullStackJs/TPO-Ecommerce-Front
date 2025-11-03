@@ -71,12 +71,18 @@ export const authAPI = {
       } else if (error.response?.status === 404) {
         throw new Error('Usuario no encontrado')
       } else if (error.response?.status === 500) {
-        throw new Error('Error interno del servidor')
+        const backendMessage = error.response?.data?.message || error.response?.data?.error || 'Error desconocido en el servidor'
+        console.error('🔴 Error 500 del backend:', backendMessage)
+        console.error('🔴 Detalles completos:', error.response?.data)
+        throw new Error(`Error interno del servidor: ${backendMessage}`)
       } else if (!error.response) {
-        throw new Error('No se puede conectar con el servidor. Verifica que el backend esté ejecutándose.')
+        console.error('🔴 Sin respuesta del servidor. ¿Está corriendo el backend?')
+        throw new Error('No se puede conectar con el servidor. Verifica que el backend esté ejecutándose en http://localhost:8080')
       }
       
-      throw new Error(error.response?.data?.message || 'Credenciales inválidas')
+      const errorMsg = error.response?.data?.message || error.response?.data?.error || 'Credenciales inválidas'
+      console.error('🔴 Error del backend:', errorMsg)
+      throw new Error(errorMsg)
     }
   },
 
