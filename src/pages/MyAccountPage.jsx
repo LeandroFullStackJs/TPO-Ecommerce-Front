@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser   } from "../context/UserContext"; // Teoría: Hook de Contexto para acceso global al estado del usuario.
 import { useOrders } from "../context/OrderContext";
 import { useWishlist } from "../context/WishlistContext";
 import {Link} from 'react-router-dom'
+import AddressList from "../components/AddressList";
+import AddressForm from "../components/AddressForm";
+import { addressesAPI } from "../api/addresses";
 
 // Función auxiliar para formatear números de forma segura
 const formatCurrency = (value) => {
@@ -531,6 +534,7 @@ export default function MyAccountPage() {
             { id: "compras", label: "Mis Compras" },
             { id: "configuracion", label: "Configuración" },
             { id: "wishlist", label: "Wishlist" },
+            { id: "direcciones", label: "Direcciones" },
           ].map(({ id, label }) => (
             <button
               key={id}
@@ -576,7 +580,129 @@ export default function MyAccountPage() {
         {activeTab === "compras" && <MisCompras />}
         {activeTab === "configuracion" && <Configuracion />}
         {activeTab === "wishlist" && <Wishlist />}
+        {activeTab === "direcciones" && <Direcciones />}
       </main>
     </div>
   );
+}
+
+// Pestaña de Direcciones: listado y CRUD básico
+function Direcciones() {
+  const { user } = useUser()
+  const [addresses, setAddresses] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [editing, setEditing] = useState(null)
+  const [submitting, setSubmitting] = useState(false)
+
+  const load = async () => {
+    if (!user?.id) return
+    try {
+      setLoading(true)
+      setError(null)
+      // El backend obtiene el usuarioId automáticamente del token JWT
+      const data = await addressesAPI.listMine()
+      setAddresses(Array.isArray(data) ? data : [])
+    } catch (e) {
+      setError(e.message || 'No se pudieron cargar las direcciones')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    if (user?.id) load()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id])
+
+  const handleCreate = async (form) => {
+    try {
+      setSubmitting(true)
+      // usuarioId ya NO es necesario, el backend lo obtiene del token JWT
+      await addressesAPI.create(form)
+      setEditing(null)
+      await load()
+    } catch (e) {
+      alert(e.message || 'Error al crear la dirección')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleUpdate = async (form) => {
+    try {
+      setSubmitting(true)
+      await addressesAPI.update(editing.id, { ...editing, ...form, usuarioId: user.id })
+      setEditing(null)
+      await load()
+    } catch (e) {
+      alert(e.message || 'Error al actualizar la dirección')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const handleDelete = async (addr) => {
+    if (!confirm('¿Eliminar esta dirección?')) return
+    try {
+      await addressesAPI.remove(addr.id)
+      await load()
+    } catch (e) {
+      alert(e.message || 'Error al eliminar la dirección')
+    }
+  }
+
+  const handleSetDefault = async (addr) => {
+    try {
+      await addressesAPI.setPrimary(addr.id)
+      await load()
+    } catch (e) {
+      alert(e.message || 'Error al marcar como predeterminada')
+    }
+  }
+
+  return (
+    <section aria-labelledby="tab-direcciones">
+      <h1 className="section-title" style={{ marginBottom: '1.5rem', textAlign: 'center' }}>
+        Direcciones
+      </h1>
+
+      {loading && (
+        <p style={{ textAlign: 'center', color: 'var(--text-light)' }}>Cargando...</p>
+      )}
+      {error && (
+        <p className="error-message" style={{ textAlign: 'center' }}>{error}</p>
+      )}
+
+      {!loading && !error && (
+        <div style={{ display: 'grid', gap: '1rem', maxWidth: 800, margin: '0 auto' }}>
+          <div
+            style={{
+              backgroundColor: 'var(--white)',
+              boxShadow: 'var(--shadow)',
+              borderRadius: 'var(--border-radius)',
+              padding: '1.25rem'
+            }}
+          >
+            <h3 style={{ marginBottom: '0.75rem' }}>{editing ? 'Editar dirección' : 'Nueva dirección'}</h3>
+            <AddressForm
+              initialValue={editing || undefined}
+              onSubmit={editing ? handleUpdate : handleCreate}
+              onCancel={() => setEditing(null)}
+              submitting={submitting}
+            />
+          </div>
+
+          <div>
+            <AddressList
+              addresses={addresses}
+              onEdit={setEditing}
+              onDelete={handleDelete}
+              onSetDefault={handleSetDefault}
+            />
+          </div>
+        </div>
+      )}
+    </section>
+  )
 }
