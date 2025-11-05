@@ -152,7 +152,7 @@ export default function LoginPage() {
 
           <div className="demo-credentials">
             <h4>Credenciales de la demo:</h4>
-            <p><strong>Admin:</strong> admin@arte.com / Admin123@</p>  
+            <p><strong>Admin:</strong> admin@arte.com / Admin123@</p>
             <p><strong>Usuario:</strong> galeria@arte.com / Admin123@</p>
           </div>
         </form>
