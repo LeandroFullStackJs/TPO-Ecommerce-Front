@@ -25,7 +25,7 @@ import axios from 'axios'
  * Incluye URL del servidor, timeout y headers por defecto.
  */
 const api = axios.create({
-  baseURL: '/api',                         // URL relativa para usar proxy de Vite
+  baseURL: 'http://localhost:8080/api',    // URL absoluta del backend Spring Boot
   timeout: 10000,                          // Timeout de 10 segundos
   headers: {
     'Content-Type': 'application/json'     // Content-Type por defecto

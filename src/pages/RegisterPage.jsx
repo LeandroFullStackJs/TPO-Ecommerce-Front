@@ -34,7 +34,13 @@ export default function RegisterPage() {
     if (!formData.password) {
       newErrors.password = 'La contraseña es requerida'
     } else if (formData.password.length < 6) {
-      newErrors.password = 'La contraseña debe tener al menos 6 caracteres'
+      newErrors.password = 'La contraseña debe tener al menos 6 caracteres.'
+    } else if (!/[A-Z]/.test(formData.password)) {
+      newErrors.password = 'La contraseña debe contener al menos una mayúscula.'
+    } else if (!/\d/.test(formData.password)) {
+      newErrors.password = 'La contraseña debe contener al menos un número.'
+    } else if (formData.password.length > 50) {
+      newErrors.password = 'La contraseña no puede tener más de 50 caracteres.'
     }
     
     if (!formData.confirmPassword) {
@@ -156,6 +162,9 @@ export default function RegisterPage() {
               className={`input ${errors.password ? 'error' : ''}`}
               placeholder="Enter your password"
             />
+            <small className="form-help-text">
+              La contraseña debe tener al menos 6 caracteres, una mayúscula y un número.
+            </small>
             {errors.password && (
               <span className="error-text">{errors.password}</span>
             )}

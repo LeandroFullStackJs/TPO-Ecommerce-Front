@@ -979,13 +979,21 @@ body::before {
   gap: 1.1rem;
 }
 
-
-
 .error-text {
   color: #ff0019;
   font-size: 0.8rem;
   margin-top: 0.25rem;
   font-family: 'Courier New', Courier, monospace;
+}
+
+.form-help-text {
+  display: block;
+  text-align: left;
+  font-size: 0.6rem;
+  color: var(--text-light);
+  margin-top: -0.5rem; /* Reduce el espacio con el input de arriba */
+  margin-bottom: 0.5rem; /* Añade espacio antes del siguiente elemento */
+  padding-left: 0.25rem;
 }
 
 .auth-footer {
