@@ -26,6 +26,7 @@ export function UserProvider({ children }) {
   // Estados del contexto
   const [user, setUser] = useState(null)           // Datos del usuario actual
   const [loading, setLoading] = useState(true)     // Estado de carga inicial
+  const [error, setError] = useState(null)         // Estado para manejar errores
 
   /**
    * EFECTO DE INICIALIZACIÓN - PERSISTENCIA DE SESIÓN
@@ -96,6 +97,9 @@ export function UserProvider({ children }) {
     try {
       // Activar indicador de carga para UI (spinner, botón disabled, etc.)
       setLoading(true)
+
+      // Limpiar errores previos al intentar un nuevo login
+      setError(null)
       
       console.log('🔑 Intentando login con:', { email, password: '***' })
       
@@ -172,6 +176,9 @@ export function UserProvider({ children }) {
       // ERROR: Credenciales inválidas, servidor caído, red, etc.
       console.error('❌ Error en login:', error.message)
       
+      // Guardar el mensaje de error en el estado del contexto
+      setError(error.message)
+
       // No manejar el error aquí, dejarlo para el componente
       // Esto permite mostrar mensajes específicos en la UI
       throw error
@@ -194,6 +201,7 @@ export function UserProvider({ children }) {
   const register = async (userData) => {
     try {
       setLoading(true)
+      setError(null)
       
       console.log('📝 Iniciando registro con datos:', userData)
       
@@ -229,6 +237,7 @@ export function UserProvider({ children }) {
       return newUser
     } catch (error) {
       console.error('❌ Error en registro:', error.message)
+      setError(error.message)
       // Propagar el error para manejo en el componente
       throw error
     } finally {
@@ -246,6 +255,7 @@ export function UserProvider({ children }) {
     setUser(null)
     // Remover datos persistentes del localStorage
     localStorage.removeItem("user")
+    localStorage.removeItem("token") // Asegurarse de limpiar también el token
   }
 
   /**
@@ -275,6 +285,7 @@ export function UserProvider({ children }) {
   const updateUser = async (userData) => {
     try {
       setLoading(true)
+      setError(null)
       
       // Verificar que hay un usuario autenticado
       if (!user || !user.id) {
@@ -306,6 +317,7 @@ export function UserProvider({ children }) {
       
       return normalizedUserData
     } catch (error) {
+      setError(error.message)
       throw error
     } finally {
       setLoading(false)
@@ -324,6 +336,7 @@ export function UserProvider({ children }) {
   const changePassword = async (currentPassword, newPassword) => {
     try {
       setLoading(true)
+      setError(null)
       
       // Verificar autenticación
       if (!user || !user.id) {
@@ -334,11 +347,19 @@ export function UserProvider({ children }) {
       await authAPI.changePassword(user.id, currentPassword, newPassword)
       return true
     } catch (error) {
+      setError(error.message)
       throw error
     } finally {
       setLoading(false)
     }
   }
+
+  /**
+   * FUNCIÓN PARA LIMPIAR ERRORES
+   * Permite a los componentes limpiar el estado de error, por ejemplo,
+   * cuando el usuario empieza a escribir de nuevo en un formulario.
+   */
+  const clearError = () => setError(null)
 
   /**
    * VALOR DEL CONTEXTO
@@ -348,6 +369,8 @@ export function UserProvider({ children }) {
   const value = {
     user,                // Datos del usuario actual
     loading,             // Estado de carga
+    error,               // Estado de error
+    clearError,          // Función para limpiar errores
     login,               // Función de inicio de sesión
     register,            // Función de registro
     logout,              // Función de cierre de sesión
