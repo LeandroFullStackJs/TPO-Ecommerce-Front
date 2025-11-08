@@ -130,13 +130,18 @@ export const authAPI = {
       
       // Mensajes específicos para registro
       if (error.response?.status === 400) {
-        throw new Error(error.response?.data?.message || 'Datos de registro inválidos')
+        // Si el backend devuelve un objeto con errores de validación
+        if (typeof error.response.data === 'object' && error.response.data.message) {
+          throw new Error(error.response.data.message);
+        }
+        // Si no, usa un mensaje genérico.
+        throw new Error('Los datos proporcionados son inválidos. Por favor, revisa los campos.');
       } else if (error.response?.status === 409) {
         throw new Error('Este email ya está registrado')
       } else if (error.response?.status === 500) {
         throw new Error('Error interno del servidor')
       } else if (!error.response) {
-        throw new Error('No se puede conectar con el servidor. Verifica que el backend esté ejecutándose.')
+        throw new Error('No se puede conectar con el servidor.')
       }
       
       throw new Error(error.response?.data?.message || 'Error al registrar usuario')
