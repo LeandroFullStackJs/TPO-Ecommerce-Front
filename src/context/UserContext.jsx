@@ -210,7 +210,7 @@ export function UserProvider({ children }) {
         email: userData.email,
         password: userData.password,
         nombre: userData.firstName || userData.username || 'Usuario',
-        apellido: userData.lastName || userData.username || 'Apellido', // El backend requiere apellido obligatorio
+        apellido: userData.lastName || userData.username || 'Apellido',
         username: userData.username || userData.email?.split('@')[0] || 'user'
       }
       
@@ -221,18 +221,11 @@ export function UserProvider({ children }) {
 
       console.log('✅ Usuario registrado exitosamente:', response)
 
+      // Hacer login automático después del registro exitoso
+      await login(userData.email, userData.password)
+
       // El backend puede devolver la estructura de diferentes formas
       const newUser = response.user || response.data || response
-
-      // Guardar datos del nuevo usuario en el estado y localStorage
-      setUser(newUser)
-      localStorage.setItem("user", JSON.stringify(newUser))
-
-      // Si viene con token, también guardarlo
-      if (response.token) {
-        localStorage.setItem("token", response.token)
-        console.log('🔐 Token de registro almacenado')
-      }
 
       return newUser
     } catch (error) {
@@ -245,7 +238,7 @@ export function UserProvider({ children }) {
       setLoading(false)
     }
   }
-
+  
   /**
    * FUNCIÓN DE CIERRE DE SESIÓN
    * Limpia todos los datos del usuario y cierra la sesión.
