@@ -85,6 +85,9 @@ export function ProductProvider({ children }) {
       // productsAPI.getAll() hace GET request a /products
       const data = await productsAPI.getAll()
       
+      console.log('📦 Productos cargados:', data.length, 'productos')
+      console.log('📦 Ejemplo de producto:', data[0])
+      
       // PASO 4: ÉXITO - Actualizar estado con productos recibidos
       setProducts(data)  // Esto triggerea re-render en componentes que usan productos
       

@@ -24,6 +24,7 @@ import ProductCard from '../components/ProductCard'
 import { categoriesAPI } from '../api/categories'
 import { useProducts } from '../context/ProductContext'
 import { FaSearch } from "react-icons/fa";
+import { textIncludes } from '../utils/textUtils'
 
 export default function CategoriesPage() {
   // Datos del contexto de productos
@@ -172,11 +173,24 @@ export default function CategoriesPage() {
 
     return products
       .filter(p => {
-        // PASO 1: BÚSQUEDA DE TEXTO MULTICANAL
-        // Busca en nombre, artista y descripción del producto
-        const searchableText = ((p.name || p.nombre || '') + ' ' + (p.artist || '') + ' ' + (p.description || ''))
-          .toLowerCase()
-        const matchText = searchableText.includes(q.toLowerCase())
+        // PASO 1: BÚSQUEDA DE TEXTO MULTICANAL INTELIGENTE
+        // Busca en nombre, artista y descripción del producto con tolerancia a acentos
+        const searchableText = (p.name || p.nombreObra || p.nombre || '') + ' ' + 
+                               (p.artist || p.artista || '') + ' ' + 
+                               (p.description || p.descripcion || '')
+        
+        const matchText = !q || textIncludes(searchableText, q)
+        
+        // Debug: Log de búsqueda (solo cuando hay query)
+        if (q && p.id === 1) {
+          console.log('🔍 Debug búsqueda:', {
+            query: q,
+            searchableText: searchableText,
+            productName: p.name || p.nombreObra,
+            productArtist: p.artist || p.artista,
+            matchText: matchText
+          })
+        }
 
         // PASO 2: VALIDACIONES DE FILTROS INDIVIDUALES
         // Filtro por categoría: cat es un ID, pero categorias es un array de nombres
@@ -193,7 +207,7 @@ export default function CategoriesPage() {
         const matchPrice = filters.price.length === 0 || checkPriceMatch(p.precio || p.price, filters.price)
 
         // PASO 3: COMBINACIÓN LÓGICA (AND) DE TODOS LOS FILTROS
-        return (
+        const finalMatch = (
           matchText &&
           matchCat &&
           matchTechnique &&
@@ -203,7 +217,18 @@ export default function CategoriesPage() {
           matchPallette &&
           matchPrice
         )
+        
+        return finalMatch
       })
+      
+    // Debug: Log de resultados de filtrado
+    console.log('🔍 Resultados de búsqueda:', {
+      query: q,
+      totalProducts: products.length,
+      filteredProducts: filteredResults.length
+    })
+    
+    return filteredResults
       .sort((a, b) => {
         // Manejo defensivo para nombres undefined
         const nameA = a.name || a.nombre || 'Sin nombre'
@@ -391,7 +416,22 @@ export default function CategoriesPage() {
   {/* Grilla de productos */}
   <div className="products-grid">
     {filtered.length === 0 ? (
-      <p>No se encontraron resultados</p>
+      <div className="no-results">
+        <p>No se encontraron resultados</p>
+        {q && (
+          <p>
+            No encontramos obras que coincidan con "<strong>{q}</strong>".
+            <br />
+            Intenta con otros términos como "pintura", "abstracto" o el nombre de un artista.
+          </p>
+        )}
+        {cat && categories.length > 0 && (
+          <p>
+            No hay obras en la categoría seleccionada.
+          </p>
+        )}
+        <p>Total de productos disponibles: {products?.length || 0}</p>
+      </div>
     ) : (
       filtered.map(product => (
         <ProductCard key={product.id} product={product} />
