@@ -72,17 +72,34 @@ export const productsAPI = {
   create: async (productData) => {
     try {
       console.log('📡 Enviando producto al backend:', productData)
+      console.log('📡 URL completa:', 'http://localhost:8080/api/productos')
+      console.log('📡 Headers que se envían:', {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : 'Sin token'
+      })
+      
       const response = await api.post('/productos', productData)
       console.log('✅ Producto creado exitosamente:', response.data)
       return response.data
     } catch (error) {
-      console.error('❌ Error al crear producto:', {
+      console.error('❌ Error detallado al crear producto:', {
         message: error.message,
-        response: error.response?.data,
         status: error.response?.status,
-        productData: productData
+        statusText: error.response?.statusText,
+        responseData: error.response?.data,
+        responseHeaders: error.response?.headers,
+        requestData: productData,
+        requestURL: error.config?.url,
+        requestMethod: error.config?.method
       })
-      throw new Error(error.response?.data?.message || 'Los datos proporcionados no son válidos')
+      
+      // Mostrar mensaje específico del backend si existe
+      const backendMessage = error.response?.data?.message || 
+                           error.response?.data?.error || 
+                           error.response?.data?.details ||
+                           'Los datos proporcionados no son válidos'
+      
+      throw new Error(backendMessage)
     }
   },
 

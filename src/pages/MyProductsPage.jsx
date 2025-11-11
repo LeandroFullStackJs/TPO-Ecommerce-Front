@@ -44,7 +44,7 @@ export default function MyProductsPage() {
     category: '',
     price: '',
     stock: '',
-    image: '',
+    image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
     description: '',
     dimensions: '',
     technique: '',
@@ -125,8 +125,29 @@ export default function MyProductsPage() {
       newErrors.stock = 'El stock debe ser un número'
     }
     
+    // Validar URL de imagen
+    if (formData.image && !isValidImageUrl(formData.image)) {
+      newErrors.image = 'Debe ser una URL válida de imagen (jpg, jpeg, png, gif, webp)'
+    }
+    
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
+  }
+
+  // Función auxiliar para validar URLs de imágenes
+  const isValidImageUrl = (url) => {
+    try {
+      const urlObj = new URL(url)
+      const validExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp']
+      const pathname = urlObj.pathname.toLowerCase()
+      return validExtensions.some(ext => pathname.endsWith(ext)) || 
+             url.includes('unsplash.com') || 
+             url.includes('pixabay.com') ||
+             url.includes('pexels.com') ||
+             url.includes('imgur.com')
+    } catch {
+      return false
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -137,23 +158,67 @@ export default function MyProductsPage() {
     try {
       setLoading(true)
       
+      // Verificar autenticación antes de crear producto
+      console.log('🔐 Verificando autenticación:', {
+        user: user,
+        userId: user?.id,
+        userIdType: typeof user?.id,
+        userIdParsed: parseInt(user?.id),
+        token: localStorage.getItem('token') ? 'Token presente' : 'Sin token'
+      })
+      
+      if (!user || !user.id) {
+        throw new Error('Debes estar autenticado para crear productos')
+      }
+      
+      if (isNaN(parseInt(user.id))) {
+        throw new Error('ID de usuario inválido. Vuelve a iniciar sesión.')
+      }
+      
+      // Validar datos antes de mapear
+      console.log('📋 Datos del formulario antes del mapeo:', formData)
+      console.log('👤 Usuario actual:', user)
+      console.log('📂 Categorías disponibles:', categories)
+      
+      // Validaciones adicionales
+      const categoryId = Number(formData.category)
+      const precio = Number(formData.price)
+      const stock = Number(formData.stock)
+      const anio = Number(formData.year)
+      
+      if (!categoryId || isNaN(categoryId)) {
+        throw new Error('Categoría inválida. Por favor selecciona una categoría válida.')
+      }
+      
+      if (!precio || isNaN(precio) || precio <= 0) {
+        throw new Error('Precio inválido. Debe ser un número mayor a 0.')
+      }
+      
+      if (isNaN(stock) || stock < 0) {
+        throw new Error('Stock inválido. Debe ser un número mayor o igual a 0.')
+      }
+      
+      if (!anio || isNaN(anio) || anio < 1900 || anio > 2030) {
+        throw new Error('Año inválido. Debe ser un año entre 1900 y 2030.')
+      }
+
       // Mapear datos del frontend al formato esperado por el backend Spring Boot
       const productData = {
         // Campos principales en español (requeridos por backend)
-        nombreObra: formData.name,
-        descripcion: formData.description,
-        precio: Number(formData.price),
-        stock: Number(formData.stock),
-        imagen: formData.image,
-        artista: formData.artist,
-        tecnica: formData.technique,
-        dimensiones: formData.dimensions,
-        anio: Number(formData.year),
+        nombreObra: formData.name.trim(),
+        descripcion: formData.description.trim(),
+        precio: precio,
+        stock: stock,
+        imagen: formData.image.trim(),
+        artista: formData.artist.trim(),
+        tecnica: formData.technique.trim(),
+        dimensiones: formData.dimensions.trim(),
+        anio: anio,
         
-        // IDs requeridos
-        usuarioId: user.id,
-        artistaId: user.id, // Asumimos que el usuario es el artista
-        categoriaIds: [Number(formData.category)], // Array de IDs de categorías
+        // IDs requeridos - Verificar que estos campos estén correctos
+        usuarioId: parseInt(user.id),
+        artistaId: parseInt(user.id), // Asumimos que el usuario es el artista
+        categoriaIds: [categoryId], // Array de IDs de categorías
         
         // Campos adicionales con valores por defecto
         activo: true,
@@ -161,7 +226,11 @@ export default function MyProductsPage() {
         estilo: "Contemporáneo" // Valor por defecto
       }
       
-      console.log('📤 Enviando producto al backend:', productData)
+      console.log('📤 Datos mapeados para enviar al backend:', productData)
+      console.log('🎨 Categoría seleccionada:', categories.find(c => c.id === categoryId))
+      console.log('💰 Precio parseado:', precio)
+      console.log('📦 Stock parseado:', stock)
+      console.log('📅 Año parseado:', anio)
       
       if (editingProduct) {
         await updateProduct(editingProduct.id, productData)
@@ -174,7 +243,23 @@ export default function MyProductsPage() {
       // No necesitamos refreshProducts aquí, el contexto se actualiza automáticamente
     } catch (error) {
       console.error('❌ Error al crear/actualizar producto:', error)
-      setErrors({ general: error.message })
+      
+      // Mostrar error más específico al usuario
+      let errorMessage = 'Error al crear el producto'
+      
+      if (error.message.includes('imagen')) {
+        errorMessage = 'Error con la imagen: verifica que sea una URL válida'
+      } else if (error.message.includes('categoría')) {
+        errorMessage = 'Error con la categoría: selecciona una categoría válida'
+      } else if (error.message.includes('precio')) {
+        errorMessage = 'Error con el precio: debe ser un número positivo'
+      } else if (error.message.includes('token') || error.message.includes('auth')) {
+        errorMessage = 'Error de autenticación: inicia sesión nuevamente'
+      } else {
+        errorMessage = error.message || 'Error desconocido al crear el producto'
+      }
+      
+      setErrors({ general: errorMessage })
     } finally {
       setLoading(false)
     }
@@ -214,7 +299,7 @@ export default function MyProductsPage() {
       category: '',
       price: '',
       stock: '',
-      image: '',
+      image: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400',
       description: '',
       dimensions: '',
       technique: '',
@@ -401,9 +486,12 @@ export default function MyProductsPage() {
                         value={formData.image}
                         onChange={(e) => setFormData({...formData, image: e.target.value})}
                         className={errors.image ? 'error' : ''}
-                        placeholder="https://ejemplo.com/imagen.jpg"
+                        placeholder="https://images.unsplash.com/photo-ejemplo.jpg"
                       />
                       {errors.image && <span className="error-text">{errors.image}</span>}
+                      <small className="help-text">
+                        💡 Usa URLs de imágenes reales. Ejemplos: Unsplash, Pixabay, Imgur
+                      </small>
                     </div>
                   </div>
 
