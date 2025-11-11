@@ -10,6 +10,7 @@
     "server": "json-server --watch db.json --port 5000",
     "dev:full": "concurrently \"npm run server\" \"npm run dev\""
   },
+  "homepage": ".",
   "dependencies": {
     "axios": "^1.11.0",
     "prop-types": "^15.8.1",
